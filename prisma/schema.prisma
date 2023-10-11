@@ -39,6 +39,7 @@ model Question {
   title      String
   group_id   Int
   user_id    Int
+  is_active  Boolean      @default(true)
   groups     Group        @relation(fields: [group_id], references: [id])
   users      User         @relation(fields: [user_id], references: [id])
   result     String
@@ -61,8 +62,4 @@ model Vote {
   submissionId Int
   user         User       @relation(fields: [user_id], references: [id])
   submission   Submission @relation(fields: [submissionId], references: [id])
-
 }
-
-
-

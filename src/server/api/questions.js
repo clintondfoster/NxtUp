@@ -24,6 +24,19 @@ router.get("/:id", async (req, res, next) => {
       next(err);
     }
   });
+router.get("/group/:id", async (req, res, next) => {
+    try {
+      const activeQuestion = await prisma.Question.findMany({
+        where: {
+            group_id: Number(req.params.id),
+            is_active: true,
+        },
+      });
+      res.send(activeQuestion);
+    } catch (err) {
+      next(err);
+    }
+  });
 
   router.delete("/:id",  async (req, res, next) => {
   
@@ -40,7 +53,6 @@ router.get("/:id", async (req, res, next) => {
   });
 
   router.post("/", async (req, res, next) => {
-    // console.log('req body from post', req.body);
     try {
       const question = await prisma.Question.create({
         data: req.body,

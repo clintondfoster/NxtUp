@@ -71,3 +71,9 @@ router.get("/:id", async (req, res, next) => {
 
 
 module.exports = router
+
+
+// * updates required 
+// * 1. create & assign role when group is created 
+// * 2. 
+// * 3. 
