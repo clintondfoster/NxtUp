@@ -8,63 +8,58 @@ datasource db {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
-  username    String       @unique
-  password    String
-  email       String       @unique
-  roleId      Int
-  groups      Group[]
-  votes       Vote[]
-  submissions Submission[]
-  Question    Question[]
-  Role        Role[]
+  id         Int          @id @default(autoincrement())
+  username   String       @unique
+  password   String
+  email      String       @unique
+  Vote       Vote[]
+  Submission Submission[]
+  Question   Question[]
+  Role       Role[]
 }
 
 model Role {
-  id         Int     @id @default(autoincrement())
-  userId     Int
-  groupId    Int
-  User       User    @relation(fields: [userId], references: [id])
-  Group      Group   @relation(fields: [groupId], references: [id])
-  isAdmitted Boolean @default(true)
+  id          Int     @id @default(autoincrement())
+  user_id     Int
+  group_id    Int
+  user        User    @relation(fields: [user_id], references: [id])
+  group       Group   @relation(fields: [group_id], references: [id])
+  is_admitted Boolean @default(true)
 }
 
 model Group {
   id        Int        @id @default(autoincrement())
   name      String
-  questions Question[]
-  User      User?      @relation(fields: [userId], references: [id])
-  userId    Int?
+  Questions Question[]
   Role      Role[]
 }
 
 model Question {
-  id           Int        @id @default(autoincrement())
-  title        String
-  groupId      Int
-  userId       Int
-  submissionId Int
-  groups       Group      @relation(fields: [groupId], references: [id])
-  users        User       @relation(fields: [userId], references: [id])
-  submissions  Submission @relation(fields: [submissionId], references: [id])
-  result       String
+  id         Int          @id @default(autoincrement())
+  title      String
+  group_id   Int
+  user_id    Int
+  groups     Group        @relation(fields: [group_id], references: [id])
+  users      User         @relation(fields: [user_id], references: [id])
+  result     String
+  Submission Submission[]
 }
 
 model Submission {
-  id         Int        @id @default(autoincrement())
-  title      String
-  link       String
-  userId     Int
-  questionId Int
-  votes      Vote[]
-  User       User       @relation(fields: [userId], references: [id])
-  Question   Question[]
+  id          Int      @id @default(autoincrement())
+  title       String
+  link        String
+  user_id     Int
+  question_id Int
+  Vote        Vote[]
+  user        User     @relation(fields: [user_id], references: [id])
+  question    Question @relation(fields: [question_id], references: [id])
 }
 
 model Vote {
   id           Int        @id @default(autoincrement())
-  userId       Int
+  user_id      Int
   submissionId Int
-  User         User       @relation(fields: [userId], references: [id])
-  Submission   Submission @relation(fields: [submissionId], references: [id])
+  user         User       @relation(fields: [user_id], references: [id])
+  submission   Submission @relation(fields: [submissionId], references: [id])
 }
