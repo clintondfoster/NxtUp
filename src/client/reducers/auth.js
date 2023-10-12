@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {api as storeApi} from "./api";
+import {votingApi as storeApi} from "./api";
 
  //session storage key
 const CREDENTIALS = "credentials";

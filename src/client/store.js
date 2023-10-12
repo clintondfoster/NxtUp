@@ -1,16 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { api } from "./reducers/api";
+import { votingApi } from "./reducers/api";
 import authReducer from './reducers/auth'
-import dataReducer from './reducers/api'
+// import dataReducer from './reducers/api'
 
 const store = configureStore({
     reducer: {
-        [api.reducerPath]: api.reducer,
+        [votingApi.reducerPath]: votingApi.reducer,
         auth: authReducer,
-        data:dataReducer
+        // data:dataReducer
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(api.middleware),
+        getDefaultMiddleware().concat(votingApi.middleware),
 });
 
 export default store;

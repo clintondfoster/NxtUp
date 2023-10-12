@@ -26,6 +26,7 @@ model Role {
   user        User    @relation(fields: [user_id], references: [id])
   group       Group   @relation(fields: [group_id], references: [id])
   is_admitted Boolean @default(true)
+  is_creator Boolean @default(false)
 }
 
 model Group {
@@ -35,6 +36,7 @@ model Group {
   User      User?      @relation(fields: [userId], references: [id])
   userId    Int?
   Role      Role[]
+  // code 
 }
 
 model Question {
@@ -42,6 +44,7 @@ model Question {
   title      String
   group_id   Int
   user_id    Int
+  is_active  Boolean      @default(true)
   groups     Group        @relation(fields: [group_id], references: [id])
   users      User         @relation(fields: [user_id], references: [id])
   result     String
