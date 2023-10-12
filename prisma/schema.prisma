@@ -16,6 +16,7 @@ model User {
   Submission Submission[]
   Question   Question[]
   Role       Role[]
+  Group      Group[]
 }
 
 model Role {
@@ -31,7 +32,9 @@ model Role {
 model Group {
   id        Int        @id @default(autoincrement())
   name      String
-  Questions Question[]
+  questions Question[]
+  User      User?      @relation(fields: [userId], references: [id])
+  userId    Int?
   Role      Role[]
   // code 
 }
