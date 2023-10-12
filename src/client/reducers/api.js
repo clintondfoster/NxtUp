@@ -30,6 +30,14 @@ export const votingApi = createApi({
         method: "POST",
         body: body,
       }),
+    }),
+    addQuestion: builder.mutation({
+      query: (body) => ({
+        url: "api/questions",
+        method: "POST",
+        body: body,
+      }),
+    }),
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `api/users/${id}`,
@@ -46,7 +54,6 @@ export const votingApi = createApi({
         };
       },
       }),
-    }),
   }),
 });
 function storeToken(state, { payload }) {
@@ -61,6 +68,7 @@ export const {
   useDeleteUserMutation,
   useEditUserMutation,
   useAddGroupMutation,
+  useAddQuestionMutation
 } = votingApi;
 // export default dataSlice.reducer;
 
