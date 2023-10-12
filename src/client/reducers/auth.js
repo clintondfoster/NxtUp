@@ -6,18 +6,21 @@ const CREDENTIALS = "credentials";
 
 const authApi = storeApi.injectEndpoints({
     endpoints: (builder)=>({
+        me: builder.query({ 
+            query: () => "auth/me",
+        }),
         login: builder.mutation({
-            query: (cred)=>({
+            query: (credentials)=>({
                 url:"auth/login",
                 method: "POST",
-                body: cred
+                body: credentials,
             })
         }),
         register: builder.mutation({
-            query: (cred)=>({
+            query: (credentials)=>({
                 url:"auth/register",
                 method: "POST",
-                body: cred
+                body: credentials,
             })
         }),
         logout: builder.mutation({
@@ -29,6 +32,7 @@ const authApi = storeApi.injectEndpoints({
 function storeToken(state, {payload}){
     console.log(state)
     state.credentials = {token: payload.token, user: {...payload.user}};
+    console.log("Token recieved:", payload.token);
     window.sessionStorage.setItem(
         CREDENTIALS,
         JSON.stringify({
@@ -44,7 +48,7 @@ const authSlice = createSlice({
     initialState: {
         credentials : JSON.parse(window.sessionStorage.getItem(CREDENTIALS)) || {
             token:"",
-            user: {userId:null}
+            user: {userId: null}
         }
     },
     reducers:{},
@@ -54,8 +58,8 @@ const authSlice = createSlice({
         builder.addMatcher(storeApi.endpoints.logout.matchFulfilled, (state)=>{
             console.log("logout")
             state.credentials = {
-                token:"",
-                user: {userId:null}
+                token: "",
+                // user: {userId:null}
             };
             window.sessionStorage.removeItem(CREDENTIALS)
         });
@@ -65,6 +69,7 @@ const authSlice = createSlice({
 export default  authSlice.reducer;
 
 export const {
+    useMeQuery,
     useLoginMutation,
     useRegisterMutation,
     useLogoutMutation
