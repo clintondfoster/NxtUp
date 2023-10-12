@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLoginMutation, useRegisterMutation } from "../../reducers/auth";
-import TextInput from "./inputs/TextInput";
+import TextInput from "../inputs/TextInput";
 // import { useNavigate } from "react-router-dom";
 
 /**
