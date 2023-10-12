@@ -17,11 +17,11 @@ export const votingApi = createApi({
       const token = parsedCredentials.token;
       console.log("token from reducer", token);
       if (token) {
-        headers.set("Authorization", token);
+          headers.set("Authorization", `Bearer ${token}`);
       }
       console.log("token from session storage:", token);
       return headers;
-    },
+  },
   }),
   endpoints: (builder) => ({
     addGroup: builder.mutation({
@@ -63,3 +63,4 @@ export const {
   useAddGroupMutation,
 } = votingApi;
 // export default dataSlice.reducer;
+
