@@ -56,7 +56,7 @@ router.get("/group/:id", async (req, res, next) => {
     try {
       const question = await prisma.Question.create({
         data: req.body,
-      });
+      });we 
       console.log('req body from post request', req.body);
       res.send(question);
     } catch (err) {
