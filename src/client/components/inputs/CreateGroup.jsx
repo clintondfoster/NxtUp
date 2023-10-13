@@ -9,6 +9,7 @@ const CreateGroup = () => {
       const response = await createGroup({ name: groupName });
       console.log("Group created:", groupName);
       console.log("Role created");
+      setGroupName("");
     } catch (err) {
       console.error("Error creating group:", err);
     }
