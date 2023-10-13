@@ -47,7 +47,6 @@ model Question {
   is_active  Boolean      @default(true)
   groups     Group        @relation(fields: [group_id], references: [id])
   users      User         @relation(fields: [user_id], references: [id])
-  result     String
   Submission Submission[]
 }
 
