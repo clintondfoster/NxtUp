@@ -13,25 +13,5 @@ router.get("/", async (req, res, next) => {
 });
 
 
-router.post("/", async (req, res, next) => {
-  try {
-    const { group_id, is_admitted, is_creator } = req.body
-    const role = await prisma.Role.create({
-      data: {
-        user: req.user.id,
-        group_id,
-        is_admitted, 
-        is_creator,
-      }
-    });
-    console.log("req body from post request", req.body);
-    res.send(role);
-  } catch (err) {
-    console.error("Error adding role", err);
-    res.status(500).send(err.message);
-    next(err);
-  }
-});
-
 
 module.exports = router;
