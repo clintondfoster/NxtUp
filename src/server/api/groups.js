@@ -42,11 +42,30 @@ router.get("/:id", async (req, res, next) => {
   router.post("/", async (req, res, next) => {
     // console.log('req body from post', req.body);
     try {
+      const testUser = 1
+      const {name} = req.body
       const group = await prisma.Group.create({
-        data: req.body,
+        data: {
+          userId: testUser, 
+          name, 
+        }
       });
+
+      const role = await prisma.role.create({
+        data: {
+          user_id: testUser, 
+          group_id: group.id,
+          is_admitted: true, 
+          is_creator: true
+        }
+      })
+
       console.log('req body from post request', req.body);
-      res.send(group);
+      const response = {
+        group, 
+        role,
+      }
+      res.send(response);
     } catch (err) {
       console.error("Error adding group", err)
       res.status(500).send(err.message);
