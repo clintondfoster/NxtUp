@@ -8,6 +8,7 @@ const CreateQuestion = () => {
     try {
       const response = await createQuestion({ title: questionTitle });
       console.log("Question created:", questionTitle);
+      setQuestionTitle("");
     } catch (err) {
       console.error("Error creating group:", err);
     }

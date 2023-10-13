@@ -7,15 +7,12 @@ const prisma = new PrismaClient();
 
 router.post("/", async (req, res, next) => {
   const { title } = req.body;
-  const group = 2
-  const user = 1
+  const user = 1 //update based on your current postico dummy data
 
   try {
     const groupCreator = await prisma.role.findFirst({
       where: {
-        group_id: group,
         user_id: user,
-        is_admitted: true,
         is_creator: true,
       },
     });
