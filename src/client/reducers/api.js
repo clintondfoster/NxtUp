@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
 
 const CREDENTIALS = "credentials";
 
@@ -17,7 +17,7 @@ export const votingApi = createApi({
       const token = parsedCredentials.token;
       console.log("token from reducer", token);
       if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
+          headers.set("Authorization", token);
       }
       console.log("token from session storage:", token);
       return headers;
@@ -37,6 +37,9 @@ export const votingApi = createApi({
         method: "POST",
         body: body,
       }),
+    }),
+    getUserById: builder.query({
+      query: (id) => `api/users/${id}`
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
@@ -58,9 +61,12 @@ export const votingApi = createApi({
 });
 function storeToken(state, { payload }) {
   console.log("storeToken is running");
-  state.credentials = { token: payload.token };
-  console.log("Token recieved:", payload.token);
-  window.sessionStorage.setItem(CREDENTIALS, JSON.stringify(payload));
+  console.log(state);
+
+  const { token, user } = payload;
+  state.credentials = { token, user };
+  console.log("Token recieved:", token);
+  window.sessionStorage.setItem(CREDENTIALS, JSON.stringify({ token, user }));
 }
 
 export const {
@@ -70,5 +76,6 @@ export const {
   useAddGroupMutation,
   useAddQuestionMutation
 } = votingApi;
+
 // export default dataSlice.reducer;
 

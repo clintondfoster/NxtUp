@@ -4,12 +4,14 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const authorization = require("../middleware");
 
+//Apply Middleware to all routes for user
 router.use(authorization);
 
 
 router.get("/:id", async (req, res, next) => {
     try {
-        if (!req.user) {
+        if (!req.User) {
+            console.log(req.User)
             return res.status(401).send("User not authenticated")
         }
 
@@ -31,7 +33,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
     try {
-        if (!req.user) {
+        if (!req.User) {
             return res.status(401).send("User not authenticated")
         }
 

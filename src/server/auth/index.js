@@ -38,7 +38,7 @@ router.post("/register", [
 
     //check if the email already exists
     const existingUser = await prisma.User.findUnique({
-        where: { email },
+        where: { username },
     });
 
     if (existingUser) {
@@ -61,7 +61,7 @@ router.post("/register", [
         message: "You have registered a new account!",
         token,
         user: {
-            user_id: user.id,
+            userId: user.id,
             username: user.username,
             email: user.email,
         }
@@ -76,10 +76,10 @@ router.post("/login", async (req, res, next) => {
     
     try {
         console.log("Login request recieved", req.body);
-        const { email, password } = req.body;
+        const { username, email, password } = req.body;
 
         const user = await prisma.User.findUnique({
-            where: { email },
+            where: { username },
         });
 
         console.log("User found:", user);
@@ -98,7 +98,7 @@ router.post("/login", async (req, res, next) => {
         res.send({
             token,
             user: {
-                user_id: user.id,
+                userId: user.id,
                 username: user.username,
                 email: user.email,
             }

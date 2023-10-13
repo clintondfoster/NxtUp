@@ -24,20 +24,21 @@ const authApi = storeApi.injectEndpoints({
             })
         }),
         logout: builder.mutation({
-            queryFn: ()=>({data:{}})
+            query: ()=>({data:{}})
         })
     })
 })
 
 function storeToken(state, {payload}){
     console.log(state)
-    state.credentials = {token: payload.token, user: {...payload.user}};
+    state.credentials = {token: payload.token };
     console.log("Token recieved:", payload.token);
     window.sessionStorage.setItem(
         CREDENTIALS,
         JSON.stringify({
-            token: payload.token,
-            user: {...payload.user}
+            payload
+            // token: payload.token,
+            // user: {...payload.user}
         })
     )
 }
@@ -47,7 +48,7 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         credentials : JSON.parse(window.sessionStorage.getItem(CREDENTIALS)) || {
-            token:"",
+            token: "",
             user: {userId: null}
         }
     },
@@ -59,7 +60,7 @@ const authSlice = createSlice({
             console.log("logout")
             state.credentials = {
                 token: "",
-                // user: {userId:null}
+                user: {userId:null}
             };
             window.sessionStorage.removeItem(CREDENTIALS)
         });
