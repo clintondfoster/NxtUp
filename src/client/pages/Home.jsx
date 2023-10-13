@@ -1,6 +1,7 @@
 import React from "react";
 import CreateGroup from "../components/inputs/CreateGroup";
 import CreateQuestion from "../components/inputs/CreateQuestion";
+import JoinGroup from "../components/inputs/JoinGroup";
 
 const Home = () => {
 
@@ -9,14 +10,13 @@ const Home = () => {
       {" "}
       <h2>Home Page</h2>
       <div>
-        <CreateGroup/> 
+        <CreateGroup/> {/* creates new group and sets users role as creator */}
       </div>
       <div>
         <CreateQuestion/>  {/* not functional yet  */}
       </div>
       <div>
-        <input placeholder="Enter Group Code" />
-        <button>Join group</button>
+        <JoinGroup/> 
       </div>
     </>
   );
