@@ -17,11 +17,14 @@ export const votingApi = createApi({
       const token = parsedCredentials.token;
       console.log("token from reducer", token);
       if (token) {
+
           headers.set("Authorization", token);
+
+        // headers.set("Authorization", `Bearer ${token}`);
       }
       console.log("token from session storage:", token);
       return headers;
-  },
+    },
   }),
   endpoints: (builder) => ({
     addGroup: builder.mutation({
@@ -38,8 +41,25 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
-    getUserById: builder.query({
-      query: (id) => `api/users/${id}`
+    addSubmission: builder.mutation({
+      query: (body) => ({
+        url: "api/submissions",
+        method: "POST",
+        body: body,
+      }),
+    }),
+
+    // getUserById: builder.query({
+    //   query: (id) => `api/users/${id}`
+    // }),
+
+    addRole: builder.mutation({
+      query: (body) => ({
+        url: "api/role",
+        method: "POST",
+        body: body,
+      }),
+
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
@@ -56,9 +76,10 @@ export const votingApi = createApi({
           body,
         };
       },
-      }),
+    }),
   }),
 });
+
 function storeToken(state, { payload }) {
   console.log("storeToken is running");
   console.log(state);
@@ -74,8 +95,9 @@ export const {
   useDeleteUserMutation,
   useEditUserMutation,
   useAddGroupMutation,
-  useAddQuestionMutation
+  useAddQuestionMutation,
+  useAddRoleMutation,
+  useAddSubmissionMutation,
 } = votingApi;
 
 // export default dataSlice.reducer;
-

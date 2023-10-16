@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAddGroupMutation } from "../../reducers/api";
+import { useAddGroupMutation, useAddRoleMutation } from "../../reducers/api";
 
 const CreateGroup = () => {
   const [groupName, setGroupName] = useState("");
@@ -8,6 +8,8 @@ const CreateGroup = () => {
     try {
       const response = await createGroup({ name: groupName });
       console.log("Group created:", groupName);
+      console.log("Role created");
+      setGroupName("");
     } catch (err) {
       console.error("Error creating group:", err);
     }

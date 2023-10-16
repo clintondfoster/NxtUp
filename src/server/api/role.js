@@ -12,26 +12,27 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
 router.post("/", async (req, res, next) => {
   try {
-    const { group_id, is_admitted, is_creator } = req.body
+    const { group_name } = req.body;
+    const testUser = 1;
+    const group = await prisma.group.findFirst({
+      where: {
+        name: group_name,
+      },
+    });
     const role = await prisma.Role.create({
       data: {
-        user: req.user.id,
-        group_id,
-        is_admitted, 
-        is_creator,
-      }
+        user_id: testUser,
+        group_id: group.id,
+        is_admitted: true,
+        is_creator: false,
+      },
     });
-    console.log("req body from post request", req.body);
     res.send(role);
   } catch (err) {
-    console.error("Error adding role", err);
-    res.status(500).send(err.message);
     next(err);
   }
 });
-
 
 module.exports = router;
