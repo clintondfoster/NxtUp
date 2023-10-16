@@ -7,7 +7,7 @@ const JoinGroup = () => {
 
   const handleCreateRole = async () => {
     try {
-      const response = createRole({ access_code: accessCode });
+      await createRole({ accessCode: accessCode });
       console.log("Group joined:", accessCode);
       console.log("Role created");
       setAccessCode("");
