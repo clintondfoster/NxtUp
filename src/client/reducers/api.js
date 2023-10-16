@@ -10,19 +10,15 @@ export const votingApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/",
     prepareHeaders: (headers, { getState }) => {
-      console.log("prepareHeaders is running");
-
       const credentials = window.sessionStorage.getItem(CREDENTIALS);
       const parsedCredentials = JSON.parse(credentials || "{}");
       const token = parsedCredentials.token;
-      console.log("token from reducer", token);
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+          headers.set("Authorization", token);
       }
-      console.log("token from session storage:", token);
       return headers;
-    },
-  }),
+  },
+}),
   endpoints: (builder) => ({
     addGroup: builder.mutation({
       query: (body) => ({
@@ -45,22 +41,12 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
-    deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `api/users/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    editUser: builder.mutation({
-      query(data) {
-        const { id, ...body } = data;
-        return {
-          url: `api/users/${id}`,
-          method: "PUT",
-          body,
-        };
-      },
-    }),
+    createVote: builder.mutation({
+      query:()=>({
+        url: "api/vote",
+        method: "POST"
+      })
+    })
   }),
 });
 function storeToken(state, { payload }) {
@@ -71,11 +57,9 @@ function storeToken(state, { payload }) {
 }
 
 export const {
-  useGetUserByIdQuery,
-  useDeleteUserMutation,
-  useEditUserMutation,
   useAddGroupMutation,
   useAddQuestionMutation,
   useAddRoleMutation,
+  useCreateVoteMutation
 } = votingApi;
-// export default dataSlice.reducer;
+

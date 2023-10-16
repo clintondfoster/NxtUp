@@ -1,0 +1,16 @@
+body{
+    background-color: lightblue;
+}
+button {
+
+    font-variant-caps: all-petite-caps;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: MediumSeaGreen;
+    }
+}
+input{
+    background-color: Lavender;
+    border: 1.5px solid black;
+}

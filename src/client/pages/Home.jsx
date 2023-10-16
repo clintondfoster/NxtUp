@@ -2,6 +2,7 @@ import React from "react";
 import CreateGroup from "../components/inputs/CreateGroup";
 import CreateQuestion from "../components/inputs/CreateQuestion";
 import JoinGroup from "../components/inputs/JoinGroup";
+import CreateVote from "../components/inputs/CreateVote";
 
 const Home = () => {
 
@@ -17,6 +18,9 @@ const Home = () => {
       </div>
       <div>
         <JoinGroup/> 
+      </div>
+      <div>
+        <CreateVote/>
       </div>
     </>
   );
