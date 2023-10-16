@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const protection = require("../middleware") ;
+const protection = require("../middleware");
 
 router.get("/", async (req, res, next) => {
   try {
