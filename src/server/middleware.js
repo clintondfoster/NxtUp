@@ -9,6 +9,7 @@ const protection = async (req, res, next) => {
 
     try {
         req.user = jwt.verify(token, process.env.JWT);
+        console.log("middleware req.user", req.user)
         next();
     } catch (error) {
         return res.status(403).send("Failed to authenticate token.")

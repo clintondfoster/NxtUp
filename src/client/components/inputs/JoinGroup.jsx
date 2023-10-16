@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useAddRoleMutation } from "../../reducers/api";
 
 const JoinGroup = () => {
-  const [groupName, setGroupName] = useState("");
+  const [accessCode, setAccessCode] = useState("");
   const [createRole] = useAddRoleMutation();
 
-  const handeCreateRole = async () => {
+  const handleCreateRole = async () => {
     try {
-      const response = createRole({ group_name: groupName });
-      console.log("Group joined:", groupName);
+      const response = createRole({ access_code: accessCode });
+      console.log("Group joined:", accessCode);
       console.log("Role created");
-      setGroupName("");
+      setAccessCode("");
     } catch (err) {
       console.error("Error creating group:", err);
     }
@@ -21,10 +21,10 @@ const JoinGroup = () => {
       <input
         placeholder="Group Code"
         type="text"
-        value={groupName}
-        onChange={(e) => setGroupName(e.target.value)}
+        value={accessCode}
+        onChange={(e) => setAccessCode(e.target.value)}
       />
-      <button onClick={handeCreateRole}>Join group</button>
+      <button onClick={handleCreateRole}>Join group</button>
     </div>
   );
 };

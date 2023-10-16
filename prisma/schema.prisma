@@ -26,17 +26,17 @@ model Role {
   user        User    @relation(fields: [user_id], references: [id])
   group       Group   @relation(fields: [group_id], references: [id])
   is_admitted Boolean @default(true)
-  is_creator Boolean @default(false)
+  is_creator  Boolean @default(false)
 }
 
 model Group {
-  id        Int        @id @default(autoincrement())
-  name      String
-  questions Question[]
-  User      User?      @relation(fields: [userId], references: [id])
-  userId    Int?
-  Role      Role[]
-  // code 
+  id          Int        @id @default(autoincrement())
+  name        String
+  questions   Question[]
+  User        User?      @relation(fields: [userId], references: [id])
+  userId      Int?
+  Role        Role[]
+  access_code String     @default("")
 }
 
 model Question {
