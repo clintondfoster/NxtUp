@@ -19,15 +19,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-      <Route
-          path="/home"
-          element={ loggedIn ? <Home /> : <Login/> }
-        />
-      <Route
-         index
-          element={<Login/>}
-        />
-       
+        <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
+        <Route index element={<Login />} />
       </Routes>
     </div>
   );

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
 
 const CREDENTIALS = "credentials";
 
@@ -14,7 +14,7 @@ export const votingApi = createApi({
       const parsedCredentials = JSON.parse(credentials || "{}");
       const token = parsedCredentials.token;
       if (token) {
-          headers.set("Authorization", token);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
   },
@@ -34,12 +34,25 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
+    addSubmission: builder.mutation({
+      query: (body) => ({
+        url: "api/submissions",
+        method: "POST",
+        body: body,
+      }),
+    }),
+
+    // getUserById: builder.query({
+    //   query: (id) => `api/users/${id}`
+    // }),
+
     addRole: builder.mutation({
       query: (body) => ({
         url: "api/role",
         method: "POST",
         body: body,
       }),
+
     }),
     createVote: builder.mutation({
       query:()=>({
@@ -49,17 +62,22 @@ export const votingApi = createApi({
     })
   }),
 });
+
 function storeToken(state, { payload }) {
   console.log("storeToken is running");
-  state.credentials = { token: payload.token };
-  console.log("Token recieved:", payload.token);
-  window.sessionStorage.setItem(CREDENTIALS, JSON.stringify(payload));
+  console.log(state);
+
+  const { token, user } = payload;
+  state.credentials = { token, user };
+  console.log("Token recieved:", token);
+  window.sessionStorage.setItem(CREDENTIALS, JSON.stringify({ token, user }));
 }
 
 export const {
   useAddGroupMutation,
   useAddQuestionMutation,
   useAddRoleMutation,
-  useCreateVoteMutation
+  useAddSubmissionMutation,
+  useCreateVoteMutation,
 } = votingApi;
-
+// export default dataSlice.reducer;

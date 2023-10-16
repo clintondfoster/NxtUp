@@ -3,9 +3,11 @@ const process = require("process");
 const protection = async (req, res, next) => {
     const token = req.headers.authorization
 
+
     if (!token) {
         return res.status(401).send("No token provided.");
     }
+
 
     try {
         req.user = jwt.verify(token, process.env.JWT);

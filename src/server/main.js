@@ -5,6 +5,7 @@ const PORT = 3000;
 const cors = require('cors');
 const path = require("path");
 
+
 //Use Cors
 app.use(cors());
 
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "..", "dist")));
 
 //Routes
-app.use("/api", require("./api"));
+app.use("/api", require("."));
 app.use("/auth", require("./auth"));
 
 
