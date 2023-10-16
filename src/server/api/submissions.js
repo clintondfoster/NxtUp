@@ -27,30 +27,44 @@ router.get("/:id", async (req, res, next) => {
     });
   
 router.post("/", async (req, res, next) => {
+    console.log("recieved post submission data:", req.body)
+
+    if (req.user) {
+      console.log("user id from middleware", req.user.id);
+  } else {
+      console.log("req.user is undefined");
+      return res.status(400).json({ error: "User not authenticated" });
+  }
+    // console.log("user id from middleware", req.user.id)
     try {
+
+      const { link, group_id, user_id } = req.body;
 
         const activeQuestion = await prisma.Question.findFirst({
           where: {
-            group_id: req.group_id,
+            group_id: group_id,
             is_active: true,
           },
         });
 
         if (!activeQuestion) {
-          res.status(404).send("No active question found for this group.")
+         return res.status(404).json({ error: "No active question found for this group."})
         }
 
-      const { link, user_id, question_id } = req.body; 
             const newSubmission = await prisma.Submission.create({
             data: {
               link: link,
-              user_id: req.user.id,
-              question_id: activeQuestion.id
+              question_id: activeQuestion.id,
+              user: {
+                connect: {
+                  id: req.user.id
+                }
+              }
             },
           });
           console.log("Req body from create submission,", req.body);
     
-          res.send(newSubmission);
+          res.json(newSubmission);
         } catch (err) {
           next(err);
         }

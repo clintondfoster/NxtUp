@@ -7,7 +7,7 @@ router.use("/questions", require("./questions"));
 // router.use("/users", require("./users"));
 router.use("/role", require("./role"));
 
-router.use("/submission", require("./submissions"));
+router.use("/submissions", require("./submissions"));
 
 router.use("/vote", require("./vote"));
 

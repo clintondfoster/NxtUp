@@ -10,7 +10,7 @@ router.use(authorization);
 
 router.get("/:id", async (req, res, next) => {
     try {
-        if (!req.User) {
+        if (!req.user) {
             console.log(req.User)
             return res.status(401).send("User not authenticated")
         }

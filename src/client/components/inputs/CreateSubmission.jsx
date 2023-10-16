@@ -9,7 +9,11 @@ const CreateSubmission = () => {
 
   const handleCreateSubmission = async () => {
     try {
-      const response = await createSubmission({ link: submissionLink });
+      const response = await createSubmission({
+        link: submissionLink,
+        group_id,
+        user_id,
+      });
       console.log("Submission created:", response);
       setSubmissionLink("");
     } catch (err) {

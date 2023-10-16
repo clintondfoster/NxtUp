@@ -77,5 +77,7 @@ export const {
   useAddGroupMutation,
   useAddQuestionMutation,
   useAddRoleMutation,
+  useAddSubmissionMutation,
+  useCreateVoteMutation,
 } = votingApi;
 // export default dataSlice.reducer;
