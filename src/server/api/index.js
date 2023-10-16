@@ -6,6 +6,7 @@ router.use("/questions", require("./questions"));
 // router.use("/auth", require("./auth"));
 // router.use("/users", require("./users"));
 router.use("/role", require("./role"));
+router.use("/vote", require("./vote"));
 
 
 module.exports = router;

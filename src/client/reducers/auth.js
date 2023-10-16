@@ -6,21 +6,18 @@ const CREDENTIALS = "credentials";
 
 const authApi = storeApi.injectEndpoints({
     endpoints: (builder)=>({
-        me: builder.query({ 
-            query: () => "auth/me",
-        }),
         login: builder.mutation({
-            query: (credentials)=>({
-                url:"auth/login",
+            query: (cred)=>({
+                url:"/auth/login",
                 method: "POST",
-                body: credentials,
+                body: cred
             })
         }),
         register: builder.mutation({
-            query: (credentials)=>({
-                url:"auth/register",
+            query: (cred)=>({
+                url:"/auth/register",
                 method: "POST",
-                body: credentials,
+                body: cred
             })
         }),
         logout: builder.mutation({
@@ -30,9 +27,7 @@ const authApi = storeApi.injectEndpoints({
 })
 
 function storeToken(state, {payload}){
-    console.log(state)
     state.credentials = {token: payload.token, user: {...payload.user}};
-    console.log("Token recieved:", payload.token);
     window.sessionStorage.setItem(
         CREDENTIALS,
         JSON.stringify({
@@ -48,7 +43,7 @@ const authSlice = createSlice({
     initialState: {
         credentials : JSON.parse(window.sessionStorage.getItem(CREDENTIALS)) || {
             token:"",
-            user: {userId: null}
+            user: {userId:null}
         }
     },
     reducers:{},
@@ -56,10 +51,9 @@ const authSlice = createSlice({
         builder.addMatcher(storeApi.endpoints.login.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.register.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.logout.matchFulfilled, (state)=>{
-            console.log("logout")
             state.credentials = {
-                token: "",
-                // user: {userId:null}
+                token:"",
+                user: {userId:null}
             };
             window.sessionStorage.removeItem(CREDENTIALS)
         });
@@ -69,7 +63,6 @@ const authSlice = createSlice({
 export default  authSlice.reducer;
 
 export const {
-    useMeQuery,
     useLoginMutation,
     useRegisterMutation,
     useLogoutMutation
