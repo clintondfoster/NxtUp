@@ -1,25 +1,26 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import AuthForm from "./components/authForm/AuthForm";
-import { useMeQuery } from "./reducers/auth";
+import Login from "./pages/Login";
+import jwtDecode from "jwt-decode";
 
 function App() {
-  const me = useSelector((state) => state.auth.credentials);
-  const { data, isLoading, error } = useMeQuery();
-
   const storedToken = window.sessionStorage.getItem("credentials");
-  // let decodedToken = null;
+  let decodedToken = null;
+  if (storedToken) {
+    decodedToken = jwtDecode(storedToken);
+  }
 
-  console.log("Me in app", me);
+  const loggedIn = decodedToken?.id;
 
+  if (storedToken) {
+    decodedToken = jwtDecode(storedToken);
+  }
   return (
     <div className="App">
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<AuthForm />} />
-        {/* <Route path="/me"  */}
+        <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
+        <Route index element={<Login />} />
       </Routes>
     </div>
   );
