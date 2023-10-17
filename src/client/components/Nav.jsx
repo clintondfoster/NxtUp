@@ -18,7 +18,7 @@ function NavB() {
         <Nav.Link href="/home">Home</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link href="/results/:${code}">Your Group</Nav.Link>
+        <Nav.Link href="#">Your Group</Nav.Link>
       </Nav.Item>
       <Nav.Item>
         <Nav.Link onClick={logout}>Logout</Nav.Link>
