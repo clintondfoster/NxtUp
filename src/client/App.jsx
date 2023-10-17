@@ -32,7 +32,6 @@ function App() {
           element={<Login/>}
         />
         <Route path="results/:code" element={<ResultsCode/> }/>
-        {/* <Route path="results/:code" element={< Results/> }/> */}
        
       </Routes>
     </div>
