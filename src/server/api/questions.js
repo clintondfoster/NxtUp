@@ -5,8 +5,11 @@ const prisma = new PrismaClient();
 const protection = require("../middleware");
 
 
+
 router.post("/", protection, async (req, res, next) => {
   const { title, group_id } = req.body;
+  c
+onst user = req.user.id 
 
   try {
     const groupCreator = await prisma.role.findFirst({
@@ -19,7 +22,7 @@ router.post("/", protection, async (req, res, next) => {
       data: {
         title,
         group_id,
-        user_id: groupCreator.user_id,
+        user_id: user,
         is_active: true,
   
       },
