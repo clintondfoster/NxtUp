@@ -2,86 +2,97 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
+const protection = require("../middleware");
 
 router.get("/", async (req, res, next) => {
-    try {
-      const allSubmissions = await prisma.Submission.findMany();
-      res.send(allSubmissions);
-    } catch (err) {
-      next(err);
-    }
-  });
+  try {
+    const allSubmissions = await prisma.Submission.findMany();
+    res.send(allSubmissions);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get("/:id", async (req, res, next) => {
-    try {
-        const submission = await prisma.Submission.findUnique({
-          where: {
-            id: Number(req.params.id),
-          },
-        });
-        res.send(submission);
-      } catch (err) {
-        next(err);
-      }
+  try {
+    const submission = await prisma.Submission.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
     });
-  
-router.post("/", async (req, res, next) => {
-    console.log("recieved post submission data:", req.body)
-
-    if (req.user) {
-      console.log("user id from middleware", req.user.id);
-  } else {
-      console.log("req.user is undefined");
-      return res.status(400).json({ error: "User not authenticated" });
+    res.send(submission);
+  } catch (err) {
+    next(err);
   }
-    // console.log("user id from middleware", req.user.id)
-    try {
+});
 
-      const { link, group_id, user_id } = req.body;
+router.get("/:question_id", async (req, res, next) => {
+  const { question_id } = req.body;
+  try {
+    const submissions = await prisma.Submission.findMany({
+      where: {
+        question_id,
+      },
+    });
+    res.send(submissions);
+  } catch (err) {
+    next(err);
+  }
+});
 
-        const activeQuestion = await prisma.Question.findFirst({
-          where: {
-            group_id: group_id,
-            is_active: true,
-          },
-        });
+router.post("/", protection, async (req, res, next) => {
+  console.log("recieved post submission data:", req.body);
 
-        if (!activeQuestion) {
-         return res.status(404).json({ error: "No active question found for this group."})
-        }
+  if (req.user) {
+    console.log("user id from middleware", req.user.id);
+  } else {
+    console.log("req.user is undefined");
+    return res.status(400).json({ error: "User not authenticated" });
+  }
+  // console.log("user id from middleware", req.user.id)
+  try {
+    const { link, group_id, question_id } = req.body;
 
-            const newSubmission = await prisma.Submission.create({
-            data: {
-              link: link,
-              question_id: activeQuestion.id,
-              user: {
-                connect: {
-                  id: req.user.id
-                }
-              }
-            },
-          });
-          console.log("Req body from create submission,", req.body);
-    
-          res.json(newSubmission);
-        } catch (err) {
-          next(err);
-        }
-      });
+    const activeQuestion = await prisma.Question.findFirst({
+      where: {
+        group_id,
+        is_active: true,
+      },
+    });
+
+    if (!activeQuestion) {
+      return res
+        .status(404)
+        .json({ error: "No active question found for this group." });
+    }
+
+    const newSubmission = await prisma.Submission.create({
+      data: {
+        link,
+        question_id,
+        user_id: req.user.id,
+      },
+    });
+    console.log("Req body from create submission,", req.body);
+
+    res.json(newSubmission);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.put("/:id", async (req, res, next) => {
-    try {
-        const updatedSubmission = await prisma.Submission.update({
-        where: {
-            id: Number(req.params.id),
-            },
-            data: req.body,
-          });
-          res.send(updatedSubmission);
-        } catch (err) {
-          next(err);
-        }
-      });
+  try {
+    const updatedSubmission = await prisma.Submission.update({
+      where: {
+        id: Number(req.params.id),
+      },
+      data: req.body,
+    });
+    res.send(updatedSubmission);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

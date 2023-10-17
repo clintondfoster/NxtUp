@@ -30,6 +30,12 @@ export const votingApi = createApi({
     getGroupByCode: builder.query({
       query: (code) => `api/groups/${code}`,
     }),
+    getQuestionByGroupId: builder.query({
+      query: (groupId) => `api/questions/${groupId}`,
+    }),
+    getSubmissionsByQuestionId: builder.query({
+      query: (questionId) => `api/submissions/${questionId}`,
+    }),
     addQuestion: builder.mutation({
       query: (body) => ({
         url: "api/questions",
@@ -83,5 +89,7 @@ export const {
   useCreateVoteMutation, 
   useGetGroupByCodeQuery, 
   useAddSubmissionMutation,
+  useGetQuestionByGroupIdQuery, 
+  useGetSubmissionsByQuestionIdQuery, 
 } = votingApi;
 // export default dataSlice.reducer;
