@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ResultsCode from "./components/inputs/ResultsCode";
 import jwtDecode from "jwt-decode";
+import NavB from "./components/Nav";
+import Results from "./pages/Results";
 
 function App() {
   const storedToken = window.sessionStorage.getItem("credentials");
@@ -19,6 +21,7 @@ function App() {
   }
   return (
     <div className="App">
+      <NavB/>
       <Routes>
       <Route
           path="/home"
@@ -29,6 +32,7 @@ function App() {
           element={<Login/>}
         />
         <Route path="results/:code" element={<ResultsCode/> }/>
+        {/* <Route path="results/:code" element={< Results/> }/> */}
        
       </Routes>
     </div>
