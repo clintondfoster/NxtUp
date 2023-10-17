@@ -1,9 +1,11 @@
 import React from "react";
 import { useGetGroupByCodeQuery } from "../reducers/api";
 import CreateQuestion from "../components/inputs/CreateQuestion";
+import { useParams } from "react-router-dom";
 
-const Results = ({ groupCode }) => {
-  const { data, isLoading } = useGetGroupByCodeQuery(groupCode);
+const Results = () => {
+  const { accessCode } = useParams();
+  const { data, isLoading } = useGetGroupByCodeQuery(accessCode);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -15,6 +17,7 @@ const Results = ({ groupCode }) => {
     return (
       <div>
         <h1>Group Name: {group.name}</h1>
+        <h4>Code: {group.access_code}</h4>
         <CreateQuestion groupId={group.id} />
       </div>
     );

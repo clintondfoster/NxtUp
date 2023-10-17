@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLoginMutation, useRegisterMutation } from "../reducers/auth";
 import { useNavigate } from "react-router-dom";
 import TextInput from "../components/inputs/TextInput";
+import validator from "validator";
 /**
  * AuthForm allows a user to either login or register for an account.
  */
@@ -15,6 +16,11 @@ function AuthForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    minLength: false,
+    containsNumber: false,
+    containsCapital: false,
+  });
 
   const [isLogin, setIsLogin] = useState(true);
   const [message, setMessage] = useState("");
@@ -26,6 +32,14 @@ function AuthForm() {
     : "Already have an account?";
   const oppositeAuthType = isLogin ? "Register" : "Login";
 
+  function checkPasswordStrength(pass) {
+    setPasswordRequirements({
+      minLength: pass.length >= 7,
+      containsNumber: /\d/.test(pass),
+      containsCapital: /[A-Z]/.test(pass),
+    });
+  }
+
   /**
    * Send credentials to server for authentication
    */
@@ -35,6 +49,27 @@ function AuthForm() {
 
     if (!isLogin && password !== confirmPassword) {
       setError("Passwords do not match");
+      return;
+    }
+
+    if (
+      !validator.isStrongPassword(password, {
+        minLength: 7,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 0,
+        returnScore: false,
+        pointsPerUnique: 1,
+        pointsPerRepeat: 0.5,
+        pointsForContainingLower: 10,
+        pointsForContainingUpper: 10,
+        pointsForContainingNumber: 10,
+        pointsForContainingSymbol: 10,
+      })
+    ) {
+      setError(
+        "Password should contain an uppercase letter, a number, and be at least 7 characters long"
+      );
       return;
     }
 
@@ -84,8 +119,22 @@ function AuthForm() {
               name="password"
               onChange={(event) => {
                 setPassword(event.target.value);
+                checkPasswordStrength(event.target.value);
               }}
             />
+            {!isLogin && (
+              <div className="password-requirements">
+                {!passwordRequirements.minLength && (
+                  <div>At least 7 characters</div>
+                )}
+                {!passwordRequirements.containsNumber && (
+                  <div>Contains a number</div>
+                )}
+                {!passwordRequirements.containsCapital && (
+                  <div>Contains a capital letter</div>
+                )}
+              </div>
+            )}
             {!isLogin && (
               <label>
                 Confirm Password
