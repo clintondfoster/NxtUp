@@ -8,8 +8,7 @@ const protection = require("../middleware");
 
 router.post("/", protection, async (req, res, next) => {
   const { title, group_id } = req.body;
-  c
-onst user = req.user.id 
+  const user = req.user.id 
 
   try {
     const groupCreator = await prisma.role.findFirst({
