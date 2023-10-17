@@ -14,11 +14,11 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:access_code", async (req, res, next) => {
   try {
-    const group = await prisma.Group.findUnique({
+    const group = await prisma.Group.findFirst({
       where: {
-        id: Number(req.params.id),
+        access_code: req.params.access_code,
       },
     });
     res.send(group);

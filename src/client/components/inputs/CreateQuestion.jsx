@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useAddQuestionMutation } from "../../reducers/api";
 
-const CreateQuestion = () => {
+const CreateQuestion = ({ groupId }) => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [createQuestion] = useAddQuestionMutation();
   const handleCreateQuestion = async () => {
     try {
-      const response = await createQuestion({ title: questionTitle });
+      const response = await createQuestion({ 
+        title: questionTitle, 
+        group_id: groupId
+       });
       console.log("Question created:", questionTitle);
       setQuestionTitle("");
     } catch (err) {
