@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const authorization = require("../middleware");
+const protection = require("../middleware");
 
 //Apply Middleware to all routes for user
-router.use(authorization);
+router.use(protection);
 
 
 router.get("/:id", async (req, res, next) => {

@@ -12,7 +12,7 @@ export const votingApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const credentials = window.sessionStorage.getItem(CREDENTIALS);
       const parsedCredentials = JSON.parse(credentials || "{}");
-      const token = parsedCredentials.token;
+      const token = parsedCredentials.payload?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
