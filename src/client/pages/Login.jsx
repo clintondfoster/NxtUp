@@ -39,7 +39,9 @@ function AuthForm() {
     }
 
     const authMethod = isLogin ? login : register;
-    const credentials = { password, email };
+    const credentials = isLogin
+      ? { password, email }
+      : { password, email, username };
 
     try {
       setLoading(true);
