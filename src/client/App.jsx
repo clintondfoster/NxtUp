@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useParams } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import ResultsCode from "./components/inputs/ResultsCode";
 import jwtDecode from "jwt-decode";
 
 function App() {
@@ -19,8 +20,16 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
-        <Route index element={<Login />} />
+      <Route
+          path="/home"
+          element={ loggedIn ? <Home /> : <Login/> }
+        />
+      <Route
+         index
+          element={<Login/>}
+        />
+        <Route path="results/:code" element={<ResultsCode/> }/>
+       
       </Routes>
     </div>
   );

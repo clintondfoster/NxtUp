@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const protection = require("../middleware");
 
 
 
-router.post("/", async (req, res, next) => {
-  const { title } = req.body;
-  const user = 1 //update based on your current postico dummy data
+router.post("/", protection, async (req, res, next) => {
+  const { title, group_id } = req.body;
+  const user = req.user.id 
 
   try {
     const groupCreator = await prisma.role.findFirst({
@@ -19,8 +20,8 @@ router.post("/", async (req, res, next) => {
     const createdQuestion = await prisma.question.create({
       data: {
         title,
-        group_id: groupCreator.group_id,
-        user_id: groupCreator.id,
+        group_id,
+        user_id: user,
         is_active: true,
   
       },
