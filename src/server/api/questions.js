@@ -33,9 +33,9 @@ router.get("/:id/submissions", async (req, res, next) => {
     });
 
     // If no submissions found for the question
-    if (submissions.length === 0) {
-      return res.status(404).json({ error: "No submissions found for this question" });
-    }
+    // if (submissions.length === 0) {
+    //   return res.status(404).json({ error: "No submissions found for this question" });
+    // }
 
     res.status(200).send(submissions);
   } catch (err) {

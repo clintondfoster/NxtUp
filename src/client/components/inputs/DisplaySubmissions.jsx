@@ -1,26 +1,30 @@
-import { useGetSubmissionsByQuestionIdQuery } from "../../reducers/api";
+import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
 
 const DisplaySubmissions = ({ questionId }) => {
-  const { data, isLoading } = useGetSubmissionsByQuestionIdQuery(questionId);
-  console.log(`data from submissions`, data);
+  const { data: submissionsData, isLoading: submissionsLoading } =
+    useGetSubmissionsForQuestionQuery(questionId);
+  console.log("Sub questionsId:", questionId);
+  console.log(`data from submissions`, submissionsData);
+  // console.log("error", error);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (submissionsLoading) return <div>Loading submission...</div>;
+  if (!submissionsData || submissionsData.length === 0) {
+    return <div>No submissions found.</div>;
   }
 
-  if (data) {
-    const submission = data;
-    console.log(`submission`);
-
-    return (
-      <div>
-        <h1>submissions: </h1>
-        <h1>{submission.link}</h1>
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div>
+      <h1>Submissions:</h1>
+      <ul>
+        {submissionsData.map((submission) => (
+          <li key={submission.id}>
+            <a href={submission.link} target="_blank" rel="noopener noreferrer">
+              {submission.link}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
-
 export default DisplaySubmissions;
