@@ -8,15 +8,13 @@ const jwt = require("jsonwebtoken");
 router.post("/register", async (req, res,next)=>{
 
     const salt_rounds = 5;
-
     const hashedPassword = await bcrypt.hash(req.body.password, salt_rounds)
-
 
     try{
         const user = await prisma.user.create({
             data:{
                 username: req.body.username,
-                password:hashedPassword,
+                password: hashedPassword,
                 email: req.body.email
             }
         })
@@ -25,7 +23,7 @@ router.post("/register", async (req, res,next)=>{
 
         res.status(201).send({token, user:{userId:user.id, username: user.username}})
 
-    }catch(err){
+    }catch(err) {
         next(err)
     }
 
@@ -41,7 +39,7 @@ router.post("/login", async (req, res,next)=>{
             return res.status(401).send("Invalid Login")
         }
 
-        const isValid = bcrypt.compare(req.body.password, user.password)
+        const isValid = await bcrypt.compare(req.body.password, user.password)
 
         if(!isValid){
             return res.status(401).send("Invalid Login")

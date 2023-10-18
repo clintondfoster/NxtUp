@@ -6,6 +6,7 @@ import jwtDecode from "jwt-decode";
 // import { useDispatch } from "react-redux";
 // import { setGroupId } from "./reducers/api";
 import Results from "./pages/Results";
+import QuestionPage from "./pages/QuestionPage";
 
 function App() {
   // const dispatch = useDispatch();
@@ -25,15 +26,13 @@ function App() {
 
   const loggedIn = decodedToken?.id;
 
-  if (storedToken) {
-    decodedToken = jwtDecode(storedToken);
-  }
   return (
     <div className="App">
       <Routes>
         <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
         <Route index element={<Login />} />
         <Route path="/results/:accessCode" element={<Results />} />
+        <Route path="/question/:questionId" element={<QuestionPage />} />
       </Routes>
     </div>
   );
