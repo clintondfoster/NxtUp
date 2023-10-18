@@ -7,7 +7,6 @@ import Results from "./pages/Results";
 import QuestionPage from "./pages/QuestionPage";
 import NavB from "./components/Nav";
 
-
 function App() {
   const storedToken = window.sessionStorage.getItem("credentials");
   let decodedToken = null;
