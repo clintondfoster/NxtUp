@@ -6,7 +6,6 @@ import jwtDecode from "jwt-decode";
 import Results from "./pages/Results";
 import QuestionPage from "./pages/QuestionPage";
 import NavB from "./components/Nav";
-import Results from "./pages/Results";
 
 function App() {
   const storedToken = window.sessionStorage.getItem("credentials");
