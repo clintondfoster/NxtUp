@@ -3,7 +3,6 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const protection = require("../middleware");
-
 router.get("/", async (req, res, next) => {
     try {
       const allSubmissions = await prisma.Submission.findMany();
@@ -12,7 +11,6 @@ router.get("/", async (req, res, next) => {
       next(err);
     }
   });
-
 router.get("/:id", async (req, res, next) => {
     try {
         const submission = await prisma.Submission.findUnique({
@@ -25,10 +23,8 @@ router.get("/:id", async (req, res, next) => {
         next(err);
       }
     });
-  
 router.post("/", protection, async (req, res, next) => {
     console.log("recieved post submission data:", req.body)
-
     if (req.user.id) {
       console.log("user id from middleware", req.user.id);
   } else {
@@ -37,36 +33,31 @@ router.post("/", protection, async (req, res, next) => {
   }
     // console.log("user id from middleware", req.user.id)
     try {
-
-      const { link, group_id, user_id } = req.body;
-
+      const { link, group_id, userId, question_id } = req.body;
         const activeQuestion = await prisma.Question.findFirst({
           where: {
+            id: Number(question_id),
             group_id: group_id,
             is_active: true,
           },
         });
-
         if (!activeQuestion) {
          return res.status(404).json({ error: "No active question found for this group."})
         }
-
             const newSubmission = await prisma.Submission.create({
             data: {
               link: link,
-              question_id: activeQuestion.id,
+              question_id: Number(question_id),
               user_id: req.user.id,
               }
             },
           );
           console.log("Req body from create submission,", req.body);
-    
           res.json(newSubmission);
         } catch (err) {
           next(err);
         }
       });
-
 router.put("/:id", async (req, res, next) => {
     try {
         const updatedSubmission = await prisma.Submission.update({
@@ -80,5 +71,4 @@ router.put("/:id", async (req, res, next) => {
           next(err);
         }
       });
-
 module.exports = router;
