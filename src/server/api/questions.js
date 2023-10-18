@@ -30,6 +30,9 @@ router.get("/:id/submissions", async (req, res, next) => {
       where: {
         question_id: Number(req.params.id),
       },
+      include: {
+        user: true,
+      }
     });
 
     // If no submissions found for the question
