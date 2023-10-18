@@ -21,6 +21,7 @@ const DisplaySubmissions = ({ questionId }) => {
             <a href={submission.link} target="_blank" rel="noopener noreferrer">
               {submission.link}
             </a>
+            <span>User: {submission.user.username}</span>
           </li>
         ))}
       </ul>

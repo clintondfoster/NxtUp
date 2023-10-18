@@ -32,9 +32,8 @@ function storeToken(state, {payload}){
         window.sessionStorage.setItem(
         CREDENTIALS,
         JSON.stringify({
-            payload
-            // token: payload.token,
-            // user: {...payload.user}
+            token: payload.token,
+            user: {...payload.user}
         })
     )
 }
@@ -46,7 +45,6 @@ const authSlice = createSlice({
         credentials : JSON.parse(window.sessionStorage.getItem(CREDENTIALS)) || {
 
             token:"",
-
 
         }
     },
