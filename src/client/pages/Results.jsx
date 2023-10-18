@@ -1,30 +1,60 @@
-import { useState } from "react";
-import { useGetGroupByCodeQuery } from "../reducers/api";
+import React from "react";
+import {
+  useGetGroupByCodeQuery,
+  useGetActiveQuestionsForGroupQuery,
+} from "../reducers/api";
 import CreateQuestion from "../components/inputs/CreateQuestion";
-import DisplayQuestion from "../components/inputs/DisplayQuestion";
+import { useParams, Link } from "react-router-dom";
+import CreateSubmission from "../components/inputs/CreateSubmission";
+import { useState } from "react";
 
-const Results = ({ groupCode, questionId }) => {
-  const [createdQuestionId, setCreatedQuestionId] = useState(null);
-  const { data, isLoading } = useGetGroupByCodeQuery(groupCode);
+const Results = () => {
+  const { accessCode } = useParams();
+  console.log("Group Access Code:", accessCode);
+  const { data: groupData, isLoading: groupLoading } =
+    useGetGroupByCodeQuery(accessCode);
+  const { data: questionsData, isLoading: questionsLoading } =
+    useGetActiveQuestionsForGroupQuery(accessCode);
 
-  if (isLoading) {
+  const [selectedQuestion, setSelectedQuestion] = useState("");
+
+  if (groupLoading) {
     return <div>Loading...</div>;
   }
 
-  if (data) {
-    const group = data;
+  if (!groupData) return null;
 
-    return (
-      <div>
-        <h1>Group Name: {group.name}</h1>
-        <CreateQuestion groupId={group.id} />
-        <DisplayQuestion groupId={group.id} /> 
-        
-      </div>
-    );
-  }
+  // const groupId = groupData.id;
 
-  return null;
+  // if (groupData) {
+  //   const group = groupData;
+
+  return (
+    <div>
+      <h1>Group Name: {groupData.name}</h1>
+      <h4>Code: {groupData.access_code}</h4>
+
+      <CreateQuestion groupId={groupData.id} />
+
+      {questionsLoading && <div>Loading questions...</div>}
+      {questionsData && (
+        <div>
+          <h2>Active Questions</h2>
+          <ul>
+            {questionsData.map((question) => (
+              <li key={question.id}>
+                {question.title}
+
+                <Link to={`/question/${question.id}`}>Submit Answer</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {selectedQuestion && <CreateSubmission question={selectedQuestion} />}
+    </div>
+  );
 };
 
 export default Results;

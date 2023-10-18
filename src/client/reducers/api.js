@@ -12,7 +12,7 @@ export const votingApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const credentials = window.sessionStorage.getItem(CREDENTIALS);
       const parsedCredentials = JSON.parse(credentials || "{}");
-      const token = parsedCredentials.payload?.token;
+      const token = parsedCredentials.payload.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -30,11 +30,14 @@ export const votingApi = createApi({
     getGroupByCode: builder.query({
       query: (code) => `api/groups/${code}`,
     }),
-    getQuestionByGroupId: builder.query({
-      query: (groupId) => `api/questions/${groupId}`,
+    getActiveQuestionsForGroup:builder.query({
+      query: (code) => `api/questions/group/${code}/active`
     }),
-    getSubmissionsByQuestionId: builder.query({
-      query: (questionId) => `api/submissions/${questionId}`,
+    getQuestionById: builder.query({
+      query: (id) => `api/questions/${id}`,
+    }),
+    getSubmissionsForQuestion: builder.query({
+      query: (questionId) => `api/questions/${questionId}/submissions`
     }),
     addQuestion: builder.mutation({
       query: (body) => ({
@@ -89,7 +92,9 @@ export const {
   useCreateVoteMutation, 
   useGetGroupByCodeQuery, 
   useAddSubmissionMutation,
-  useGetQuestionByGroupIdQuery, 
-  useGetSubmissionsByQuestionIdQuery, 
+  useGetActiveQuestionsForGroupQuery,
+  useGetQuestionByIdQuery,
+  useGetSubmissionsForQuestionQuery,
+
 } = votingApi;
 // export default dataSlice.reducer;
