@@ -6,12 +6,10 @@ import jwtDecode from "jwt-decode";
 import Results from "./pages/Results";
 import QuestionPage from "./pages/QuestionPage";
 import NavB from "./components/Nav";
-import Results from "./pages/Results";
 
 function App() {
   const storedToken = window.sessionStorage.getItem("credentials");
   let decodedToken = null;
-
 
   if (storedToken) {
     decodedToken = jwtDecode(storedToken);
@@ -21,7 +19,7 @@ function App() {
 
   return (
     <div className="App">
-      <NavB/>
+      <NavB />
       <Routes>
         <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
         <Route index element={<Login />} />
