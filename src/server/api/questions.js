@@ -72,7 +72,7 @@ router.get("/group/:access_code/active", async (req, res, next) => {
 
 router.post("/", protection, async (req, res, next) => {
   const { title, group_id } = req.body;
-  const user = req.user.id 
+  const user = req.user.id;
 
   try {
     const groupCreator = await prisma.role.findFirst({
@@ -87,7 +87,6 @@ router.post("/", protection, async (req, res, next) => {
         group_id,
         user_id: user,
         is_active: true,
-  
       },
     });
     res.status(200).send(createdQuestion);
@@ -97,5 +96,19 @@ router.post("/", protection, async (req, res, next) => {
   }
 });
 
+router.get("/:group_id", async (req, res, next) => {
+  const { group_id } = req.body;
+  try {
+    const activeQuestion = await prisma.Question.findFirst({
+      where: {
+        group_id,
+        is_active: true,
+      },
+    });
+    res.send(activeQuestion);
+  } catch (err) {
+    next(err);
+  }
+});
 
-module.exports = router
+module.exports = router;

@@ -3,22 +3,15 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import jwtDecode from "jwt-decode";
-// import { useDispatch } from "react-redux";
-// import { setGroupId } from "./reducers/api";
 import Results from "./pages/Results";
 import QuestionPage from "./pages/QuestionPage";
+import NavB from "./components/Nav";
+import Results from "./pages/Results";
 
 function App() {
-  // const dispatch = useDispatch();
   const storedToken = window.sessionStorage.getItem("credentials");
   let decodedToken = null;
 
-  // useEffect(() => {
-  //   const storedGroupId = window.sessionStorage.getItem("currentGroupId");
-  //   if (storedGroupId) {
-  //     dispatch(setGroupId(Number(storedGroupId)));
-  //   }
-  // }, [dispatch]);
 
   if (storedToken) {
     decodedToken = jwtDecode(storedToken);
@@ -28,6 +21,7 @@ function App() {
 
   return (
     <div className="App">
+      <NavB/>
       <Routes>
         <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
         <Route index element={<Login />} />

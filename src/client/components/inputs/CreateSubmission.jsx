@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useAddSubmissionMutation } from "../../reducers/api";
+// import CreateVote from "../components/inputs/CreateVote";
+
 
 const CreateSubmission = ({ groupId, userId, questionId }) => {
+
   const [submissionLink, setSubmissionLink] = useState("");
   //   const [userId, setUserId] = useState("");
   //   const [questionId, setQuestionId] = useState("");
@@ -22,6 +25,7 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
         group_id: groupId,
         question_id: questionId,
         user_id: userId,
+
       });
       console.log("Submission created:", response);
       setSubmissionLink("");
