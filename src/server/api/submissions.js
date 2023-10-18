@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
+const protection = require("../middleware");
 
 router.get("/", async (req, res, next) => {
     try {
@@ -26,10 +26,10 @@ router.get("/:id", async (req, res, next) => {
       }
     });
   
-router.post("/", async (req, res, next) => {
+router.post("/", protection, async (req, res, next) => {
     console.log("recieved post submission data:", req.body)
 
-    if (req.user) {
+    if (req.user.id) {
       console.log("user id from middleware", req.user.id);
   } else {
       console.log("req.user is undefined");
@@ -55,13 +55,10 @@ router.post("/", async (req, res, next) => {
             data: {
               link: link,
               question_id: activeQuestion.id,
-              user: {
-                connect: {
-                  id: req.user.id
-                }
+              user_id: req.user.id,
               }
             },
-          });
+          );
           console.log("Req body from create submission,", req.body);
     
           res.json(newSubmission);
