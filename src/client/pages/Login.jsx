@@ -107,7 +107,7 @@ function AuthForm() {
           setMessage("Successfully registered! Redirecting...");
           setTimeout(() => {
             navigate(`/home`);
-          }, 3000);
+          }, 2000);
         }
       } else {
         throw new Error("User data not received");

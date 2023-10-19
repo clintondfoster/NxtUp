@@ -54,9 +54,9 @@ export const votingApi = createApi({
       }),
     }),
 
-    // getUserById: builder.query({
-    //   query: (id) => `api/users/${id}`
-    // }),
+    getUserGroupsByRoles: builder.query({
+      query: () => `api/role/user_groups`
+    }),
 
     addRole: builder.mutation({
       query: (body) => ({
@@ -95,6 +95,7 @@ export const {
   useGetActiveQuestionsForGroupQuery,
   useGetQuestionByIdQuery,
   useGetSubmissionsForQuestionQuery,
+  useGetUserGroupsByRolesQuery,
 
 } = votingApi;
 // export default dataSlice.reducer;
