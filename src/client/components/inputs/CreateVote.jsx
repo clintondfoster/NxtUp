@@ -1,25 +1,22 @@
-
 import { useCreateVoteMutation } from "../../reducers/api";
-import { useDispatch } from "react-redux";
 
-const CreateVote = () => {
-  const dispatch = useDispatch();
+const CreateVote = ({ questionId, submissionId }) => {
   const [createVote] = useCreateVoteMutation();
 
-const onCreateVote = async ()=>{
-    await createVote()
-    .then(()=>{
+  const onCreateVote = async () => {
+    await createVote({ questionId, submissionId })
+      .then(() => {
         console.log("voted");
-    })
-    .catch(() => {
+      })
+      .catch(() => {
         console.log("error");
       });
-}
+  };
 
   return (
-    <div>
+    <section>
       <button onClick={onCreateVote}>Vote For This Link</button>
-    </div>
+    </section>
   );
 };
 
