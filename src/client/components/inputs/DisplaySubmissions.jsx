@@ -24,8 +24,6 @@ const DisplaySubmissions = ({ questionId }) => {
               {/* <DeleteVote voteId={}/> */}
               <AllVotes submissionId={submission.id}/>
             </h2>
-
-            </a>
             <span> User: {submission.user.username}</span>
           </li>
         ))}
