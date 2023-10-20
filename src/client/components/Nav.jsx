@@ -22,6 +22,7 @@ function NavB() {
   };
 
   return (
+
     <div>
       {LogoutMessage && <div>You have successfully logged out.</div>}
       <Nav defaultActiveKey="/home" as="ul">
@@ -36,6 +37,7 @@ function NavB() {
         </Nav.Item>
       </Nav>
     </div>
+
   );
 }
 
