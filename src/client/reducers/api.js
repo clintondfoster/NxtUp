@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const CREDENTIALS = "credentials";
 
@@ -12,14 +12,13 @@ export const votingApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const credentials = window.sessionStorage.getItem(CREDENTIALS);
       const parsedCredentials = JSON.parse(credentials || "{}");
-      const token = parsedCredentials.payload?.token;
+      const token = parsedCredentials.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
-      
-  },
-}),
+    },
+  }),
   endpoints: (builder) => ({
     addGroup: builder.mutation({
       query: (body) => ({
@@ -31,14 +30,14 @@ export const votingApi = createApi({
     getGroupByCode: builder.query({
       query: (code) => `api/groups/${code}`,
     }),
-    getActiveQuestionsForGroup:builder.query({
-      query: (code) => `api/questions/group/${code}/active`
+    getActiveQuestionsForGroup: builder.query({
+      query: (code) => `api/questions/group/${code}/active`,
     }),
     getQuestionById: builder.query({
       query: (id) => `api/questions/${id}`,
     }),
     getSubmissionsForQuestion: builder.query({
-      query: (questionId) => `api/questions/${questionId}/submissions`
+      query: (questionId) => `api/questions/${questionId}/submissions`,
     }),
     addQuestion: builder.mutation({
       query: (body) => ({
@@ -63,16 +62,32 @@ export const votingApi = createApi({
       query: (body) => ({
         url: "api/role",
         method: "POST",
+        where: {
+          question_id: Number(req.body.questionId),
+        },
+        where: {
+          question_id: Number(req.body.questionId),
+        },
         body: body,
       }),
-
+    }),
+    getVotesForSub: builder.query({
+      query: (submissionId) => `api/vote/${submissionId}`,
+    }),
+    deleteVote: builder.mutation({
+      query: (id) => ({
+        url: `api/vote/${id}`,
+        method: "DElETE",
+ 
+      }),
     }),
     createVote: builder.mutation({
-      query:()=>({
+      query: (body) => ({
         url: "api/vote",
-        method: "POST"
-      })
-    })
+        method: "POST",
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -86,16 +101,37 @@ function storeToken(state, { payload }) {
   window.sessionStorage.setItem(CREDENTIALS, JSON.stringify({ token, user }));
 }
 
+
+
+
+const initialState = [];
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      storeApi.endpoints.useCreateVoteMutation.matchFulfilled,
+      (state, { payload }) => {
+        return [...payload.voted]
+
+      }
+    ) 
+  }
+});
+
 export const {
   useAddGroupMutation,
   useAddQuestionMutation,
   useAddRoleMutation,
-  useCreateVoteMutation, 
-  useGetGroupByCodeQuery, 
+  useGetVotesForSubQuery,
+  useCreateVoteMutation,
+  useDeleteVoteMutation,
+  useGetGroupByCodeQuery,
   useAddSubmissionMutation,
   useGetActiveQuestionsForGroupQuery,
   useGetQuestionByIdQuery,
   useGetSubmissionsForQuestionQuery,
-
 } = votingApi;
 // export default dataSlice.reducer;

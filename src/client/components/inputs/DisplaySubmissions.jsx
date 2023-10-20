@@ -1,11 +1,10 @@
 import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
-
+import CreateVote from "../inputs/CreateVote";
+import AllVotes from "./AllVotes";
 const DisplaySubmissions = ({ questionId }) => {
   const { data: submissionsData, isLoading: submissionsLoading } =
     useGetSubmissionsForQuestionQuery(questionId);
-  console.log("Sub questionsId:", questionId);
-  console.log(`data from submissions`, submissionsData);
-  // console.log("error", error);
+
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
@@ -18,9 +17,12 @@ const DisplaySubmissions = ({ questionId }) => {
       <ul>
         {submissionsData.map((submission) => (
           <li key={submission.id}>
-            <a href={submission.link} target="_blank" rel="noopener noreferrer">
+            <h2>
               {submission.link}
-            </a>
+              <CreateVote questionId={questionId} submissionId={submission.id} />
+              {/* <DeleteVote voteId={}/> */}
+              <AllVotes submissionId={submission.id}/>
+            </h2>
           </li>
         ))}
       </ul>
