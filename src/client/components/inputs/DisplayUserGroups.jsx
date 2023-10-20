@@ -1,5 +1,6 @@
 import { useGetUserGroupsByRolesQuery } from "../../reducers/api";
 import react from "react";
+import { Link } from "react-router-dom";
 
 function DisplayUserGroups() {
   const { data: userGroups, error, isLoading } = useGetUserGroupsByRolesQuery();
@@ -12,7 +13,9 @@ function DisplayUserGroups() {
       <h2> Your Active Groups</h2>
       <ul>
         {userGroups.map((group) => (
-          <li key={group.id}>{group.name}</li>
+          <li key={group.id}>
+            <Link to={`/results/${group.access_code}`}>{group.name}</Link>
+          </li>
         ))}
       </ul>
     </div>
