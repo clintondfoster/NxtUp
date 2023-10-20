@@ -6,6 +6,7 @@ import jwtDecode from "jwt-decode";
 import Results from "./pages/Results";
 import QuestionPage from "./pages/QuestionPage";
 import NavB from "./components/Nav";
+import PageNav from "./components/PageNav";
 
 function App() {
   const storedToken = window.sessionStorage.getItem("credentials");
@@ -19,12 +20,39 @@ function App() {
 
   return (
     <div className="App">
-      <NavB />
       <Routes>
-        <Route path="/home" element={loggedIn ? <Home /> : <Login />} />
+        <Route
+          path="/home"
+          element={
+            loggedIn ? (
+              <>
+                {" "}
+                <NavB /> <Home />{" "}
+              </>
+            ) : (
+              <Login />
+            )
+          }
+        />
         <Route index element={<Login />} />
-        <Route path="/results/:accessCode" element={<Results />} />
-        <Route path="/question/:questionId" element={<QuestionPage />} />
+        <Route
+          path="/results/:accessCode"
+          element={
+            <>
+              <PageNav />
+              <Results />
+            </>
+          }
+        />
+        <Route
+          path="/question/:questionId"
+          element={
+            <>
+              <PageNav />
+              <QuestionPage />
+            </>
+          }
+        />
       </Routes>
     </div>
   );
