@@ -19,10 +19,14 @@ const DisplaySubmissions = ({ questionId }) => {
           <li key={submission.id}>
             <h2>
               {submission.link}
+
               <CreateVote questionId={questionId} submissionId={submission.id} />
               {/* <DeleteVote voteId={}/> */}
               <AllVotes submissionId={submission.id}/>
             </h2>
+
+            </a>
+            <span> User: {submission.user.username}</span>
           </li>
         ))}
       </ul>
