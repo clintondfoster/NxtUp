@@ -36,6 +36,10 @@ io.on("connection", (socket) => {
     io.emit("new_submission", data)
     console.log(data)
   })
+  socket.on("new_vote", (data) => {
+    io.emit("new_vote", data)
+    console.log(data)
+  })
 
   socket.on("disconnect", () => {
     console.log(`user disconnected: ${socket.id}`);
