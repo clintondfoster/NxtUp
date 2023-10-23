@@ -1,4 +1,6 @@
 import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
+import { useEffect } from "react";
+import io from "socket.io-client";
 import CreateVote from "../inputs/CreateVote";
 import AllVotes from "./AllVotes";
 const DisplaySubmissions = ({ questionId }) => {
@@ -20,6 +22,26 @@ const DisplaySubmissions = ({ questionId }) => {
   const topFive = [...submissionsData]
     .sort((a, b) => b.Vote - a.Vote)
     .slice(0, 5);
+  
+  //socket logic 
+  const socket = io.connect("http://localhost:3000");
+  const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
+  
+    useEffect(() => {
+    socket.current = io.connect("http://localhost:3000");
+
+    socket.current.on("connect", () => {});
+
+    socket.current.on("new_submission", (newSubmission) => {
+      console.log("new submission:", newSubmission);
+      refetch(questionId);
+    });
+
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
+  
 
   return (
     <div>
@@ -68,4 +90,5 @@ const DisplaySubmissions = ({ questionId }) => {
     </div>
   );
 };
+
 export default DisplaySubmissions;
