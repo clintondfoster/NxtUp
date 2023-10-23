@@ -1,8 +1,6 @@
 import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
 import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-import { addSubmission } from "../../reducers/submissionSlice";
-import { useDispatch, useSelector } from "react-redux";
 
 const DisplaySubmissions = ({ questionId }) => {
   const socket = io.connect("http://localhost:3000");
@@ -10,34 +8,16 @@ const DisplaySubmissions = ({ questionId }) => {
   const { data: submissionsData, isLoading: submissionsLoading } =
     useGetSubmissionsForQuestionQuery(questionId);
 
-
-  const {refetch} = useGetSubmissionsForQuestionQuery(questionId); 
-
-  //* state slice
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   socket.on("new_submission", (newSubmission) => {
-  //     dispatch(addSubmission(newSubmission));
-  //   });
-
-  //   return () => {
-  //     socket.off("new_submission");
-  //   };
-  // }, [socket, dispatch]);
-
-  // const submissions = useSelector((state) => state.submissions);
-
-
+  const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
 
   useEffect(() => {
     socket.current = io.connect("http://localhost:3000");
 
-    socket.current.on('connect', () => {
-    });
+    socket.current.on("connect", () => {});
 
-    socket.current.on('new_submission', (newSubmission) => {
-      console.log('new submission:', newSubmission);
-      refetch(questionId); 
+    socket.current.on("new_submission", (newSubmission) => {
+      console.log("new submission:", newSubmission);
+      refetch(questionId);
     });
 
     return () => {

@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useAddSubmissionMutation } from "../../reducers/api";
-// import CreateVote from "../components/inputs/CreateVote";
 import io from "socket.io-client";
 
 
@@ -53,7 +51,6 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
       />
       <button onClick={handleCreateSubmission}>Submit</button>
       {isError && <p>{errorMessage || error.message}</p>}
-      {/* {isSuccess && <p style={{ color: "green" }}>{successMessage}</p>} */}
     </div>
   );
 };
