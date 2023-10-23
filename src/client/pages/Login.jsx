@@ -40,6 +40,7 @@ function AuthForm() {
 
   const authType = view === "login" ? "Login" : "Create Account";
   const navigate = useNavigate();
+
   const oppositeAuthCopy =
     view === "login" ? "Don't have an account?" : "Already have an account?";
   const oppositeAuthType = view === "login" ? "Create Account" : "Login";
@@ -107,7 +108,7 @@ function AuthForm() {
           setMessage("Successfully registered! Redirecting...");
           setTimeout(() => {
             navigate(`/home`);
-          }, 3000);
+          }, 2000);
         }
       } else {
         throw new Error("User data not received");

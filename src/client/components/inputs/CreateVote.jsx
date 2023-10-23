@@ -1,25 +1,37 @@
-
+import React, { useState, Fragment } from "react";
 import { useCreateVoteMutation } from "../../reducers/api";
-import { useDispatch } from "react-redux";
-
-const CreateVote = () => {
-  const dispatch = useDispatch();
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+const CreateVote = ({ questionId, submissionId }) => {
   const [createVote] = useCreateVoteMutation();
 
-const onCreateVote = async ()=>{
-    await createVote()
-    .then(()=>{
+  const [active, setActive] = useState(false);
+  const handleClick = () => {
+    setActive(!active);
+  };
+
+  const onCreateVote = async () => {
+    await createVote({ questionId, submissionId })
+      .then(() => {
         console.log("voted");
-    })
-    .catch(() => {
+      })
+      .catch(() => {
         console.log("error");
       });
-}
+  };
 
   return (
-    <div>
-      <button onClick={onCreateVote}>Vote For This Link</button>
-    </div>
+    <Fragment>
+      <button
+        onClick={function (event) {
+          onCreateVote();
+          handleClick();
+        }}
+        style={{ backgroundColor: active ? "green" : "white" }}
+      >
+        <FontAwesomeIcon icon={faHeart} />
+      </button>
+    </Fragment>
   );
 };
 

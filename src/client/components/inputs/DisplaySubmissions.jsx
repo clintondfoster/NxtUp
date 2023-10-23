@@ -1,16 +1,33 @@
 import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import io from "socket.io-client";
-
+import CreateVote from "../inputs/CreateVote";
+import AllVotes from "./AllVotes";
 const DisplaySubmissions = ({ questionId }) => {
+  const {
+    data: submissionsData,
+    isLoading: submissionsLoading,
+    error,
+  } = useGetSubmissionsForQuestionQuery(questionId);
+  console.log("Sub questionsId:", questionId);
+  console.log(`data from submissions`, submissionsData);
+
+  if (submissionsLoading) return <div>Loading submission...</div>;
+  if (!submissionsData || submissionsData.length === 0) {
+    return <div>No submissions found.</div>;
+  }
+  if (error) return <div>Error fetching submissions: {error.message}</div>;
+
+  //Get top 5 submissions based on vote count
+  const topFive = [...submissionsData]
+    .sort((a, b) => b.Vote - a.Vote)
+    .slice(0, 5);
+  
+  //socket logic 
   const socket = io.connect("http://localhost:3000");
-
-  const { data: submissionsData, isLoading: submissionsLoading } =
-    useGetSubmissionsForQuestionQuery(questionId);
-
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
-
-  useEffect(() => {
+  
+    useEffect(() => {
     socket.current = io.connect("http://localhost:3000");
 
     socket.current.on("connect", () => {});
@@ -24,24 +41,52 @@ const DisplaySubmissions = ({ questionId }) => {
       socket.current.disconnect();
     };
   }, []);
+  
 
   return (
     <div>
-      <h1>Submissions:</h1>
-      {submissionsLoading && <div>Loading submission...</div>}
-      {!submissionsLoading &&
-        (!submissionsData || submissionsData.length === 0) && (
-          <div>No submissions found.</div>
-        )}
-      {!submissionsLoading && submissionsData && submissionsData.length > 0 && (
-        <ul>
-          {submissionsData.map((submission) => (
-            <li key={submission.id}>
-              <h3>{submission.link}</h3>
-            </li>
+      <h1>Leader Board</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Link</th>
+            <th>User</th>
+            <th>Votes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {topFive.map((submission, index) => (
+            <tr key={submission.id}>
+              <td>{index + 1}</td>
+              <td>
+                <a
+                  href={submission.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {submission.link}
+                </a>
+              </td>
+              <td>{submission.user.username}</td>
+              <td>{submission.Vote}</td>
+            </tr>
           ))}
-        </ul>
-      )}
+        </tbody>
+      </table>
+
+      <h1>All Submissions:</h1>
+      <ul>
+        {submissionsData.map((submission) => (
+          <li key={submission.id}>
+            <h2>{submission.link} </h2>
+            <CreateVote questionId={questionId} submissionId={submission.id} />
+            <AllVotes submissionId={submission.id} />
+
+            <span> User: {submission.user.username}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

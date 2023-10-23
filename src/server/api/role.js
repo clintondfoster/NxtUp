@@ -13,6 +13,28 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/user_groups", protection, async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const userRolesWithGroups = await prisma.Role.findMany({
+      where: {
+        user_id: userId,
+      },
+      include: {
+        group: true,
+      }
+    });
+
+    const userGroups = userRolesWithGroups.map(role => role.group);
+
+    res.send(userGroups);
+
+  } catch (err) {
+    next(err)
+  }
+});
+
 router.post("/", protection, async (req, res, next) => {
   try {
     const { accessCode } = req.body;

@@ -5,21 +5,34 @@ const prisma = new PrismaClient();
 const protection = require("../middleware");
 
 
-// submit a vote for a response
-router.post("/", protection, async (req, res, next) => {
-  try {
 
-    const activeSubmission = await prisma.submission.findFirst({
+// Create vote if not exist, delete vote if exists
+router.post("/", protection, async (req, res, next) => {
+  console.log("body", req.body);
+  try {
+    const existVote = await prisma.vote.findFirst({
       where: {
-        question_id: req.question_id,
-      },
-    });
-    const createVote = await prisma.vote.create({
-      data: {
-        submissionId: activeSubmission.id,
+        submissionId: +req.body.submissionId,
         user_id: req.user.id,
       },
     });
+    if (existVote) {
+      await prisma.vote.delete({
+        where: {
+          id: existVote.id,
+          submissionId: +req.body.submissionId,
+          user_id: req.user.id,
+        },
+      });
+    } else {
+      const createVote = await prisma.vote.create({
+        data: {
+          submissionId: +req.body.submissionId,
+          user_id: req.user.id,
+        },
+      });
+    }
+
     res.status(200).send(createVote);
   } catch (err) {
     console.error(err);
@@ -27,41 +40,18 @@ router.post("/", protection, async (req, res, next) => {
   }
 });
 
-router.delete("/", async (req, res, next) => {
-  try {
 
-    const activeSubmission = await prisma.submission.findFirst({
-      where: {
-        question_id: req.question.id,
-      },
-    });
-    const deleteVote = await prisma.vote.delete({
-      data: {
-        submissionId: activeSubmission.id,
-        user_id: req.user.id,
-      },
-    });
-    res.status(200).send(deleteVote);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// get all votes by submission id
-router.get("/", async (req, res, next) => {
+router.get("/:submissionId", async (req, res, next) => {
   try {
     const activeSubmission = await prisma.submission.findFirst({
       where: {
-        question_id: req.question.id,
+        id: +req.params.submissionId,
+      },
+      include: {
+        Vote: true,
       },
     });
-    const allVotes = await prisma.vote.findMany({
-      where: {
-        submissionId: activeSubmission.id,
-      },
-    });
-    res.status(200).send(allVotes);
+    res.status(200).send(activeSubmission.Vote);
   } catch (err) {
     console.error(err);
     next(err);
