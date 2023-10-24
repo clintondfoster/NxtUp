@@ -4,16 +4,35 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const protection = require("../middleware");
 
-// submit a vote for a submission
+
+
+// Create vote if not exist, delete vote if exists
 router.post("/", protection, async (req, res, next) => {
   console.log("body", req.body);
   try {
-    const createVote = await prisma.vote.create({
-      data: {
+    const existVote = await prisma.vote.findFirst({
+      where: {
         submissionId: +req.body.submissionId,
         user_id: req.user.id,
       },
     });
+    if (existVote) {
+      await prisma.vote.delete({
+        where: {
+          id: existVote.id,
+          submissionId: +req.body.submissionId,
+          user_id: req.user.id,
+        },
+      });
+    } else {
+      const createVote = await prisma.vote.create({
+        data: {
+          submissionId: +req.body.submissionId,
+          user_id: req.user.id,
+        },
+      });
+    }
+
     res.status(200).send(createVote);
   } catch (err) {
     console.error(err);
@@ -21,24 +40,7 @@ router.post("/", protection, async (req, res, next) => {
   }
 });
 
-// delete a vote for a submission
-router.delete("/:id",  async (req, res, next) => {
-  console.log("body", req.body);
-  try {
-    const deleteVote = await prisma.vote.delete({
-      where: {
-        // submissionId: +req.body.submissionId,
-        // user_id: req.user.id,
-        id: Number(req.params.id),
-      },
-    });
-    res.status(200).send(deleteVote);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-// get all votes by submission id
+
 router.get("/:submissionId", async (req, res, next) => {
   try {
     const activeSubmission = await prisma.submission.findFirst({

@@ -1,32 +1,84 @@
 import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
 import CreateVote from "../inputs/CreateVote";
 import AllVotes from "./AllVotes";
+import VideoEmbed from "./VideoEmbed";
+
+
 const DisplaySubmissions = ({ questionId }) => {
+  //socket logic
+  useEffect(() => {
+    const socket = io.connect("http://localhost:3000");
+
+
+    socket.on("connect", () => {});
+
+    socket.on("new_submission", (newSubmission) => {
+      console.log("new submission:", newSubmission);
+      refetch(questionId);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
+
+    // page tabs 
+  const [activeTab, setActiveTab] = useState('leaderboard')
+
+  const handleTabs = (tab) => {
+    setActiveTab(tab)
+  }
+
+  //
 
   const {
     data: submissionsData,
     isLoading: submissionsLoading,
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
-  console.log("Sub questionsId:", questionId);
-  console.log(`data from submissions`, submissionsData);
-
+  // console.log("Sub questionsId:", questionId);
+  // console.log(`data from submissions`, submissionsData);
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
     return <div>No submissions found.</div>;
   }
-  if (error) return <div>Error fetching submissions: {error.message}</div>;
+  // if (error) return <div>Error fetching submissions: {error.message}</div>;
 
   //Get top 5 submissions based on vote count
   const topFive = [...submissionsData]
     .sort((a, b) => b.Vote - a.Vote)
     .slice(0, 5);
 
+
+  
+
   return (
     <div>
-      <h1>Leader Board</h1>
+      <h1>switch between tabs (placeholder)</h1>
+    <div className="tab-header">
+      <button
+        className={activeTab === 'leaderboard' ? 'active' : ''}
+        onClick={() => handleTabs('leaderboard')}
+      >
+        Leaderboard
+      </button>
+      <button
+        className={activeTab === 'allSubmissions' ? 'active' : ''}
+        onClick={() => handleTabs('allSubmissions')}
+      >
+        All Submissions
+      </button>
+    </div>
+
+    {activeTab === 'leaderboard' && (
+     
       <table>
+        
         <thead>
           <tr>
             <th>Rank</th>
@@ -40,37 +92,37 @@ const DisplaySubmissions = ({ questionId }) => {
             <tr key={submission.id}>
               <td>{index + 1}</td>
               <td>
-                <a
-                  href={submission.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {submission.link}
-                </a>
+              <VideoEmbed videoUrl={submission.link}/>
               </td>
               <td>{submission.user.username}</td>
-              <td>{submission.Vote}</td>
+              <td><AllVotes submissionId={submission.id} /></td>
             </tr>
           ))}
         </tbody>
       </table>
+   
+    )}
 
-      <h1>All Submissions:</h1>
-      <ul>
-        {submissionsData.map((submission) => (
-          <li key={submission.id}>
-            <h2>
-              {submission.link}
-
+    {activeTab === 'allSubmissions' && (
+      <div>
+        {/* <h1>All Submissions:</h1> */}
+        <div>
+          {submissionsData.map((submission) => (
+            <div key={submission.id}>
+              <VideoEmbed videoUrl={submission.link}/> 
               <CreateVote questionId={questionId} submissionId={submission.id} />
-              {/* <DeleteVote voteId={}/> */}
-              <AllVotes submissionId={submission.id}/>
-            </h2>
-            <span> User: {submission.user.username}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <section>Total Votes : {submission.Vote}</section>
+                <AllVotes submissionId={submission.id} />
+              </div>
+              <span> User: {submission.user.username}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
   );
 };
+
 export default DisplaySubmissions;
