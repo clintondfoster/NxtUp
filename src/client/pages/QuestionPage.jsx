@@ -6,6 +6,7 @@ import {
   useGetSubmissionsForQuestionQuery,
 } from "../reducers/api/";
 import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
+import Chart from "../components/Chart/Chart";
 
 const QuestionsPage = ({ socket }) => {
   const { questionId } = useParams();
@@ -24,7 +25,9 @@ const QuestionsPage = ({ socket }) => {
       {renderQuestion()}
       <CreateSubmission questionId={questionId} />
       <DisplaySubmissions questionId={questionId} socket={socket}/>
+      <Chart questionId={questionId}/>
     </div>
+
   );
 };
 

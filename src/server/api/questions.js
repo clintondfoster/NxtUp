@@ -8,13 +8,17 @@ router.get("/:id", async (req, res, next) => {
   try {
     const question = await prisma.question.findUnique({
       where: {
-        id: Number(req.params.id)
-      }
+        id: Number(req.params.id),
+      },
+      include: {
+        Submission: true,
+        Submission: {
+          include: {
+            Vote: true,
+          },
+        },
+      },
     });
-    
-    if (!question) {
-      return res.status(404).json({ error: "Question not found" });
-    }
 
     res.status(200).send(question);
   } catch (err) {
@@ -32,7 +36,7 @@ router.get("/:id/submissions", async (req, res, next) => {
       },
       include: {
         user: true,
-      }
+      },
     });
 
     // If no submissions found for the question
@@ -47,7 +51,6 @@ router.get("/:id/submissions", async (req, res, next) => {
   }
 });
 
-
 router.get("/group/:access_code/active", async (req, res, next) => {
   try {
     const group = await prisma.Group.findFirst({
@@ -55,7 +58,7 @@ router.get("/group/:access_code/active", async (req, res, next) => {
         access_code: req.params.access_code,
       },
     });
-    
+
     if (!group) {
       return res.status(404).json({ error: "Group not found" });
     }
@@ -63,8 +66,8 @@ router.get("/group/:access_code/active", async (req, res, next) => {
     const activeQuestions = await prisma.question.findMany({
       where: {
         group_id: group.id,
-        is_active: true
-      }
+        is_active: true,
+      },
     });
     res.status(200).send(activeQuestions);
   } catch (err) {

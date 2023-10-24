@@ -24,15 +24,11 @@ const DisplaySubmissions = ({ questionId }) => {
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
 
-  // 
-
   const {
     data: submissionsData,
     isLoading: submissionsLoading,
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
-  console.log("Sub questionsId:", questionId);
-  console.log(`data from submissions`, submissionsData);
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
