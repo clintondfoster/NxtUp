@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, "..", "dist")));
 //Routes
 app.use("/api", require("."));
 app.use("/auth", require("./auth"));
+app.use("/oauth", require("./oauth"))
 
 //websocket
 const server = createServer(app);
@@ -34,6 +35,10 @@ io.on("connection", (socket) => {
   console.log(`user connected: ${socket.id}`);
   socket.on("new_submission", (data) => {
     io.emit("new_submission", data)
+    console.log(data)
+  })
+  socket.on("new_vote", (data) => {
+    io.emit("new_vote", data)
     console.log(data)
   })
 

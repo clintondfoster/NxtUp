@@ -8,7 +8,7 @@ import {
 import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 import Chart from "../components/Chart/Chart";
 
-const QuestionsPage = ({ socket }) => {
+const QuestionPage = ({ socket }) => {
   const { questionId } = useParams();
 
   const { data: questionData, isLoading: questionLoading } =
@@ -31,4 +31,4 @@ const QuestionsPage = ({ socket }) => {
   );
 };
 
-export default QuestionsPage;
+export default QuestionPage;

@@ -2,9 +2,7 @@ import { useState } from "react";
 import { useAddSubmissionMutation } from "../../reducers/api";
 import io from "socket.io-client";
 
-
 const CreateSubmission = ({ groupId, userId, questionId }) => {
-
   const [submissionLink, setSubmissionLink] = useState("");
   const [createSubmission, { isSuccess, isError, error }] =
     useAddSubmissionMutation();
@@ -12,8 +10,7 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   const socket = io.connect("http://localhost:3000");
-  socket.on('connect', () => {
-  })
+  socket.on("connect", () => {});
 
   const handleCreateSubmission = async () => {
     if (!submissionLink) {
@@ -21,16 +18,22 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
       return;
     }
 
+    const videoId = submissionLink.split("v=")[1];
+
+    if (!videoId) {
+      setErrorMessage("Invalid YouTube URL");
+      return;
+    }
+
     try {
       const response = await createSubmission({
-        link: submissionLink,
+        link: videoId,
         group_id: groupId,
         question_id: questionId,
         user_id: userId,
       });
 
-      socket.emit("new_submission", response
-      )
+      socket.emit("new_submission", response);
 
       console.log("Submission created:", response.data);
       setSubmissionLink("");
