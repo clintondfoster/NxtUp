@@ -49,7 +49,10 @@ const DisplaySubmissions = ({ questionId }) => {
   //Get top 5 submissions based on vote count
   const topFive = [...submissionsData]
     .sort((a, b) => b.Vote - a.Vote)
-    .slice(0, 5);
+    // .slice(0, 5);
+
+    console.log("submissionsData:", submissionsData);
+console.log("topFive:", topFive);
 
   return (
     <div>
