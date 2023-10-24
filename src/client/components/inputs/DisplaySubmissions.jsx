@@ -11,7 +11,6 @@ const DisplaySubmissions = ({ questionId }) => {
   useEffect(() => {
     const socket = io.connect("http://localhost:3000");
 
-
     socket.on("connect", () => {});
 
     socket.on("new_submission", (newSubmission) => {
@@ -26,14 +25,12 @@ const DisplaySubmissions = ({ questionId }) => {
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
 
-    // page tabs 
-  const [activeTab, setActiveTab] = useState('leaderboard')
+  // page tabs
+  const [activeTab, setActiveTab] = useState("leaderboard");
 
   const handleTabs = (tab) => {
-    setActiveTab(tab)
-  }
-
-  //
+    setActiveTab(tab);
+  };
 
   const {
     data: submissionsData,
@@ -54,74 +51,67 @@ const DisplaySubmissions = ({ questionId }) => {
     .sort((a, b) => b.Vote - a.Vote)
     .slice(0, 5);
 
-
-  
-
   return (
     <div>
       <h1>switch between tabs (placeholder)</h1>
-    <div className="tab-header">
-      <button
-        className={activeTab === 'leaderboard' ? 'active' : ''}
-        onClick={() => handleTabs('leaderboard')}
-      >
-        Leaderboard
-      </button>
-      <button
-        className={activeTab === 'allSubmissions' ? 'active' : ''}
-        onClick={() => handleTabs('allSubmissions')}
-      >
-        All Submissions
-      </button>
-    </div>
-
-    {activeTab === 'leaderboard' && (
-     
-      <table>
-        
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Link</th>
-            <th>User</th>
-            <th>Votes</th>
-          </tr>
-        </thead>
-        <tbody>
-          {topFive.map((submission, index) => (
-            <tr key={submission.id}>
-              <td>{index + 1}</td>
-              <td>
-              <VideoEmbed videoUrl={submission.link}/>
-              </td>
-              <td>{submission.user.username}</td>
-              <td><AllVotes submissionId={submission.id} /></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-   
-    )}
-
-    {activeTab === 'allSubmissions' && (
-      <div>
-        {/* <h1>All Submissions:</h1> */}
-        <div>
-          {submissionsData.map((submission) => (
-            <div key={submission.id}>
-              <VideoEmbed videoUrl={submission.link}/> 
-              <CreateVote questionId={questionId} submissionId={submission.id} />
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <section>Total Votes : {submission.Vote}</section>
-                <AllVotes submissionId={submission.id} />
-              </div>
-              <span> User: {submission.user.username}</span>
-            </div>
-          ))}
-        </div>
+      <div className="tab-header">
+        <button
+          className={activeTab === "leaderboard" ? "active" : ""}
+          onClick={() => handleTabs("leaderboard")}
+        >
+          Leaderboard
+        </button>
+        <button
+          className={activeTab === "allSubmissions" ? "active" : ""}
+          onClick={() => handleTabs("allSubmissions")}
+        >
+          All Submissions
+        </button>
       </div>
-    )}
-  </div>
+
+      {activeTab === "leaderboard" && (
+        <div className="submission-container">
+            <div>
+              {topFive.map((submission, index) => (
+                <div key={submission.id}>
+                  <div>
+                    <VideoEmbed videoUrl={submission.link} />
+                  </div>
+                  <div className="user-votes">
+                    <p>{submission.user.username}</p>
+                    <div>
+                      <AllVotes submissionId={submission.id} />
+                    </div>
+                  </div>
+
+                </div>
+              ))}
+            </div>
+        </div>
+      )}
+
+      {activeTab === "allSubmissions" && (
+        <div>
+          {/* <h1>All Submissions:</h1> */}
+          <div>
+            {submissionsData.map((submission) => (
+              <div key={submission.id}>
+                <VideoEmbed videoUrl={submission.link} />
+                <CreateVote
+                  questionId={questionId}
+                  submissionId={submission.id}
+                />
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <section>Total Votes : {submission.Vote}</section>
+                  <AllVotes submissionId={submission.id} />
+                </div>
+                <span> User: {submission.user.username}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
