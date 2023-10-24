@@ -43,7 +43,7 @@ function App() {
                element={
                   <>
                      <PageNav />
-                     <Results />
+                     <QuestionPage />
                   </>
                }
             />

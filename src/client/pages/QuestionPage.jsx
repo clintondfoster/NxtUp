@@ -7,7 +7,7 @@ import {
 } from "../reducers/api/";
 import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 
-const QuestionsPage = ({ socket }) => {
+const QuestionPage = ({ socket }) => {
   const { questionId } = useParams();
 
   const { data: questionData, isLoading: questionLoading } =
@@ -28,4 +28,4 @@ const QuestionsPage = ({ socket }) => {
   );
 };
 
-export default QuestionsPage;
+export default QuestionPage;
