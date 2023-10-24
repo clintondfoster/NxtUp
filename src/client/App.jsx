@@ -3,10 +3,11 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import jwtDecode from "jwt-decode";
-import Results from "./pages/Results";
+import GroupPage from "./pages/GroupPage";
 import QuestionPage from "./pages/QuestionPage";
 import NavB from "./components/Nav";
 import PageNav from "./components/PageNav";
+import AccountSettings from "./pages/AccountSettings";
 
 function App() {
   const storedToken = window.sessionStorage.getItem("credentials");
@@ -40,7 +41,7 @@ function App() {
           element={
             <>
               <PageNav />
-              <Results />
+              <GroupPage />
             </>
           }
         />
@@ -53,6 +54,7 @@ function App() {
             </>
           }
         />
+        <Route path="/account-settings" element={<AccountSettings />} />
       </Routes>
     </div>
   );

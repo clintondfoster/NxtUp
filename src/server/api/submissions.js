@@ -24,11 +24,11 @@ router.get("/:id", async (req, res, next) => {
       }
     });
 router.post("/", protection, async (req, res, next) => {
-    console.log("recieved post submission data:", req.body)
+    // console.log("recieved post submission data:", req.body)
     if (req.user.id) {
-      console.log("user id from middleware", req.user.id);
+      // console.log("user id from middleware", req.user.id);
   } else {
-      console.log("req.user is undefined");
+      // console.log("req.user is undefined");
       return res.status(400).json({ error: "User not authenticated" });
   }
     // console.log("user id from middleware", req.user.id)
@@ -52,12 +52,13 @@ router.post("/", protection, async (req, res, next) => {
               }
             },
           );
-          console.log("Req body from create submission,", req.body);
+          // console.log("Req body from create submission,", req.body);
           res.json(newSubmission);
         } catch (err) {
           next(err);
         }
       });
+      
 router.put("/:id", async (req, res, next) => {
     try {
         const updatedSubmission = await prisma.Submission.update({
