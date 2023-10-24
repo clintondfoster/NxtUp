@@ -41,6 +41,15 @@ export const votingApi = createApi({
     getSubmissionsForQuestion: builder.query({
       query: (questionId) => `api/questions/${questionId}/submissions`,
     }),
+    getUserHistory: builder.query({
+      query: () => `api/role/users_history`,
+    }),
+    getQuestionsCreatedByUser: builder.query({
+      query: (code) => `api/role/created-questions/${code}`
+    }),
+    getActiveQuestionsFromJoinedGroups: builder.query({
+      query: (code) => `api/role/joined-group-questions/${code}`
+    }),
     addQuestion: builder.mutation({
       query: (body) => ({
         url: "api/questions",
@@ -64,9 +73,6 @@ export const votingApi = createApi({
       query: (body) => ({
         url: "api/role",
         method: "POST",
-        where: {
-          question_id: Number(req.body.questionId),
-        },
         where: {
           question_id: Number(req.body.questionId),
         },
@@ -106,22 +112,22 @@ function storeToken(state, { payload }) {
 
 
 
-const initialState = [];
+// const initialState = [];
 
-const cartSlice = createSlice({
-  name: "cart",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      storeApi.endpoints.useCreateVoteMutation.matchFulfilled,
-      (state, { payload }) => {
-        return [...payload.voted]
+// const cartSlice = createSlice({
+//   name: "cart",
+//   initialState,
+//   reducers: {},
+//   extraReducers: (builder) => {
+//     builder.addMatcher(
+//       // storeApi.endpoints.useCreateVoteMutation.matchFulfilled,
+//       (state, { payload }) => {
+//         return [...payload.voted]
 
-      }
-    ) 
-  }
-});
+//       }
+//     ) 
+//   }
+// });
 
 export const {
   useAddGroupMutation,
@@ -136,6 +142,9 @@ export const {
   useGetQuestionByIdQuery,
   useGetSubmissionsForQuestionQuery,
   useGetUserGroupsByRolesQuery,
+  useGetUserHistoryQuery,
+  useGetActiveQuestionsFromJoinedGroupsQuery,
+  useGetQuestionsCreatedByUserQuery,
 
 } = votingApi;
 // export default dataSlice.reducer;
