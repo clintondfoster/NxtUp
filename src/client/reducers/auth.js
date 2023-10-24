@@ -20,6 +20,13 @@ const authApi = storeApi.injectEndpoints({
                 body: cred
             })
         }),
+        oauth: builder.mutation({
+            query: (cred)=>({
+                url:"/oauth/oauth",
+                method: "POST",
+                body: cred
+            })
+        }),
         logout: builder.mutation({
             query: ()=>({data:{}})
         })
@@ -52,6 +59,7 @@ const authSlice = createSlice({
     extraReducers: (builder)=>{
         builder.addMatcher(storeApi.endpoints.login.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.register.matchFulfilled, storeToken);
+        builder.addMatcher(storeApi.endpoints.oauth.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.logout.matchRejected, (state)=>{
             state.credentials = {
 
@@ -68,5 +76,6 @@ export default  authSlice.reducer;
 export const {
     useLoginMutation,
     useRegisterMutation,
-    useLogoutMutation
+    useLogoutMutation,
+    useOauthMutation,
 } = authApi

@@ -7,55 +7,57 @@ import Results from "./pages/Results";
 import QuestionPage from "./pages/QuestionPage";
 import NavB from "./components/Nav";
 import PageNav from "./components/PageNav";
+import OAuthHandler from "./pages/OAuthHandler";
 
 function App() {
-  const storedToken = window.sessionStorage.getItem("credentials");
-  let decodedToken = null;
+   const storedToken = window.sessionStorage.getItem("credentials");
+   let decodedToken = null;
 
-  if (storedToken) {
-    decodedToken = jwtDecode(storedToken);
-  }
+   if (storedToken) {
+      decodedToken = jwtDecode(storedToken);
+   }
 
-  const loggedIn = decodedToken?.id;
+   const loggedIn = decodedToken?.id;
 
-  return (
-    <div className="App">
-      <Routes>
-        <Route
-          path="/home"
-          element={
-            loggedIn ? (
-              <>
-                {" "}
-                <NavB /> <Home />{" "}
-              </>
-            ) : (
-              <Login />
-            )
-          }
-        />
-        <Route index element={<Login />} />
-        <Route
-          path="/results/:accessCode"
-          element={
-            <>
-              <PageNav />
-              <Results />
-            </>
-          }
-        />
-        <Route
-          path="/question/:questionId"
-          element={
-            <>
-              <PageNav />
-              <QuestionPage />
-            </>
-          }
-        />
-      </Routes>
-    </div>
-  );
+   return (
+      <div className="App">
+         <Routes>
+            <Route
+               path="/home"
+               element={
+                  loggedIn ? (
+                     <>
+                        {" "}
+                        <NavB /> <Home />{" "}
+                     </>
+                  ) : (
+                     <Login />
+                  )
+               }
+            />
+            <Route index element={<Login />} />
+            <Route
+               path="/results/:accessCode"
+               element={
+                  <>
+                     <PageNav />
+                     <Results />
+                  </>
+               }
+            />
+            <Route
+               path="/question/:questionId"
+               element={
+                  <>
+                     <PageNav />
+                     <QuestionPage />
+                  </>
+               }
+            />
+            <Route path="/oauthhandler" element={<OAuthHandler />} />
+         </Routes>
+      </div>
+   );
 }
 
 export default App;
