@@ -7,7 +7,7 @@ import {
 } from "../reducers/api/";
 import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 
-const QuestionsPage = () => {
+const QuestionsPage = ({ socket }) => {
   const { questionId } = useParams();
 
   const { data: questionData, isLoading: questionLoading } =
@@ -23,7 +23,7 @@ const QuestionsPage = () => {
     <div>
       {renderQuestion()}
       <CreateSubmission questionId={questionId} />
-      <DisplaySubmissions questionId={questionId} />
+      <DisplaySubmissions questionId={questionId} socket={socket}/>
     </div>
   );
 };

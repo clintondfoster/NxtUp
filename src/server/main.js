@@ -2,9 +2,10 @@ const express = require("express");
 const ViteExpress = require("vite-express");
 const app = express();
 const PORT = 3000;
-const cors = require('cors');
+const cors = require("cors");
 const path = require("path");
-
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 //Use Cors
 app.use(cors());
@@ -20,20 +21,44 @@ app.use(express.static(path.join(__dirname, "..", "dist")));
 app.use("/api", require("."));
 app.use("/auth", require("./auth"));
 
-
-app.get("/hello", (req, res) => {
-  res.send("Hello Vite + React!");
+//websocket
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  },
 });
 
-app.get("/sauce", (req, res) => {
-  res.send("This class is the sauce");
+io.on("connection", (socket) => {
+  console.log(`user connected: ${socket.id}`);
+  socket.on("new_submission", (data) => {
+    io.emit("new_submission", data)
+    console.log(data)
+  })
+  socket.on("new_vote", (data) => {
+    io.emit("new_vote", data)
+    console.log(data)
+  })
+
+  socket.on("disconnect", () => {
+    console.log(`user disconnected: ${socket.id}`);
+  });
+
+});
+
+app.use((req, res, next) => {
+  req.app.locals.io = io;
+  next();
 });
 
 
-const server = app.listen(PORT, ()=>{
-  console.log('Server running on port'+PORT)
-})
-ViteExpress.bind(app,server)
+
+
+server.listen(PORT, () => {
+  console.log("Server running on port" + PORT);
+});
+ViteExpress.bind(app, server);
 
 // ViteExpress.listen(app, PORT, () =>
 //   console.log("Server is listening on port" +PORT)
@@ -41,5 +66,7 @@ ViteExpress.bind(app,server)
 
 app.use((err, req, res, next) => {
   console.error(`Error: ${err.message}\nStack: ${err.stack}`);
-  res.status(500).send("Internal server error.")
-})
+  res.status(500).send("Internal server error.");
+});
+
+module.exports.io = io;
