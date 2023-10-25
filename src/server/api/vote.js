@@ -4,8 +4,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const protection = require("../middleware");
 
-
-
 // Create vote if not exist, delete vote if exists
 router.post("/", protection, async (req, res, next) => {
   console.log("body", req.body);
@@ -32,7 +30,6 @@ router.post("/", protection, async (req, res, next) => {
         },
       });
     }
-
     res.status(200).send(createVote);
   } catch (err) {
     console.error(err);
@@ -40,6 +37,25 @@ router.post("/", protection, async (req, res, next) => {
   }
 });
 
+router.get("/voted/:submissionId/:userId", async (req, res, next) => {
+  try {
+    const validVote = await prisma.vote.findFirst({
+      where: {
+        submissionId: +req.params.submissionId,
+        user_id: +req.params.userId,
+      },
+    });
+    if (validVote) {
+      res.status(200).send(validVote);
+      return;
+    } else {
+      res.status(404).send(null);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 router.get("/:submissionId", async (req, res, next) => {
   try {
@@ -48,7 +64,11 @@ router.get("/:submissionId", async (req, res, next) => {
         id: +req.params.submissionId,
       },
       include: {
-        Vote: true,
+        Vote: {
+          include: {
+            submission:true,
+          },
+        },
       },
     });
     res.status(200).send(activeSubmission.Vote);
@@ -57,5 +77,6 @@ router.get("/:submissionId", async (req, res, next) => {
     next(err);
   }
 });
+
 
 module.exports = router;

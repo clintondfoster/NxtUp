@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, "..", "dist")));
 //Routes
 app.use("/api", require("."));
 app.use("/auth", require("./auth"));
+app.use("/oauth", require("./oauth"))
 
 //websocket
 const server = createServer(app);
