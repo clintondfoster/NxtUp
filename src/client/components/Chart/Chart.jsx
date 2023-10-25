@@ -10,6 +10,8 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { io } from "socket.io-client";
+import { useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -21,7 +23,28 @@ ChartJS.register(
 );
 
 const Chart = ({ questionId }) => {
-  const { data = [], isLoading } = useGetQuestionByIdQuery(questionId);
+  const { data = [], isLoading, refetch } = useGetQuestionByIdQuery(questionId);
+
+     //socket logic
+     useEffect(() => {
+      const socket = io.connect("http://localhost:3000");
+  
+  
+      socket.on("connect", () => {});
+  
+      socket.on("new_vote", (data) => {
+
+        refetch(questionId);
+      });
+  
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
+
+    
+
+     
   console.log(data, "chartData");
   if (isLoading) return <p>Loading...</p>;
 
@@ -37,6 +60,9 @@ const Chart = ({ questionId }) => {
       },
     ],
   };
+
+
+  
   const options = {
     responsive: true,
   };
