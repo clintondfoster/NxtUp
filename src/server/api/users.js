@@ -7,6 +7,11 @@ const protection = require("../middleware");
 //Apply Middleware to all routes for user
 router.use(protection);
 
+// router.get("/", async (req, res, next) => {
+//     try {
+//         if (!req.user || !req.user.is)
+
+
 
 router.get("/:id", async (req, res, next) => {
     try {
