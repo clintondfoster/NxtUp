@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useLoginMutation, useRegisterMutation } from "../reducers/auth";
+import { useLoginMutation, useRegisterMutation } from "../../reducers/auth";
 import { useNavigate } from "react-router-dom";
-import TextInput from "../components/inputs/TextInput";
+import TextInput from "../../components/inputs/TextInput";
 import validator from "validator";
 /**
  * AuthForm allows a user to either login or register for an account.
