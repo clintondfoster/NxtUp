@@ -12,6 +12,7 @@ model User {
   username   String       @unique
   password   String
   email      String       @unique
+  sub        String?      @unique
   Vote       Vote[]
   Submission Submission[]
   Question   Question[]
