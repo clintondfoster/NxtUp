@@ -41,7 +41,7 @@ const GroupPage = () => {
         <CreateQuestion groupId={groupData.id} />
 
         {questionsLoading && <div>Loading questions...</div>}
-        {questionsData && (
+        {questionsData && questionsData.length > 0 && (
           <div>
             <h2>Active Questions in this Group:</h2>
             <ul>
