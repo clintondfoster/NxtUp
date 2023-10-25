@@ -22,7 +22,6 @@ router.post("/", protection, async (req, res, next) => {
           user_id: req.user.id,
         },
       });
-      return;
     } else {
       const createVote = await prisma.vote.create({
         data: {
@@ -30,8 +29,8 @@ router.post("/", protection, async (req, res, next) => {
           user_id: req.user.id,
         },
       });
-      res.status(200).send(createVote);
     }
+    res.status(200).send(createVote);
   } catch (err) {
     console.error(err);
     next(err);
