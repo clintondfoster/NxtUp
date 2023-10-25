@@ -5,7 +5,6 @@ import CreateVote from "../inputs/CreateVote";
 import AllVotes from "./AllVotes";
 import VideoEmbed from "./VideoEmbed";
 
-
 const DisplaySubmissions = ({ questionId }) => {
   //socket logic
   useEffect(() => {
@@ -18,10 +17,17 @@ const DisplaySubmissions = ({ questionId }) => {
       refetch(questionId);
     });
 
+    socket.on("new_vote", (submissionId) => {
+      console.log("vote changed:", submissionId);
+      refetch(questionId);
+    });
+
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
 
@@ -37,22 +43,19 @@ const DisplaySubmissions = ({ questionId }) => {
     isLoading: submissionsLoading,
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
-  // console.log("Sub questionsId:", questionId);
-  // console.log(`data from submissions`, submissionsData);
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
     return <div>No submissions found.</div>;
   }
-  // if (error) return <div>Error fetching submissions: {error.message}</div>;
 
-  //Get top 5 submissions based on vote count
-  const topFive = [...submissionsData]
-    .sort((a, b) => b.Vote - a.Vote)
-    // .slice(0, 5);
+  //Get top submissions based on vote count
+  const topVoted = [...submissionsData]
+    .sort((a, b) => b.Vote.length - a.Vote.length)
+
 
     console.log("submissionsData:", submissionsData);
-console.log("topFive:", topFive);
+    console.log("topVoted:", topVoted);
 
   return (
     <div>
@@ -74,43 +77,43 @@ console.log("topFive:", topFive);
 
       {activeTab === "leaderboard" && (
         <div className="submission-container">
-            <div>
-              {topFive.map((submission, index) => (
-                <div key={submission.id}>
-                  <div>
-                    <VideoEmbed videoUrl={submission.link} />
-                  </div>
-                  <div className="user-votes">
-                    <p>{submission.user.username}</p>
-                    <div>
-                      <AllVotes submissionId={submission.id} />
-                    </div>
-                  </div>
-
+          <div>
+            {topVoted.map((submission, index) => (
+              <div key={submission.id}>
+                <div>
+                  <VideoEmbed videoUrl={submission.link} />
                 </div>
-              ))}
-            </div>
+                <div className="user-votes">
+                  <p>{submission.user.username}</p>
+                  <div>
+                    <AllVotes submissionId={submission.id} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       {activeTab === "allSubmissions" && (
         <div>
-          {/* <h1>All Submissions:</h1> */}
           <div>
-            {submissionsData.map((submission) => (
-              <div key={submission.id}>
-                <VideoEmbed videoUrl={submission.link} />
-                <CreateVote
-                  questionId={questionId}
-                  submissionId={submission.id}
-                />
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <section>Total Votes : {submission.Vote}</section>
-                  <AllVotes submissionId={submission.id} />
+            {submissionsData.map((submission) => {
+              return (
+                <div key={submission.id}>
+                  <VideoEmbed videoUrl={submission.link} />
+                  <CreateVote
+                    questionId={questionId}
+                    submissionId={submission.id}
+                  />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <section>Total Votes :  </section>
+                    <AllVotes submissionId={submission.id} />
+                  </div>
+                  <p> User: {submission.user.username}</p>
                 </div>
-                <span> User: {submission.user.username}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

@@ -20,7 +20,7 @@ const CreateVote = ({ questionId, submissionId }) => {
   const onCreateVote = async () => {
     await createVote({ questionId, submissionId })
       .then(() => {
-        console.log("voted");
+        console.log("vote cast for", submissionId);
         socket.emit("new_vote", submissionId);
       })
       .catch(() => {

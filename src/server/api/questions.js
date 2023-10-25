@@ -32,6 +32,7 @@ router.get("/:id/submissions", async (req, res, next) => {
       },
       include: {
         user: true,
+        Vote: true
       }
     });
 
