@@ -36,7 +36,8 @@ router.get("/:id/submissions", async (req, res, next) => {
       },
       include: {
         user: true,
-      },
+        Vote: true
+      }
     });
 
     // If no submissions found for the question
