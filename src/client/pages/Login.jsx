@@ -1,4 +1,4 @@
-// import AuthForm from "../components/authForm/AuthForm";
+import AuthForm from "../components/authForm/AuthForm";
 import { useLocation } from "react-router-dom";
 
 export default function Login() {
@@ -20,7 +20,7 @@ export default function Login() {
 
    return (
       <div className="login-container">
-         <div>{/* <AuthForm /> */}</div>
+         <div><AuthForm /></div>
          <div></div>
          <div>
             <button onClick={oauthRedirect}>Press</button>
