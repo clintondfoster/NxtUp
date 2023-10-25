@@ -27,6 +27,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/", protection, async (req, res, next) => {
+
   console.log("recieved post submission data:", req.body);
   if (req.user.id) {
     console.log("user id from middleware", req.user.id);
