@@ -72,9 +72,6 @@ export const votingApi = createApi({
       query: (body) => ({
         url: "api/role",
         method: "POST",
-        where: {
-          question_id: Number(req.body.questionId),
-        },
         body: body,
       }),
     }),
