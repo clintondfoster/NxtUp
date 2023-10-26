@@ -27,12 +27,8 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/", protection, async (req, res, next) => {
-
-  console.log("recieved post submission data:", req.body);
   if (req.user.id) {
-    console.log("user id from middleware", req.user.id);
   } else {
-    console.log("req.user is undefined");
     return res.status(400).json({ error: "User not authenticated" });
   }
 
@@ -57,11 +53,9 @@ router.post("/", protection, async (req, res, next) => {
         user_id: req.user.id,
       },
     });
-    console.log("Req body from create submission,", req.body);
-    console.log("new_submission from post route", newSubmission);
 
     req.app.locals.io.emit("new_submission", newSubmission);
-    
+
     res.json(newSubmission);
   } catch (err) {
     next(err);

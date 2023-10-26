@@ -42,7 +42,6 @@ router.delete("/:id", async (req, res, next) => {
 
 router.post("/", protection, async (req, res, next) => {
   try {
-    console.log("req.user", req.user);
     const userId = req.user.id;
     const { name } = req.body;
     const accessCode = generateCode(5); 
@@ -64,7 +63,6 @@ router.post("/", protection, async (req, res, next) => {
       },
     });
 
-    console.log("req body from post request", req.body);
     const response = {
       group,
       role,
@@ -93,7 +91,3 @@ router.put("/:id", async (req, res, next) => {
 
 module.exports = router;
 
-// * updates required
-// * 1. create & assign role when group is created
-// * 2.
-// * 3.

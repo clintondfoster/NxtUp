@@ -6,7 +6,6 @@ const protection = require("../middleware");
 
 // Create vote if not exist, delete vote if exists
 router.post("/", protection, async (req, res, next) => {
-  console.log("body", req.body);
   try {
     const existVote = await prisma.vote.findFirst({
       where: {
