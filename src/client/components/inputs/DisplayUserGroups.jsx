@@ -10,7 +10,7 @@ function DisplayUserGroups() {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching users groups: {error.message}</p>;
 
-  console.log("userGroups:", userGroups);
+ 
 
   const creator = userGroups.filter((group) => group.userId === userId);
 

@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const GroupPage = () => {
   const { accessCode } = useParams();
-  // console.log("Group Access Code:", accessCode);
+
 
   const {
     data: groupData,
@@ -54,15 +54,6 @@ const GroupPage = () => {
             </ul>
           </div>
         )}
-
-        {/* <ul>
-          {groupData.questions.map((question) => (
-            <li key={question.id}>
-              {question.title}
-              <Link to={`/question/${question.id}`}>Submit Answer</Link>
-            </li>
-          ))}
-        </ul> */}
       </div>
 
       {selectedQuestion && <CreateSubmission question={selectedQuestion} />}
