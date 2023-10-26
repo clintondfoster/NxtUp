@@ -38,6 +38,7 @@ const DisplaySubmissions = ({ questionId }) => {
     setActiveTab(tab);
   };
 
+
   const {
     data: submissionsData,
     isLoading: submissionsLoading,
@@ -46,16 +47,13 @@ const DisplaySubmissions = ({ questionId }) => {
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
-    return <div>No submissions found.</div>;
+    return <div>Input a link to create a submission.</div>;
   }
 
   //Get top submissions based on vote count
   const topVoted = [...submissionsData]
     .sort((a, b) => b.Vote.length - a.Vote.length)
 
-
-    console.log("submissionsData:", submissionsData);
-    console.log("topVoted:", topVoted);
 
   return (
     <div>

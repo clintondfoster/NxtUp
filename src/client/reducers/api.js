@@ -43,12 +43,21 @@ export const votingApi = createApi({
     getUserHistory: builder.query({
       query: () => `api/role/users_history`,
     }),
+    updateUserRole: builder.mutation({
+      query: ({ groupId, userId, data }) => ({
+        url: `api/users/group/${groupId}/users/${userId}/role`,
+        method: "PUT",
+        body: data,
+      }),
     getQuestionsCreatedByUser: builder.query({
       query: (code) => `api/role/created-questions/${code}`,
     }),
     getActiveQuestionsFromJoinedGroups: builder.query({
       query: (code) => `api/role/joined-group-questions/${code}`,
     }),
+    getCurrentUser: builder.query({
+      query: () => `api/me`,
+  }),
     addQuestion: builder.mutation({
       query: (body) => ({
         url: "api/questions",
@@ -63,7 +72,9 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
-
+    getUsersInGroup: builder.query({
+      query: (groupId) => `api/users/group/${groupId}/users`,
+    }),
     getUserGroupsByRoles: builder.query({
       query: () => `api/role/user_groups`,
     }),
@@ -129,7 +140,11 @@ export const {
   useGetSubmissionsForQuestionQuery,
   useGetUserGroupsByRolesQuery,
   useGetUserHistoryQuery,
+  useGetCurrentUserQuery,
+  useUpdateUserRoleMutation,
+  useGetUsersInGroupQuery,
   useGetActiveQuestionsFromJoinedGroupsQuery,
   useGetQuestionsCreatedByUserQuery,
+
 } = votingApi;
 // export default dataSlice.reducer;

@@ -43,6 +43,8 @@ const UserHistory = () => {
               {submissions.map((sub) => (
                 <li key={sub.id}>
                   <a href={sub.link} target="_blank" rel="noopener noreferrer">
+                    {" "}
+                    //will take you directly to the embedded video.
                     {sub.link}
                   </a>
                 </li>
