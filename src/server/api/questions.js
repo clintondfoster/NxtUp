@@ -76,11 +76,12 @@ router.post("/", protection, async (req, res, next) => {
   const user = req.user.id;
 
   try {
-    const question = await prisma.question.findUnique({
+    const groupCreator = await prisma.role.findFirst({
       where: {
-        id: Number(req.params.id),
-      }
-    })
+        user_id: req.user.id,
+        is_creator: true,
+      },
+    });
     const createdQuestion = await prisma.question.create({
       data: {
         title,
