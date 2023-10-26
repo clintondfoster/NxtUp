@@ -4,6 +4,29 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const protection = require("../middleware");
 
+router.post("/", protection, async (req, res, next) => {
+  try {
+    const { accessCode } = req.body;
+    const userId = req.user.id;
+    const group = await prisma.group.findFirst({
+      where: {
+        access_code: accessCode,
+      },
+    });
+    const role = await prisma.Role.create({
+      data: {
+        user_id: userId,
+        group_id: group.id,
+        is_admitted: true,
+        is_creator: false,
+      },
+    });
+    res.send(role);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/", async (req, res, next) => {
   try {
     const allRoles = await prisma.Role.findMany();
@@ -23,24 +46,22 @@ router.get("/user_groups", protection, async (req, res, next) => {
       },
       include: {
         group: true,
-      }
+      },
     });
 
-    const userGroups = userRolesWithGroups.map(role => role.group);
+    const userGroups = userRolesWithGroups.map((role) => role.group);
 
     res.send(userGroups);
-
   } catch (err) {
-    next(err)
+    next(err);
   }
 });
 
 router.get("/users_history", protection, async (req, res, next) => {
-  try{
+  try {
     //get user
     const userId = req.user.id;
     // console.log("From Roles api router: UserID:", userId)
-
 
     //find group where user is admitted
     const rolesWhereAdmitted = await prisma.Role.findMany({
@@ -52,7 +73,7 @@ router.get("/users_history", protection, async (req, res, next) => {
 
     // console.log("Roles api - rolesWhereAdmitted:", rolesWhereAdmitted);
 
-    const groupIds = rolesWhereAdmitted.map(role => role.group_id);
+    const groupIds = rolesWhereAdmitted.map((role) => role.group_id);
 
     // console.log("Roles api groupIds", groupIds)
 
@@ -66,7 +87,7 @@ router.get("/users_history", protection, async (req, res, next) => {
       },
     });
 
-    const questionIds = questions.map(question => question.id);
+    const questionIds = questions.map((question) => question.id);
 
     const submissions = await prisma.Submission.findMany({
       where: {
@@ -82,10 +103,9 @@ router.get("/users_history", protection, async (req, res, next) => {
 
     // console.log("Roles with admitted status:", rolesWhereAdmitted)
     res.json(submissions);
-
   } catch (err) {
-    console.error("Error fetching user submission history", err)
-    next (err)
+    console.error("Error fetching user submission history", err);
+    next(err);
   }
 });
 
@@ -111,7 +131,6 @@ router.get("/users_history", protection, async (req, res, next) => {
 //     if(!creatorRole) {
 //       return res.json([])
 //     }
-
 
 //     const questions = await prisma.Question.findMany({
 //       where: {
@@ -151,29 +170,5 @@ router.get("/users_history", protection, async (req, res, next) => {
 //     next(err)
 //   }
 // })
-
-
-router.post("/", protection, async (req, res, next) => {
-  try {
-    const { accessCode } = req.body;
-    const userId = req.user.id
-    const group = await prisma.group.findFirst({
-      where: {
-        access_code: accessCode,
-      },
-    });
-    const role = await prisma.Role.create({
-      data: {
-        user_id: userId,
-        group_id: group.id,
-        is_admitted: true,
-        is_creator: false,
-      },
-    });
-    res.send(role);
-  } catch (err) {
-    next(err);
-  }
-});
 
 module.exports = router;
