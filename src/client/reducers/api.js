@@ -1,5 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { createSlice } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; 
 
 const CREDENTIALS = "credentials";
 
@@ -44,18 +43,17 @@ export const votingApi = createApi({
     getUserHistory: builder.query({
       query: () => `api/role/users_history`,
     }),
-    // getQuestionsCreatedByUser: builder.query({
-    //   query: (code) => `api/role/created-questions/${code}`
-    // }),
-    // getActiveQuestionsFromJoinedGroups: builder.query({
-    //   query: (code) => `api/role/joined-group-questions/${code}`
-    // }),
     updateUserRole: builder.mutation({
       query: ({ groupId, userId, data }) => ({
         url: `api/users/group/${groupId}/users/${userId}/role`,
         method: "PUT",
         body: data,
       }),
+    getQuestionsCreatedByUser: builder.query({
+      query: (code) => `api/role/created-questions/${code}`,
+    }),
+    getActiveQuestionsFromJoinedGroups: builder.query({
+      query: (code) => `api/role/joined-group-questions/${code}`,
     }),
     getCurrentUser: builder.query({
       query: () => `api/me`,
@@ -78,16 +76,13 @@ export const votingApi = createApi({
       query: (groupId) => `api/users/group/${groupId}/users`,
     }),
     getUserGroupsByRoles: builder.query({
-      query: () => `api/role/user_groups`
+      query: () => `api/role/user_groups`,
     }),
 
     addRole: builder.mutation({
       query: (body) => ({
         url: "api/role",
         method: "POST",
-        where: {
-          question_id: Number(req.body.questionId),
-        },
         body: body,
       }),
     }),
@@ -98,9 +93,21 @@ export const votingApi = createApi({
       query: (id) => ({
         url: `api/vote/${id}`,
         method: "DElETE",
- 
       }),
     }),
+    deleteGroup: builder.mutation({
+      query: (id) => ({
+        url: `api/groups/${id}`,
+        method: "DElETE",
+      }),
+    }),
+    closeQuestion: builder.mutation({
+      query: (id) => ({
+        url: `api/questions/${id}`,
+        method: "PUT",
+      }),
+    }),
+
     createVote: builder.mutation({
       query: (body) => ({
         url: "api/vote",
@@ -112,34 +119,12 @@ export const votingApi = createApi({
 });
 
 function storeToken(state, { payload }) {
-  console.log("storeToken is running");
-  console.log(state);
+
 
   const { token, user } = payload;
   state.credentials = { token, user };
-  console.log("Token recieved:", token);
   window.sessionStorage.setItem(CREDENTIALS, JSON.stringify({ token, user }));
 }
-
-
-
-
-// const initialState = [];
-
-// const cartSlice = createSlice({
-//   name: "cart",
-//   initialState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder.addMatcher(
-//       // storeApi.endpoints.useCreateVoteMutation.matchFulfilled,
-//       (state, { payload }) => {
-//         return [...payload.voted]
-
-//       }
-//     ) 
-//   }
-// });
 
 export const {
   useAddGroupMutation,
@@ -155,12 +140,11 @@ export const {
   useGetSubmissionsForQuestionQuery,
   useGetUserGroupsByRolesQuery,
   useGetUserHistoryQuery,
-  // useGetActiveQuestionsFromJoinedGroupsQuery,
-  // useGetQuestionsCreatedByUserQuery,
-
   useGetCurrentUserQuery,
   useUpdateUserRoleMutation,
   useGetUsersInGroupQuery,
+  useGetActiveQuestionsFromJoinedGroupsQuery,
+  useGetQuestionsCreatedByUserQuery,
 
 } = votingApi;
 // export default dataSlice.reducer;

@@ -36,14 +36,9 @@ router.get("/:id/submissions", async (req, res, next) => {
       },
       include: {
         user: true,
-      },
+        Vote: true
+      }
     });
-
-    // If no submissions found for the question
-    // if (submissions.length === 0) {
-    //   return res.status(404).json({ error: "No submissions found for this question" });
-    // }
-
     res.status(200).send(submissions);
   } catch (err) {
     console.error(err);
@@ -113,6 +108,26 @@ router.get("/:group_id", async (req, res, next) => {
     });
     res.send(activeQuestion);
   } catch (err) {
+    next(err);
+  }
+});
+
+
+// Close question route
+router.put("/:id", async (req, res, next) => {
+  try {
+    const deletedQuestion = await prisma.question.update({
+      where: {
+        id: Number(req.params.id),
+      },
+      data: {
+        is_active: false,
+      }
+    });
+
+    res.status(200).send(deletedQuestion);
+  } catch (err) {
+    console.error(err);
     next(err);
   }
 });

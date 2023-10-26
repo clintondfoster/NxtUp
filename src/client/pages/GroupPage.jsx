@@ -11,8 +11,10 @@ import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
 
 const GroupPage = () => {
+
   const { accessCode, groupId } = useParams();
   // console.log("Group Access Code:", accessCode);
+
 
   const {
     data: groupData,
@@ -74,6 +76,7 @@ const GroupPage = () => {
           <h2>Users in this group:</h2>
           {groupData && <UsersList groupId={groupData?.id} />}
         </div>
+
       </div>
       {selectedQuestion && <CreateSubmission question={selectedQuestion} />}
     </div>

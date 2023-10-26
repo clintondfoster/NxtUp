@@ -17,10 +17,17 @@ const DisplaySubmissions = ({ questionId }) => {
       refetch(questionId);
     });
 
+    socket.on("new_vote", (submissionId) => {
+      console.log("vote changed:", submissionId);
+      refetch(questionId);
+    });
+
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
 
@@ -31,7 +38,6 @@ const DisplaySubmissions = ({ questionId }) => {
     setActiveTab(tab);
   };
 
-  //
 
   const {
     data: submissionsData,
@@ -43,12 +49,11 @@ const DisplaySubmissions = ({ questionId }) => {
   if (!submissionsData || submissionsData.length === 0) {
     return <div>Input a link to create a submission.</div>;
   }
-  // if (error) return <div>Error fetching submissions: {error.message}</div>;
 
-  //Get top 5 submissions based on vote count
-  const topFive = [...submissionsData]
-    .sort((a, b) => b.Vote - a.Vote)
-    .slice(0, 5);
+  //Get top submissions based on vote count
+  const topVoted = [...submissionsData]
+    .sort((a, b) => b.Vote.length - a.Vote.length)
+
 
   return (
     <div>
@@ -69,50 +74,44 @@ const DisplaySubmissions = ({ questionId }) => {
       </div>
 
       {activeTab === "leaderboard" && (
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Link</th>
-              <th>User</th>
-              <th>Votes</th>
-            </tr>
-          </thead>
-          <tbody>
-            {topFive.map((submission, index) => (
-              <tr key={submission.id}>
-                <td>{index + 1}</td>
-                <td>
+        <div className="submission-container">
+          <div>
+            {topVoted.map((submission, index) => (
+              <div key={submission.id}>
+                <div>
                   <VideoEmbed videoUrl={submission.link} />
-                </td>
-                <td>{submission.user.username}</td>
-                <td>
-                  <AllVotes submissionId={submission.id} />
-                </td>
-              </tr>
+                </div>
+                <div className="user-votes">
+                  <p>{submission.user.username}</p>
+                  <div>
+                    <AllVotes submissionId={submission.id} />
+                  </div>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       )}
 
       {activeTab === "allSubmissions" && (
         <div>
-          {/* <h1>All Submissions:</h1> */}
           <div>
-            {submissionsData.map((submission) => (
-              <div key={submission.id}>
-                <VideoEmbed videoUrl={submission.link} />
-                <CreateVote
-                  questionId={questionId}
-                  submissionId={submission.id}
-                />
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <section>Total Votes : {submission.Vote}</section>
-                  <AllVotes submissionId={submission.id} />
+            {submissionsData.map((submission) => {
+              return (
+                <div key={submission.id}>
+                  <VideoEmbed videoUrl={submission.link} />
+                  <CreateVote
+                    questionId={questionId}
+                    submissionId={submission.id}
+                  />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <section>Total Votes :  </section>
+                    <AllVotes submissionId={submission.id} />
+                  </div>
+                  <p> User: {submission.user.username}</p>
                 </div>
-                <span> User: {submission.user.username}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
