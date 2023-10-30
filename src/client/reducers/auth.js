@@ -6,6 +6,9 @@ const CREDENTIALS = "credentials";
 
 const authApi = storeApi.injectEndpoints({
     endpoints: (builder)=>({
+        getCurrentUser: builder.query({
+            query: () => `api/me`,
+        }),
         login: builder.mutation({
             query: (cred)=>({
                 url:"/auth/login",
@@ -60,11 +63,12 @@ const authSlice = createSlice({
         builder.addMatcher(storeApi.endpoints.login.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.register.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.oauth.matchFulfilled, storeToken);
+        builder.addMatcher(storeApi.endpoints.getCurrentUser.matchFulfilled, (state, action) => {
+            state.credentials.user = action.payload;
+        })
         builder.addMatcher(storeApi.endpoints.logout.matchRejected, (state)=>{
             state.credentials = {
-
                 token: '',
-
             };
             window.sessionStorage.removeItem(CREDENTIALS)
         });
@@ -78,4 +82,5 @@ export const {
     useRegisterMutation,
     useLogoutMutation,
     useOauthMutation,
+    useGetCurrentUserQuery,
 } = authApi

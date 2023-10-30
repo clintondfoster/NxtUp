@@ -3,6 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const protection = require("../middleware")
 
 
 router.post("/register", async (req, res,next)=>{
@@ -62,16 +63,37 @@ router.post("/login", async (req, res,next)=>{
     }
 });
 
-router.get("/me", async (req, res,next)=>{
+router.get("/me", protection, async (req, res,next)=>{
+    console.log("endpoint /me activated,")
     if(!req.user){
         return res.send({})
     }
     try{
         const user = await prisma.user.findUnique({
-            where: {id: req.user.id}
-        })
+            where: {id: req.user.id},
+            include: { Role: true }
+        });
 
-        res.send(user)
+        if(!user) {
+            return res.status(404).send("User not found");
+        }
+
+        const isCreator = user.Role.some(role => role.is_creator);
+
+        user.isCreator = isCreator;
+
+        res.setHeader("Content-Type", "application/json");
+
+        // res.json({ 
+        //     user: {
+        //         id: user.id,
+        //         username: user.username,
+        //         email: user.email,
+        //         isCreator: isCreator
+        //     }
+        // })
+        res.send(user);
+        console.log("router /me", req.user);
     }catch(err){
         next(err)
     }
