@@ -9,6 +9,7 @@ import { useParams, Link } from "react-router-dom";
 import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
+import DeleteGroup from "../components/inputs/elements/DeleteGroup";
 
 const GroupPage = () => {
 
@@ -21,7 +22,7 @@ const GroupPage = () => {
     isLoading: groupLoading,
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
-
+  console.log("groupData", groupData)
   const {
     data: questionsData,
     isLoading: questionsLoading,
@@ -54,7 +55,8 @@ const GroupPage = () => {
       <div>
         <h1>Group Name: {groupData.name}</h1>
         <h4>Code: {groupData.access_code}</h4>
-
+        <h4>Group Id: {groupData.id}</h4>
+        <DeleteGroup groupId={groupData.id}/>
         <CreateQuestion groupId={groupData.id} />
 
         {questionsLoading && <div>Loading questions...</div>}
