@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Sofia');
+.footer{
+  position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #111;
+    height: auto;
+    width: 100vw;
+    padding-top: 0px;
+    color: #fff;
+    font-family: "Sofia", sans-serif; 
+}
+
+.bigtext{
+  font-style: oblique;
+  font-size: 25px;
+}
+.smallText{
+  font-size: 11px;
+  font-style: italic;
+}
+.top{
+  margin-left: 12px;
+}
+
+.list{
+  list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    // margin: 1rem 0 3rem 0;
+}
