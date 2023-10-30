@@ -86,7 +86,7 @@ router.post("/", protection, async (req, res, next) => {
       data: {
         title,
         group_id,
-        user_id: user,
+        user_id: groupCreator.user_id,
         is_active: true,
       },
     });

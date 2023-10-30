@@ -3,10 +3,13 @@ import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useParams } from "react-router-dom";
 import {
   useGetQuestionByIdQuery,
-  useGetSubmissionsForQuestionQuery,
 } from "../reducers/api/";
 import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 import Chart from "../components/Chart/Chart";
+import CloseQuestion from "../components/inputs/CloseQuestion";
+
+
+
 
 const QuestionPage = ({ socket }) => {
   const { questionId } = useParams();
@@ -24,6 +27,7 @@ const QuestionPage = ({ socket }) => {
     <div>
       {renderQuestion()}
       <CreateSubmission questionId={questionId} />
+      <CloseQuestion />
       <DisplaySubmissions questionId={questionId} socket={socket}/>
       <Chart questionId={questionId}/>
     </div>
