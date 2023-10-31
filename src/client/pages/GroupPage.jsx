@@ -10,9 +10,11 @@ import { useParams, Link } from "react-router-dom";
 import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
+import DeleteGroup from "../components/inputs/DeleteGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteGroup from "../components/inputs/elements/DeleteGroup";
+
 
 const GroupPage = () => {
   const { accessCode, groupId } = useParams();
@@ -22,6 +24,7 @@ const GroupPage = () => {
     isLoading: groupLoading,
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
+
   const { refetch } = useGetGroupByCodeQuery(accessCode);
 
   const {
@@ -29,6 +32,7 @@ const GroupPage = () => {
     isLoading: questionsLoading,
     isError: questionsError,
   } = useGetActiveQuestionsForGroupQuery(accessCode);
+
 
   const [editGroupName] = useEditGroupNameMutation();
 
@@ -60,6 +64,7 @@ const GroupPage = () => {
   if (groupError) {
     return <div>Error with group data: {groupError.message}</div>;
   }
+
   if (!groupData) return null;
 
   return (
@@ -95,7 +100,7 @@ const GroupPage = () => {
 
         <h4>Code: {groupData.access_code}</h4>
         <h4>Group Id: {groupData.id}</h4>
-        <DeleteGroup groupId={groupData.id}/>
+        <DeleteGroup groupId={groupData.id} />
         <CreateQuestion groupId={groupData.id} />
 
         {questionsLoading && <div>Loading questions...</div>}

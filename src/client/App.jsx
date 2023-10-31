@@ -59,7 +59,7 @@ function App() {
             />
             <Route path="/oauthhandler" element={<OAuthHandler />} />
          </Routes>
-         <Footer/>
+         {/* <Footer/> */}
       </div>
    );
 }
