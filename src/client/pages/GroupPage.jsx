@@ -2,6 +2,7 @@ import React from "react";
 import {
   useGetGroupByCodeQuery,
   useGetActiveQuestionsForGroupQuery,
+  useEditGroupNameMutation,
   // useGetUsersInGroupQuery,
 } from "../reducers/api";
 import CreateQuestion from "../components/inputs/CreateQuestion";
@@ -10,6 +11,10 @@ import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
 import DeleteGroup from "../components/inputs/DeleteGroup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import DeleteGroup from "../components/inputs/elements/DeleteGroup";
+
 
 const GroupPage = () => {
   const { accessCode, groupId } = useParams();
@@ -19,12 +24,39 @@ const GroupPage = () => {
     isLoading: groupLoading,
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
-  
+
+  const { refetch } = useGetGroupByCodeQuery(accessCode);
+
   const {
     data: questionsData,
     isLoading: questionsLoading,
     isError: questionsError,
   } = useGetActiveQuestionsForGroupQuery(accessCode);
+
+
+  const [editGroupName] = useEditGroupNameMutation();
+
+  const [isEditingGroupName, setIsEditingGroupName] = useState(false);
+  const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+
+  const handleEditGroupName = async () => {
+    try {
+      const result = await editGroupName({
+        id: groupData.id,
+        name: newGroupName,
+      });
+
+      if (result.error) {
+        console.error("Error editing group name:", result.error);
+      } else {
+        console.log(`Group name updated`, newGroupName);
+        refetch();
+      }
+    } catch (error) {
+      console.error("An error occurred while editing group name:", error);
+    }
+    setIsEditingGroupName(false);
+  };
 
   const [selectedQuestion, setSelectedQuestion] = useState("");
 
@@ -38,7 +70,34 @@ const GroupPage = () => {
   return (
     <div>
       <div>
-        <h1>Group Name: {groupData.name}</h1>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          {isEditingGroupName ? (
+            <>
+              <input
+                type="text"
+                value={newGroupName}
+                placeholder={groupData.name}
+                onChange={(e) => setNewGroupName(e.target.value)}
+              />
+              <button onClick={handleEditGroupName}>Save</button>
+            </>
+          ) : (
+            <>
+              <h1>Group Name: {groupData.name}</h1>
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                onClick={() => setIsEditingGroupName(true)}
+                style={{ cursor: "pointer" }}
+              />
+            </>
+          )}
+        </div>
+
         <h4>Code: {groupData.access_code}</h4>
         <h4>Group Id: {groupData.id}</h4>
         <DeleteGroup groupId={groupData.id} />

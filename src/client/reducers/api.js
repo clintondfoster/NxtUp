@@ -114,6 +114,16 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
+    editGroupName: builder.mutation({
+      query(data) {
+        const { id, ...body } = data;
+        return {
+          url: `api/groups/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
+    }),
   }),
 });
 function storeToken(state, { payload }) {
@@ -142,5 +152,6 @@ export const {
   useGetQuestionsCreatedByUserQuery,
   useDeleteGroupByCodeMutation,
   useCloseQuestionMutation,
+  useEditGroupNameMutation,
 } = votingApi;
 // export default dataSlice.reducer;
