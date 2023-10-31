@@ -13,7 +13,7 @@ import UsersList from "../components/inputs/UsersList";
 import DeleteGroup from "../components/inputs/DeleteGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import DeleteGroup from "../components/inputs/elements/DeleteGroup";
+
 
 
 const GroupPage = () => {
