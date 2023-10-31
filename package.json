@@ -9,10 +9,16 @@
     "less": "less-watch-compiler src/client/style src/client index.less"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-free": "^6.4.2",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.4",
     "@prisma/client": "^5.5.1",
     "@reduxjs/toolkit": "^1.9.5",
     "bcrypt": "^5.1.1",
@@ -37,6 +43,7 @@
     "redux": "^4.2.1",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "styled-components": "^6.1.0",
     "uuid": "^9.0.1",
     "validator": "^13.11.0",
     "vite-express": "*"

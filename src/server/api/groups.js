@@ -44,13 +44,18 @@ router.delete("/:id", async (req, res, next) => {
 router.post("/", protection, async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { name } = req.body;
     const accessCode = generateCode(5);
+
+    const user = await prisma.user.findUnique({
+      where:{ id: userId}
+    })
+
+    const username = user.username;
 
     const group = await prisma.Group.create({
       data: {
         userId: userId,
-        name,
+        name: `${username} - ${accessCode}`,
         access_code: accessCode,
       },
     });
