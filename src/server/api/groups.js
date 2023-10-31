@@ -27,24 +27,12 @@ router.get("/:access_code", async (req, res, next) => {
   }
 });
 
-router.delete("/:access_code", async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
+  const { groupId } = req.body;
   try {
-    // const findCreator = await prisma.role.findFirst({
-    //   where: {
-    //     id: +req.user.id,
-    //     is_creator: true,
-    //   },
-    // });
-
-    // const user = await prisma.user.findFirst({
-    //   where: {
-    //     id: findCreator.id,
-    //   },
-    // });
     const group = await prisma.Group.delete({
       where: {
-        access_code: req.params.access_code,
-        // id: req.params.id
+        id: groupId
       },
     });
     res.send(group);

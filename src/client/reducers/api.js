@@ -29,8 +29,8 @@ export const votingApi = createApi({
       query: (code) => `api/groups/${code}`,
     }),
     deleteGroupByCode: builder.mutation({
-      query: (code) => ({
-        url: `api/groups/${code}`,
+      query: (id) => ({
+        url: `api/groups/${id}`,
         method: "DElETE",
       }),
     }),

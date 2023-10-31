@@ -12,6 +12,7 @@ import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import DeleteGroup from "../components/inputs/elements/DeleteGroup";
 
 const GroupPage = () => {
   const { accessCode, groupId } = useParams();
@@ -21,7 +22,6 @@ const GroupPage = () => {
     isLoading: groupLoading,
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
-
   const { refetch } = useGetGroupByCodeQuery(accessCode);
 
   const {
@@ -94,7 +94,8 @@ const GroupPage = () => {
         </div>
 
         <h4>Code: {groupData.access_code}</h4>
-
+        <h4>Group Id: {groupData.id}</h4>
+        <DeleteGroup groupId={groupData.id}/>
         <CreateQuestion groupId={groupData.id} />
 
         {questionsLoading && <div>Loading questions...</div>}
