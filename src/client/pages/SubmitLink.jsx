@@ -1,19 +1,9 @@
-import React from "react";
 import CreateSubmission from "../components/inputs/CreateSubmission";
+import { useGetQuestionByIdQuery } from "../reducers/api";
 import { useParams } from "react-router-dom";
-import {
-  useGetQuestionByIdQuery,
-} from "../reducers/api/";
-import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
-import CloseQuestion from "../components/inputs/CloseQuestion";
-import SubmitLink from "./SubmitLink";
 
-
-
-
-const QuestionPage = () => {
+const SubmitLink = () => {
   const { questionId } = useParams();
-
   const { data: questionData, isLoading: questionLoading } =
     useGetQuestionByIdQuery(questionId);
 
@@ -27,11 +17,8 @@ const QuestionPage = () => {
     <div>
       {renderQuestion()}
       <CreateSubmission questionId={questionId} />
-      <CloseQuestion />
-      <DisplaySubmissions questionId={questionId}/>
     </div>
-
   );
 };
 
-export default QuestionPage;
+export default SubmitLink;

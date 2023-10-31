@@ -10,8 +10,10 @@ import PageNav from "./components/PageNav";
 import OAuthHandler from "./pages/OAuthHandler";
 import AccountSettings from "./pages/AccountSettings";
 import Footer from "./components/Footer/Footer";
+import Leaderboard from "./pages/Leaderboard";
+import SubmitLink from "./pages/SubmitLink";
 
-function App() {
+function App({questionId}) {
    const storedToken = window.sessionStorage.getItem("credentials");
    let decodedToken = null;
 
@@ -54,6 +56,24 @@ function App() {
                   <>
                      <PageNav />
                      <QuestionPage />
+                  </>
+               }
+            />
+            <Route
+               path="/question/:questionId/submit"
+               element={
+                  <>
+                     <PageNav />
+                     <SubmitLink questionId={questionId} />
+                  </>
+               }
+            />
+            <Route
+               path="/question/:questionId/results"
+               element={
+                  <>
+                     <PageNav />
+                     <Leaderboard questionId={questionId} />
                   </>
                }
             />

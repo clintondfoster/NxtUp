@@ -1,8 +1,14 @@
 import React from 'react'
 
 const VideoEmbed = ({ videoUrl }) => {
+
+  // const videoContainerStyle = {
+  //   border: '1px solid #000', 
+  // };
+
   return (
-    <div className="video-container">
+    // <div className="video-container" style={videoContainerStyle}>
+    <div className="video-container" >
     <iframe
       width="350"
       height="196"
