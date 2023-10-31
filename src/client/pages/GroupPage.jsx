@@ -2,6 +2,7 @@ import React from "react";
 import {
   useGetGroupByCodeQuery,
   useGetActiveQuestionsForGroupQuery,
+  useEditGroupNameMutation,
   // useGetUsersInGroupQuery,
 } from "../reducers/api";
 import CreateQuestion from "../components/inputs/CreateQuestion";
@@ -9,12 +10,11 @@ import { useParams, Link } from "react-router-dom";
 import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 const GroupPage = () => {
-
   const { accessCode, groupId } = useParams();
-  // console.log("Group Access Code:", accessCode);
-
 
   const {
     data: groupData,
@@ -22,17 +22,37 @@ const GroupPage = () => {
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
 
+  const { refetch } = useGetGroupByCodeQuery(accessCode);
+
   const {
     data: questionsData,
     isLoading: questionsLoading,
     isError: questionsError,
   } = useGetActiveQuestionsForGroupQuery(accessCode);
 
-  // const {
-  //   data: usersData,
-  //   isLoading: usersLoading,
-  //   isError: usersError,
-  // } = useGetUsersInGroupQuery(groupData?.id);
+  const [editGroupName] = useEditGroupNameMutation();
+
+  const [isEditingGroupName, setIsEditingGroupName] = useState(false);
+  const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+
+  const handleEditGroupName = async () => {
+    try {
+      const result = await editGroupName({
+        id: groupData.id,
+        name: newGroupName,
+      });
+
+      if (result.error) {
+        console.error("Error editing group name:", result.error);
+      } else {
+        console.log(`Group name updated`, newGroupName);
+        refetch();
+      }
+    } catch (error) {
+      console.error("An error occurred while editing group name:", error);
+    }
+    setIsEditingGroupName(false);
+  };
 
   const [selectedQuestion, setSelectedQuestion] = useState("");
 
@@ -40,19 +60,39 @@ const GroupPage = () => {
   if (groupError) {
     return <div>Error with group data: {groupError.message}</div>;
   }
-  // if (usersError)
-  //   return (
-  //     <p>
-  //       Error loading users: {usersError.message || JSON.stringify(usersError)}
-  //     </p>
-  //   );
   if (!groupData) return null;
 
-  console.log("groupData:", groupData);
   return (
     <div>
       <div>
-        <h1>Group Name: {groupData.name}</h1>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          {isEditingGroupName ? (
+            <>
+              <input
+                type="text"
+                value={newGroupName}
+                placeholder={groupData.name}
+                onChange={(e) => setNewGroupName(e.target.value)}
+              />
+              <button onClick={handleEditGroupName}>Save</button>
+            </>
+          ) : (
+            <>
+              <h1>Group Name: {groupData.name}</h1>
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                onClick={() => setIsEditingGroupName(true)}
+                style={{ cursor: "pointer" }}
+              />
+            </>
+          )}
+        </div>
+
         <h4>Code: {groupData.access_code}</h4>
 
         <CreateQuestion groupId={groupData.id} />
@@ -76,7 +116,6 @@ const GroupPage = () => {
           <h2>Users in this group:</h2>
           {groupData && <UsersList groupId={groupData?.id} />}
         </div>
-
       </div>
       {selectedQuestion && <CreateSubmission question={selectedQuestion} />}
     </div>
