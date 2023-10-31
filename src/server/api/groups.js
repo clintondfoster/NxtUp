@@ -117,37 +117,3 @@ router.put("/:id", async (req, res, next) => {
 });
 
 module.exports = router;
-// Delete group and all associated data
-// router.delete("/:id", async (req, res, next) => {
-//   const { id } = req.params;
-//   try {
-//     const role = await prisma.role.deleteMany({
-//       where: {
-//         group_id: Number(id),
-//       },
-//     });
-//     const question = await prisma.question.deleteMany({
-//       where: {
-//         group_id: +id,
-//       },
-//     });
-//     const submission = await prisma.submission.deleteMany({
-//       where: {
-//         question_id: question.id,
-//       },
-//     });
-//     const vote = await prisma.vote.deleteMany({
-//       where: {
-//         submissionId: submission.id,
-//       },
-//     });
-//     const group = await prisma.Group.delete({
-//       where: {
-//         id: Number(id),
-//       },
-//     });
-//     res.send(group);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
