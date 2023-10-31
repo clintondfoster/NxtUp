@@ -9,31 +9,22 @@ import { useParams, Link } from "react-router-dom";
 import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
-import DeleteGroup from "../components/inputs/elements/DeleteGroup";
+import DeleteGroup from "../components/inputs/DeleteGroup";
 
 const GroupPage = () => {
-
   const { accessCode, groupId } = useParams();
-  // console.log("Group Access Code:", accessCode);
-
 
   const {
     data: groupData,
     isLoading: groupLoading,
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
-  console.log("groupData", groupData)
+  
   const {
     data: questionsData,
     isLoading: questionsLoading,
     isError: questionsError,
   } = useGetActiveQuestionsForGroupQuery(accessCode);
-
-  // const {
-  //   data: usersData,
-  //   isLoading: usersLoading,
-  //   isError: usersError,
-  // } = useGetUsersInGroupQuery(groupData?.id);
 
   const [selectedQuestion, setSelectedQuestion] = useState("");
 
@@ -41,22 +32,16 @@ const GroupPage = () => {
   if (groupError) {
     return <div>Error with group data: {groupError.message}</div>;
   }
-  // if (usersError)
-  //   return (
-  //     <p>
-  //       Error loading users: {usersError.message || JSON.stringify(usersError)}
-  //     </p>
-  //   );
+
   if (!groupData) return null;
 
-  console.log("groupData:", groupData);
   return (
     <div>
       <div>
         <h1>Group Name: {groupData.name}</h1>
         <h4>Code: {groupData.access_code}</h4>
         <h4>Group Id: {groupData.id}</h4>
-        <DeleteGroup groupId={groupData.id}/>
+        <DeleteGroup groupId={groupData.id} />
         <CreateQuestion groupId={groupData.id} />
 
         {questionsLoading && <div>Loading questions...</div>}
@@ -78,7 +63,6 @@ const GroupPage = () => {
           <h2>Users in this group:</h2>
           {groupData && <UsersList groupId={groupData?.id} />}
         </div>
-
       </div>
       {selectedQuestion && <CreateSubmission question={selectedQuestion} />}
     </div>
