@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useGetQuestionByIdQuery } from "../reducers/api/";
 import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 import CloseQuestion from "../components/inputs/CloseQuestion";
-import SubmitLink from "./SubmitLink";
 import { useNavigate } from "react-router-dom";
 
 const QuestionPage = () => {

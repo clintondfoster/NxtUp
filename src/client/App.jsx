@@ -11,7 +11,6 @@ import OAuthHandler from "./pages/OAuthHandler";
 import AccountSettings from "./pages/AccountSettings";
 import Footer from "./components/Footer/Footer";
 import Leaderboard from "./pages/Leaderboard";
-import SubmitLink from "./pages/SubmitLink";
 import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
 
 function App({questionId}) {
@@ -57,15 +56,7 @@ function App({questionId}) {
                   <>
                      <PageNav />
                      <QuestionPage />
-                  </>
-               }
-            />
-            <Route
-               path="/question/:questionId/submit"
-               element={
-                  <>
-                     <PageNav />
-                     <SubmitLink questionId={questionId} />
+                     {/* this will be renamed to SubmitLink as will relevant file */}
                   </>
                }
             />
