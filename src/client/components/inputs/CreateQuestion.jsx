@@ -33,7 +33,7 @@ const CreateQuestion = ({ groupId }) => {
     (role) => role.group_id === groupId && role.is_admitted
   );
 
-  console.log("user isCreator", isCreator);
+  // console.log("user isCreator", isCreator);
 
   if (isCreator) {
     return (
