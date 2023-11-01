@@ -1,11 +1,17 @@
-import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
+import {
+  useGetSubmissionsForQuestionQuery,
+  useGetQuestionByIdQuery,
+} from "../../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import CreateVote from "../inputs/CreateVote";
 import AllVotes from "./AllVotes";
 import VideoEmbed from "./VideoEmbed";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const DisplaySubmissions = ({ questionId }) => {
+const DisplaySubmissions = () => {
+  const { questionId } = useParams();
   //socket logic
   useEffect(() => {
     const socket = io.connect("http://localhost:3000");
@@ -27,17 +33,7 @@ const DisplaySubmissions = ({ questionId }) => {
     };
   }, []);
 
-  
-
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
-
-  // page tabs
-  const [activeTab, setActiveTab] = useState("leaderboard");
-
-  const handleTabs = (tab) => {
-    setActiveTab(tab);
-  };
-
 
   const {
     data: submissionsData,
@@ -45,76 +41,66 @@ const DisplaySubmissions = ({ questionId }) => {
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
 
+  const { data: questionData, isLoading: questionLoading } =
+  useGetQuestionByIdQuery(questionId);
+
+  const renderQuestion = () => {
+    if (questionLoading) return <div>Loading question...</div>;
+    if (!questionData) return null;
+    return <h2>{questionData.title}</h2>;
+  };
+
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
     return <div>Input a link to create a submission.</div>;
   }
 
-  //Get top submissions based on vote count
-  const topVoted = [...submissionsData]
-    .sort((a, b) => b.Vote.length - a.Vote.length)
-
-
   return (
     <div>
-      <h1>switch between tabs (placeholder)</h1>
-      <div className="tab-header">
-        <button
-          className={activeTab === "leaderboard" ? "active" : ""}
-          onClick={() => handleTabs("leaderboard")}
-        >
-          Leaderboard
-        </button>
-        <button
-          className={activeTab === "allSubmissions" ? "active" : ""}
-          onClick={() => handleTabs("allSubmissions")}
-        >
-          All Submissions
-        </button>
-      </div>
-
-      {activeTab === "leaderboard" && (
-        <div className="submission-container">
-          <div>
-            {topVoted.map((submission, index) => (
-              <div key={submission.id}>
-                <div>
-                  <VideoEmbed videoUrl={submission.link} />
-                </div>
-                <div className="user-votes">
-                  <p>{submission.user.username}</p>
-                  <div>
-                    <AllVotes submissionId={submission.id} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {activeTab === "allSubmissions" && (
+      {renderQuestion()}
+      <div>
         <div>
-          <div>
-            {submissionsData.map((submission) => {
-              return (
-                <div key={submission.id}>
+          {submissionsData.map((submission) => {
+            return (
+              <div key={submission.id}>
+                <div
+                  style={{
+                    border: "2px solid #000",
+                    padding: "10px",
+                    width: "355px",
+                    backgroundColor: "gainsboro",
+                    marginBottom: "12px",
+                  }}
+                >
                   <VideoEmbed videoUrl={submission.link} />
                   <CreateVote
                     questionId={questionId}
                     submissionId={submission.id}
                   />
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <section>Total Votes :  </section>
-                    <AllVotes submissionId={submission.id} />
-                  </div>
                   <p> User: {submission.user.username}</p>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
-      )}
+        <div>
+          <Link
+            to={{
+              pathname: `/question/${questionId}/leaderboard`,
+            }}
+          >
+            <button
+              style={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+              }}
+            >
+              Submit
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

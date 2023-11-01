@@ -27,12 +27,33 @@ router.get("/:access_code", async (req, res, next) => {
   }
 });
 
+// Delete group and all associated data
 router.delete("/:id", async (req, res, next) => {
-  const { groupId } = req.body;
+  const { id } = req.params;
   try {
+    const role = await prisma.role.deleteMany({
+      where: {
+        group_id: Number(id),
+      },
+    });
+    const question = await prisma.question.deleteMany({
+      where: {
+        group_id: +id,
+      },
+    });
+    const submission = await prisma.submission.deleteMany({
+      where: {
+        question_id: question.id,
+      },
+    });
+    const vote = await prisma.vote.deleteMany({
+      where: {
+        submissionId: submission.id,
+      },
+    });
     const group = await prisma.Group.delete({
       where: {
-        id: groupId
+        id: Number(id),
       },
     });
     res.send(group);
@@ -44,13 +65,18 @@ router.delete("/:id", async (req, res, next) => {
 router.post("/", protection, async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { name } = req.body;
     const accessCode = generateCode(5);
+
+    const user = await prisma.user.findUnique({
+      where:{ id: userId}
+    })
+
+    const username = user.username;
 
     const group = await prisma.Group.create({
       data: {
         userId: userId,
-        name,
+        name: `${username} - ${accessCode}`,
         access_code: accessCode,
       },
     });
