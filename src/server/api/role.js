@@ -19,6 +19,7 @@ router.post("/", protection, async (req, res, next) => {
         group_id: group.id,
         is_admitted: true,
         is_creator: false,
+        is_admin: false,
       },
     });
     res.send(role);

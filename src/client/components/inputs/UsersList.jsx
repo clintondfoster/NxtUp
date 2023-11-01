@@ -7,15 +7,18 @@ import {
 
 export const UsersList = ({ groupId }) => {
   if (!groupId) return <p>Awaiting group...</p>;
-  const { data: users, isLoading, error } = useGetUsersInGroupQuery(groupId);
+  const {
+    data: users,
+    isLoading: usersLoading,
+    error: usersError,
+  } = useGetUsersInGroupQuery(groupId);
+
   console.log("users in userslist", users);
   console.log("Group id in userslist:", groupId);
 
   const [updatedUsers, setUpdatedUsers] = useState({});
   const [updateUserRole, { isLoading: isUpdating }] =
     useUpdateUserRoleMutation();
-
-  //   const currentUserId =
 
   const handleToggleCreatorStatus = async (userId, currentStatus) => {
     const isCreator = updatedUsers[userId] ?? currentStatus;
@@ -32,23 +35,28 @@ export const UsersList = ({ groupId }) => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading users</p>;
+  if (usersLoading) return <p>Loading...</p>;
+  if (usersError) return <p>Error loading users</p>;
   if (!users.length) return <p>No users found.</p>;
+
+  const currentUser = users.find((user) => user.is_admin);
+  const isAdmin = currentUser?.is_admin || false;
 
   return (
     <ul>
       {users.map((user) => {
-        const isCreator = updatedUsers[user.id] ?? user.id_creator;
+        const isCreator = updatedUsers[user.id] ?? user.is_creator;
 
         return (
           <li key={user.id}>
             {user.username}
-            <button
-              onClick={() => handleToggleCreatorStatus(user.id, isCreator)}
-            >
-              {isCreator ? "Remove Role" : "Assign Creator Role"}
-            </button>
+            {isAdmin && user.id !== currentUser.id && (
+              <button
+                onClick={() => handleToggleCreatorStatus(user.id, isCreator)}
+              >
+                {isCreator ? "Remove Status" : "Assign Creator Status"}
+              </button>
+            )}
           </li>
         );
       })}
