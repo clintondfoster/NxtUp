@@ -55,12 +55,13 @@ router.post("/", protection, async (req, res, next) => {
       },
     });
 
-    const role = await prisma.role.create({
+    const role = await prisma.Role.create({
       data: {
         user_id: userId,
         group_id: group.id,
         is_admitted: true,
         is_creator: true,
+        is_admin: true,
       },
     });
 

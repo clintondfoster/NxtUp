@@ -7,7 +7,7 @@ const protection = require("../middleware");
 //Apply Middleware to all routes for user
 router.use(protection);
 
-// if isCreator = true, then user can get a list of all users
+// all users in a group can see the other members
 router.get("/group/:groupId/users", async (req, res, next) => {
     console.log("Received request for users of group:")
     try {
@@ -15,16 +15,15 @@ router.get("/group/:groupId/users", async (req, res, next) => {
             return res.status(401).send("User not authenticated.")
         }
 
-        const userRole = await prisma.Role.findFirst({
+        const userGroup = await prisma.Role.findFirst({
             where: {
                 user_id: req.user.id,
                 group_id: Number(req.params.groupId),
-                is_creator: true
             }
         });
 
-        if (!userRole) {
-            return res.status(403).send("Access denied. Only group creator can view all users.");
+        if (!userGroup) {
+            return res.status(403).send("Access denied. You are not a member of this group.");
         }
 
         const usersInGroup = await prisma.Role.findMany({
@@ -38,7 +37,8 @@ router.get("/group/:groupId/users", async (req, res, next) => {
 
         const users = usersInGroup.map(role => ({
             ...role.user,
-            is_creator: role.is_creator
+            is_creator: role.is_creator,
+            is_admin: role.is_admin
         }))
 
         res.json(users)
@@ -76,7 +76,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
     try {
-        if (!req.User) {
+        if (!req.user) {
             return res.status(401).send("User not authenticated")
         }
 
@@ -108,12 +108,12 @@ router.put("/group/:groupId/users/:userId/role", async (req, res, next) => {
             where: {
                 user_id: req.user.id,
                 group_id: Number(req.params.groupId),
-                is_creator: true
+                is_admin: true,
             }
         });
 
         if (!userRole) {
-            return res.status(403).send("Access denied. Only group creator can modify roles.");
+            return res.status(403).send("Access denied. Only group admin can modify roles.");
         }
 
         const targetUserRole = await prisma.Role.findFirst({
