@@ -26,6 +26,19 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/:userId", async (req, res, next) => {
+  try {
+    const submission = await prisma.Submission.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+    res.send(submission);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post("/", protection, async (req, res, next) => {
   if (req.user.id) {
   } else {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAddSubmissionMutation } from "../../reducers/api";
 import io from "socket.io-client";
+import { Link } from "react-router-dom";
 
 const CreateSubmission = ({ groupId, userId, questionId }) => {
   const [submissionLink, setSubmissionLink] = useState("");
@@ -52,7 +53,11 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
         value={submissionLink}
         onChange={(e) => setSubmissionLink(e.target.value)}
       />
-      <button onClick={handleCreateSubmission}>Submit</button>
+      <Link to={{pathname:`/question/${questionId}/submissions` }}>
+        {" "}
+        <button onClick={handleCreateSubmission}>Submit</button>
+      </Link>
+
       {isError && <p>{errorMessage || error.message}</p>}
     </div>
   );

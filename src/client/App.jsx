@@ -11,7 +11,7 @@ import OAuthHandler from "./pages/OAuthHandler";
 import AccountSettings from "./pages/AccountSettings";
 import Footer from "./components/Footer/Footer";
 import Leaderboard from "./pages/Leaderboard";
-import SubmitLink from "./pages/SubmitLink";
+import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
 
 function App({questionId}) {
    const storedToken = window.sessionStorage.getItem("credentials");
@@ -56,20 +56,21 @@ function App({questionId}) {
                   <>
                      <PageNav />
                      <QuestionPage />
+                     {/* this will be renamed to SubmitLink as will relevant file */}
                   </>
                }
             />
             <Route
-               path="/question/:questionId/submit"
+               path="/question/:questionId/submissions"
                element={
                   <>
                      <PageNav />
-                     <SubmitLink questionId={questionId} />
+                     <DisplaySubmissions questionId={questionId} />
                   </>
                }
             />
             <Route
-               path="/question/:questionId/results"
+               path="/question/:questionId/leaderboard"
                element={
                   <>
                      <PageNav />
