@@ -15,3 +15,11 @@ input{
     border: 1.5px solid black;
 }
 
+.maybe-later {
+    cursor: pointer;
+  }
+
+  .maybe-later:hover {
+    text-decoration: underline;
+    color: blue;
+  }

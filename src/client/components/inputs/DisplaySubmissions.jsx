@@ -1,12 +1,17 @@
-import { useGetSubmissionsForQuestionQuery } from "../../reducers/api";
+import {
+  useGetSubmissionsForQuestionQuery,
+  useGetQuestionByIdQuery,
+} from "../../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import CreateVote from "../inputs/CreateVote";
 import AllVotes from "./AllVotes";
 import VideoEmbed from "./VideoEmbed";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const DisplaySubmissions = ({ questionId }) => {
+const DisplaySubmissions = () => {
+  const { questionId } = useParams();
   //socket logic
   useEffect(() => {
     const socket = io.connect("http://localhost:3000");
@@ -36,15 +41,23 @@ const DisplaySubmissions = ({ questionId }) => {
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
 
+  const { data: questionData, isLoading: questionLoading } =
+  useGetQuestionByIdQuery(questionId);
+
+  const renderQuestion = () => {
+    if (questionLoading) return <div>Loading question...</div>;
+    if (!questionData) return null;
+    return <h2>{questionData.title}</h2>;
+  };
+
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
     return <div>Input a link to create a submission.</div>;
   }
 
-
-
   return (
     <div>
+      {renderQuestion()}
       <div>
         <div>
           {submissionsData.map((submission) => {
@@ -73,7 +86,7 @@ const DisplaySubmissions = ({ questionId }) => {
         <div>
           <Link
             to={{
-              pathname: `/question/${questionId}/results`,
+              pathname: `/question/${questionId}/leaderboard`,
             }}
           >
             <button

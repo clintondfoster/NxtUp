@@ -12,6 +12,7 @@ import AccountSettings from "./pages/AccountSettings";
 import Footer from "./components/Footer/Footer";
 import Leaderboard from "./pages/Leaderboard";
 import SubmitLink from "./pages/SubmitLink";
+import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
 
 function App({questionId}) {
    const storedToken = window.sessionStorage.getItem("credentials");
@@ -69,7 +70,16 @@ function App({questionId}) {
                }
             />
             <Route
-               path="/question/:questionId/results"
+               path="/question/:questionId/submissions"
+               element={
+                  <>
+                     <PageNav />
+                     <DisplaySubmissions questionId={questionId} />
+                  </>
+               }
+            />
+            <Route
+               path="/question/:questionId/leaderboard"
                element={
                   <>
                      <PageNav />
