@@ -4,6 +4,7 @@ import {
   useGetUsersInGroupQuery,
   useUpdateUserRoleMutation,
 } from "../../reducers/api";
+import { useGetCurrentUserQuery } from "../../reducers/auth";
 
 export const UsersList = ({ groupId }) => {
   if (!groupId) return <p>Awaiting group...</p>;
@@ -12,6 +13,22 @@ export const UsersList = ({ groupId }) => {
     isLoading: usersLoading,
     error: usersError,
   } = useGetUsersInGroupQuery(groupId);
+
+  const { data: thisUser } = useGetCurrentUserQuery();
+
+  console.log("userlist current user", thisUser);
+
+  const isCreator = thisUser?.user?.roles?.some(
+    (role) => role.group_id === groupId && role.is_creator
+  );
+  const isAdmin = thisUser?.user?.roles?.some(
+    (role) => role.group_id === groupId && role.is_admin
+  );
+  const isAdmitted = thisUser?.user?.roles?.some(
+    (role) => role.group_id === groupId && role.is_admitted
+  );
+
+  console.log("data returned by getcurrentUser", thisUser);
 
   console.log("users in userslist", users);
   console.log("Group id in userslist:", groupId);
@@ -39,22 +56,25 @@ export const UsersList = ({ groupId }) => {
   if (usersError) return <p>Error loading users</p>;
   if (!users.length) return <p>No users found.</p>;
 
-  const currentUser = users.find((user) => user.is_admin);
-  const isAdmin = currentUser?.is_admin || false;
+  // const currentUser = users.find((user) => user.is_admin);
+  // const isAdmin = currentUser?.is_admin || false;
 
   return (
     <ul>
       {users.map((user) => {
-        const isCreator = updatedUsers[user.id] ?? user.is_creator;
+        const isCreatorStatus = updatedUsers[user.id] ?? user.is_creator;
 
         return (
           <li key={user.id}>
             {user.username}
-            {isAdmin && user.id !== currentUser.id && (
+
+            {isAdmin && user.id !== thisUser.user.id && (
               <button
-                onClick={() => handleToggleCreatorStatus(user.id, isCreator)}
+                onClick={() =>
+                  handleToggleCreatorStatus(user.id, isCreatorStatus)
+                }
               >
-                {isCreator ? "Remove Status" : "Assign Creator Status"}
+                {isCreatorStatus ? "Remove Status" : "Assign Creator Status"}
               </button>
             )}
           </li>
