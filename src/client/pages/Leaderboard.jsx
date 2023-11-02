@@ -5,9 +5,10 @@ import {
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Chart from "../components/Chart/Chart";
-import AllVotes from "../components/inputs/AllVotes";
-import VideoEmbed from "../components/inputs/VideoEmbed";
+import AllVotes from "../components/Leaderboard/AllVotes";
+import VideoEmbed from "../components/Leaderboard/VideoEmbed";
 import { useParams } from "react-router-dom";
+import "./Leaderboard.scss";
 
 const Leaderboard = () => {
   const { questionId } = useParams();
@@ -54,45 +55,22 @@ const Leaderboard = () => {
   );
 
   return (
-    <div>
-      <div>
-        <h1>Leaderboard</h1>
-      </div>
-      <div>
+    <div className="lb-container">
+      <h1>Leaderboard</h1>
+      <div className="lb-video-list">
         {topVoted.map((submission, index) => (
-          <div key={submission.id}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                border: "2px solid #000",
-                padding: "10px",
-                width: "355px",
-                backgroundColor: "gainsboro",
-                marginBottom: "12px",
-              }}
-            >
-              <div>
-                <VideoEmbed videoUrl={submission.link} />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  flexDirection: "row",
-                }}
-              >
-                {/* <p>{submission.user.username}</p> */}
-                <div style={{ display: "flex" }}>
-                  <div>votes: </div>
-                  <AllVotes submissionId={submission.id} />
-                </div>
-              </div>
+          <div className="lb-video-container" key={submission.id}>
+            <div>
+              <VideoEmbed videoUrl={submission.link} />
+            </div>
+            <div className="lb-votes">
+              <div>votes: </div>
+              <AllVotes submissionId={submission.id} />
             </div>
           </div>
         ))}
       </div>
-      <div>
+      <div className="lb-chart">
         <Chart questionId={questionId} />
       </div>
     </div>
