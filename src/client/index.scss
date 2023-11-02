@@ -1,11 +1,17 @@
+@use "./style.scss";
 
-*{
+* {
     margin: 0;
     padding: 0;
     text-align: center;
+    font-family: 'Inter', sans-serif;
+
 }
+
 body{
-    background-color: lightblue;
+    background-color: style.$background;
+    height: 100vh;
+    color: style.$text;
 }
 button {
 

@@ -1,6 +1,7 @@
 import {
   useGetSubmissionsForQuestionQuery,
   useGetQuestionByIdQuery,
+  useGetVotesForSubQuery
 } from "../../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
@@ -10,7 +11,8 @@ import VideoEmbed from "./VideoEmbed";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-const DisplaySubmissions = () => {
+
+const DisplaySubmissions = ( ) => {
   const { questionId } = useParams();
   //socket logic
   useEffect(() => {
@@ -24,7 +26,7 @@ const DisplaySubmissions = () => {
     });
 
     socket.on("new_vote", (submissionId) => {
-      console.log("vote changed:", submissionId);
+      console.log("display submissions socket connected", socket.connected);
       refetch(questionId);
     });
 
@@ -34,6 +36,8 @@ const DisplaySubmissions = () => {
   }, []);
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
+  // const { refetchVotes } = useGetVotesForSubQuery(submissionId);
+  // console.log('sub id from display', submissionId)
 
   const {
     data: submissionsData,
@@ -95,6 +99,7 @@ const DisplaySubmissions = () => {
                 bottom: "20px",
                 right: "20px",
               }}
+              // onClick={refetch}
             >
               Submit
             </button>

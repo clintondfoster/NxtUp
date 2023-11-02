@@ -20,19 +20,21 @@ const CreateVote = ({ questionId, submissionId }) => {
   };
   useEffect(() => {
     async function findVote() {
-      const req = await fetch(`/api/vote/voted/${submissionId}/${user.userId}`);
-      const res = await req.json();
-      // console.log(res, "res");
-      if (res) {
-        handleClick();
+      if (user && user.userId) {
+        const req = await fetch(`/api/vote/voted/${submissionId}/${user.userId}`);
+        const res = await req.json();
+        if (res) {
+          handleClick();
+        }
       }
     }
     findVote();
-  }, []);
+  }, []); 
+
   const onCreateVote = async () => {
     await createVote({ questionId, submissionId })
       .then(() => {
-        console.log("vote cast for", submissionId);
+        console.log("create vote socket connected", socket.connected);
         socket.emit("new_vote", submissionId);
       })
       .catch(() => {

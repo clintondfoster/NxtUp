@@ -32,18 +32,18 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`user connected: ${socket.id}`);
+  // console.log(`user connected: ${socket.id}`);
   socket.on("new_submission", (data) => {
     io.emit("new_submission", data)
     console.log(data)
   })
   socket.on("new_vote", (data) => {
     io.emit("new_vote", data)
-    console.log(data)
+    console.log('server socket received',data)
   })
 
   socket.on("disconnect", () => {
-    console.log(`user disconnected: ${socket.id}`);
+    // console.log(`user disconnected: ${socket.id}`);
   });
 
 });
