@@ -1,87 +1,44 @@
-import { useEffect, useState } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import jwtDecode from "jwt-decode";
 import GroupPage from "./pages/GroupPage";
 import QuestionPage from "./pages/QuestionPage";
-import NavB from "./components/Nav";
-import PageNav from "./components/PageNav";
 import OAuthHandler from "./pages/OAuthHandler";
-import AccountSettings from "./pages/AccountSettings";
-import Footer from "./components/Footer/Footer";
 import Leaderboard from "./pages/Leaderboard";
-import SubmitLink from "./pages/SubmitLink";
+import Navbar from "./components/Navbar/Navbar";
+import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
+import { useSelector } from "react-redux";
 
-function App({questionId}) {
-   const storedToken = window.sessionStorage.getItem("credentials");
-   let decodedToken = null;
+export default function App() {
+   const token = useSelector((state) => state.auth.credentials.token);
 
-   if (storedToken) {
-      decodedToken = jwtDecode(storedToken);
-   }
+   const signupView = (
+      <Routes>
+         <Route path="/" element={<Login />} />
+         <Route path="/oauthhandler" element={<OAuthHandler />} />
+      </Routes>
+   );
 
-   const loggedIn = decodedToken?.id;
-
-   return (
-      <div className="App">
+   const loggedInView = (
+      <div>
+         <Navbar />
          <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/group/:accessCode" element={<GroupPage />} />
+            <Route path="/question/:questionId" element={<QuestionPage />} />
             <Route
-               path="/home"
-               element={
-                  loggedIn ? (
-                     <>
-                        {" "}
-                        <NavB /> <Home />{" "}
-                     </>
-                  ) : (
-                     <Login />
-                  )
-               }
+               path="/question/:questionId/leaderboard"
+               element={<Leaderboard />}
             />
-            <Route index element={<Login />} />
+            {/* <Route path="/question/:id/submit" element={<SubmitLink />} /> */}
             <Route
-               path="/results/:accessCode"
-               element={
-                  <>
-                     <PageNav />
-                     <GroupPage />
-                  </>
-               }
-            />
-            <Route
-               path="/question/:questionId"
-               element={
-                  <>
-                     <PageNav />
-                     <QuestionPage />
-                  </>
-               }
-            />
-            <Route
-               path="/question/:questionId/submit"
-               element={
-                  <>
-                     <PageNav />
-                     <SubmitLink questionId={questionId} />
-                  </>
-               }
-            />
-            <Route
-               path="/question/:questionId/results"
-               element={
-                  <>
-                     <PageNav />
-                     <Leaderboard questionId={questionId} />
-                  </>
-               }
+               path="/question/:id/submissions"
+               element={<DisplaySubmissions />}
             />
             <Route path="/oauthhandler" element={<OAuthHandler />} />
          </Routes>
-         {/* <Footer/> */}
       </div>
    );
-}
 
-export default App;
+   return token ? loggedInView : signupView;
+}

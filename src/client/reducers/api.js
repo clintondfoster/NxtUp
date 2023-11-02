@@ -80,6 +80,9 @@ export const votingApi = createApi({
     getCurrentUser: builder.query({
       query: () => `api/me`,
   }),
+    getUserById: builder.query({
+      query: (id) => `api/users/${id}`,
+    }),
     updateUserRole: builder.mutation({
       query: ({ groupId, userId, data }) => ({
         url: `api/users/group/${groupId}/users/${userId}/role`,
@@ -144,6 +147,7 @@ export const {
   useGetUserGroupsByRolesQuery,
   useGetUserHistoryQuery,
   useGetCurrentUserQuery,
+  useGetUserByIdQuery,
   useUpdateUserRoleMutation,
   useGetUsersInGroupQuery,
   useGetActiveQuestionsFromJoinedGroupsQuery,
