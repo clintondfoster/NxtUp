@@ -2,6 +2,7 @@
 *{
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 body{
     background-color: lightblue;
@@ -19,7 +20,9 @@ input{
     background-color: Lavender;
     border: 1.5px solid black;
 }
-
+hr{
+    margin: 40px;
+}
 .maybe-later {
     cursor: pointer;
   }

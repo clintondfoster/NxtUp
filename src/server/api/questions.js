@@ -36,8 +36,8 @@ router.get("/:id/submissions", async (req, res, next) => {
       },
       include: {
         user: true,
-        Vote: true
-      }
+        Vote: true,
+      },
     });
     res.status(200).send(submissions);
   } catch (err) {
@@ -82,19 +82,38 @@ router.post("/", protection, async (req, res, next) => {
         group_id: group_id,
       },
     });
-
     if (!userRole || !userRole.is_creator) {
-      return res.status(403).json({ error: "User does not have the permissions to create a question."})
+      return res
+        .status(403)
+        .json({
+          error: "User does not have the permissions to create a question.",
+        });
     }
-    const createdQuestion = await prisma.question.create({
-      data: {
-        title,
-        group_id,
+    const existingQuestion = await prisma.question.findFirst({
+      where: {
         user_id: userRole.user_id,
+        group_id: userRole.group_id,
         is_active: true,
       },
     });
-    res.status(200).send(createdQuestion);
+    if (existingQuestion) {
+      return res
+        .status(403)
+        .json({
+          error:
+            "Active question already exists. Close current question before creating a new one",
+        });
+    } else {
+      const createdQuestion = await prisma.question.create({
+        data: {
+          title,
+          group_id,
+          user_id: userRole.user_id,
+          is_active: true,
+        },
+      });
+      res.status(200).send(createdQuestion);
+    }
   } catch (err) {
     console.error(err);
     next(err);
@@ -116,7 +135,6 @@ router.get("/:group_id", async (req, res, next) => {
   }
 });
 
-
 // Close question route
 router.put("/:id", async (req, res, next) => {
   try {
@@ -126,7 +144,7 @@ router.put("/:id", async (req, res, next) => {
       },
       data: {
         is_active: false,
-      }
+      },
     });
 
     res.status(200).send(deletedQuestion);

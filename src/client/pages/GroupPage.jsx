@@ -3,21 +3,17 @@ import {
   useGetGroupByCodeQuery,
   useGetActiveQuestionsForGroupQuery,
   useEditGroupNameMutation,
-  // useGetUsersInGroupQuery,
 } from "../reducers/api";
 import CreateQuestion from "../components/inputs/CreateQuestion";
 import { useParams, Link } from "react-router-dom";
-import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useState } from "react";
 import UsersList from "../components/inputs/UsersList";
 import DeleteGroup from "../components/inputs/DeleteGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
-
-
 const GroupPage = () => {
-  const { accessCode, groupId } = useParams();
+  const { accessCode } = useParams();
 
   const {
     data: groupData,
@@ -33,12 +29,11 @@ const GroupPage = () => {
     isError: questionsError,
   } = useGetActiveQuestionsForGroupQuery(accessCode);
 
-
   const [editGroupName] = useEditGroupNameMutation();
 
   const [isEditingGroupName, setIsEditingGroupName] = useState(false);
   const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
-
+  console.log("questionData", questionsData);
   const handleEditGroupName = async () => {
     try {
       const result = await editGroupName({
@@ -68,62 +63,70 @@ const GroupPage = () => {
   if (!groupData) return null;
 
   return (
-    <div>
-      <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          {isEditingGroupName ? (
-            <>
-              <input
-                type="text"
-                value={newGroupName}
-                placeholder={groupData.name}
-                onChange={(e) => setNewGroupName(e.target.value)}
-              />
-              <button onClick={handleEditGroupName}>Save</button>
-            </>
-          ) : (
-            <>
-              <h1>Group Name: {groupData.name}</h1>
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                onClick={() => setIsEditingGroupName(true)}
-                style={{ cursor: "pointer" }}
-              />
-            </>
-          )}
-        </div>
-
-        <h4>Code: {groupData.access_code}</h4>
-        <h4>Group Id: {groupData.id}</h4>
-        <DeleteGroup groupId={groupData.id} />
-        <CreateQuestion groupId={groupData.id} />
-
-        {questionsLoading && <div>Loading questions...</div>}
-        {questionsData && questionsData.length > 0 && (
-          <div>
-            <h2>Active Questions in this Group:</h2>
-            <ul>
-              {questionsData.map((question) => (
-                <li key={question.id}>
-                  {question.title}
-                  <Link to={`/question/${question.id}`}>Submit Answer</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <div className="groupPage">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        {isEditingGroupName ? (
+          <>
+            <input
+              type="text"
+              value={newGroupName}
+              placeholder={groupData.name}
+              onChange={(e) => setNewGroupName(e.target.value)}
+            />
+            <button onClick={handleEditGroupName}>Save</button>
+          </>
+        ) : (
+          <>
+            <h1>Group Name: {groupData.name}</h1>
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              onClick={() => setIsEditingGroupName(true)}
+              style={{ cursor: "pointer" }}
+            />
+          </>
         )}
-
-        <div>
-          <h2>Users in this group:</h2>
-          {groupData && <UsersList groupId={groupData?.id} />}
-        </div>
       </div>
-      {selectedQuestion && <CreateSubmission question={selectedQuestion} />}
+
+      <h4>Code: {groupData.access_code}</h4>
+
+      {questionsLoading && <div>Loading questions...</div>}
+      <div>
+        {questionsData && questionsData.length > 0 ? (
+          <div>
+            <h2>
+              {questionsData.map((question) => (
+                <div key={question.id}>
+                  <Link to={`/question/${question.id}`}> {question.title}</Link>
+                </div>
+              ))}
+            </h2>
+          </div>
+        ) : (
+          <CreateQuestion groupId={groupData.id} />
+        )}
+      </div>
+
+      <hr></hr>
+      <div className="previousQuestion">
+        <h3>Previous Question</h3>
+      </div>
+      <hr></hr>
+      <div className="creatorOnly">
+        <h2>Creator Setting</h2>
+        <h4>Users in this group:</h4>
+        <ul>
+          <li>{groupData && <UsersList groupId={groupData?.id} />}</li>
+        </ul>
+        <span>
+        <DeleteGroup groupId={groupData.id} />
+          </span>
+   
+      </div>
     </div>
   );
 };
