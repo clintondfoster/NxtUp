@@ -27,14 +27,18 @@ const QuestionPage = () => {
 
   return (
     <div>
-      {renderQuestion()}
-      <CreateSubmission questionId={questionId} />
-      <p
-        onClick={handleMaybeLaterClick}
-        className="maybe-later"
-      >
-        maybe later
-      </p>
+      <div> {renderQuestion()}</div>
+      <div>
+        <div>
+          <CreateSubmission questionId={questionId} />
+        </div>
+        <div>
+          <p onClick={handleMaybeLaterClick} className="maybe-later">
+            maybe later
+          </p>
+        </div>
+      </div>
+
       <CloseQuestion />
       {/* <DisplaySubmissions questionId={questionId}/> */}
     </div>
