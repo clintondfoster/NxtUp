@@ -1,7 +1,7 @@
 import React from 'react'
 import { useGetQuestionByGroupIdQuery } from '../../reducers/api'
-import CreateSubmission from "../inputs/CreateSubmission";
-import DisplaySubmissions from '../inputs/DisplaySubmissions';
+import CreateSubmission from "./CreateSubmission";
+import DisplaySubmissions from './DisplaySubmissions';
 
 const DisplayQuestion = ({ groupId }) => {
     const { data, isLoading } = useGetQuestionByGroupIdQuery(groupId);

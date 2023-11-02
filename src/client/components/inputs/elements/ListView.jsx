@@ -1,15 +1,11 @@
-import {
-  useGetSubmissionsForQuestionQuery,
-  useGetVotesForSubQuery,
-} from "../reducers/api";
+import { useGetSubmissionsForQuestionQuery } from "../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import Chart from "../components/Chart/Chart";
-import AllVotes from "../components/inputs/AllVotes";
-import VideoEmbed from "../components/inputs/VideoEmbed";
+import AllVotes from "../AllVotes";
+import VideoEmbed from "../VideoEmbed";
 import { useParams } from "react-router-dom";
 
-const Leaderboard = () => {
+const ListView = () => {
   const { questionId } = useParams();
 
   useEffect(() => {
@@ -34,15 +30,12 @@ const Leaderboard = () => {
   }, []);
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
-  // const { refetchVotes } = useGetVotesForSubQuery(submissionId);
 
   const {
     data: submissionsData,
     isLoading: submissionsLoading,
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
-  //   console.log('submission data from leaderboard', submissionsData)
-  //   console.log('question ID from leaderboard', questionId)
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
@@ -55,16 +48,12 @@ const Leaderboard = () => {
 
   return (
     <div>
-      <div>
-        <h1>Leaderboard</h1>
-      </div>
+      <div><h1>Leaderboard</h1></div>
       <div>
         {topVoted.map((submission, index) => (
           <div key={submission.id}>
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
                 border: "2px solid #000",
                 padding: "10px",
                 width: "355px",
@@ -75,17 +64,10 @@ const Leaderboard = () => {
               <div>
                 <VideoEmbed videoUrl={submission.link} />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  flexDirection: "row",
-                }}
-              >
-                {/* <p>{submission.user.username}</p> */}
-                <div style={{ display: "flex" }}>
-                  <div>votes: </div>
-                  <AllVotes submissionId={submission.id} />
+              <div className="user-votes">
+                <p>{submission.user.username}</p>
+                <div>
+                  <AllVotes submissionId={submission.id}/>
                 </div>
               </div>
             </div>
@@ -99,4 +81,4 @@ const Leaderboard = () => {
   );
 };
 
-export default Leaderboard;
+export default ListView;

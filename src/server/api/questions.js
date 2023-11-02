@@ -76,17 +76,21 @@ router.post("/", protection, async (req, res, next) => {
   const user = req.user.id;
 
   try {
-    const groupCreator = await prisma.role.findFirst({
+    const userRole = await prisma.role.findFirst({
       where: {
         user_id: req.user.id,
-        is_creator: true,
+        group_id: group_id,
       },
     });
+
+    if (!userRole || !userRole.is_creator) {
+      return res.status(403).json({ error: "User does not have the permissions to create a question."})
+    }
     const createdQuestion = await prisma.question.create({
       data: {
         title,
         group_id,
-        user_id: groupCreator.user_id,
+        user_id: userRole.user_id,
         is_active: true,
       },
     });

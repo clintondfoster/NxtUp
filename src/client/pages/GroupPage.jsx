@@ -85,7 +85,7 @@ const GroupPage = () => {
                   </>
                ) : (
                   <>
-                     <h1>Group Name: {groupData.name}</h1>
+                     <h1>{groupData.name}</h1>
                      <FontAwesomeIcon
                         icon={faPenToSquare}
                         onClick={() => setIsEditingGroupName(true)}

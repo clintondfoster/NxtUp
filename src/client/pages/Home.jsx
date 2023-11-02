@@ -2,25 +2,27 @@ import React from "react";
 import CreateGroup from "../components/inputs/CreateGroup";
 import JoinGroup from "../components/inputs/JoinGroup";
 import DisplayUserGroups from "../components/inputs/DisplayUserGroups";
-// import { selectGroupId } from "../reducers/api";
+import "./Home.scss"
 
 const Home = () => {
-  // const groupId = useSelector(selectGroupId);
 
   return (
-    <>
-      {" "}
-      <h2>Home Page</h2>
-      <div>
-        <CreateGroup />
-      </div>
-      <div>
+    <div className="home">
+   
+      <h2 className="name">UpNxt!</h2>
+  
+      <div >
         <JoinGroup />
       </div>
+      <p>or</p>
+      <div className="creategroup">
+        <CreateGroup />
+      </div> 
+      <hr></hr>
       <div>
         <DisplayUserGroups />
       </div>
-    </>
+    </div>
   );
 };
 

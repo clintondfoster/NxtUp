@@ -73,7 +73,7 @@ export const votingApi = createApi({
       query: (body) => ({
         url: "api/role",
         method: "POST",
-    
+
         body: body,
       }),
     }),

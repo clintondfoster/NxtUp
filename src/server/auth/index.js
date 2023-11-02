@@ -78,21 +78,25 @@ router.get("/me", protection, async (req, res,next)=>{
             return res.status(404).send("User not found");
         }
 
-        const isCreator = user.Role.some(role => role.is_creator);
+        const isCreator = user.Role.some(role => role.is_creator) || false;
+        const isAdmitted = user.Role.some(role => role.is_admitted) || false;
+        const isAdmin = user.Role.some(role => role.is_admin) || false;
 
-        user.isCreator = isCreator;
 
         res.setHeader("Content-Type", "application/json");
 
-        // res.json({ 
-        //     user: {
-        //         id: user.id,
-        //         username: user.username,
-        //         email: user.email,
-        //         isCreator: isCreator
-        //     }
-        // })
-        res.send(user);
+        res.json({ 
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                roles: user.Role,
+                isCreator: isCreator,
+                isAdmitted: isAdmitted,
+                isAdmin: isAdmin
+            }
+        })
+        // res.send(user);
         console.log("router /me", req.user);
     }catch(err){
         next(err)

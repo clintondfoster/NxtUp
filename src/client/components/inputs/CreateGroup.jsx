@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAddGroupMutation, useAddRoleMutation } from "../../reducers/api";
 import { useNavigate } from "react-router-dom";
-
 const CreateGroup = () => {
    const [createGroup] = useAddGroupMutation();
    const [successMessage, setSuccessMessage] = useState("");
@@ -29,7 +28,9 @@ const CreateGroup = () => {
    return (
       <div>
          {successMessage && <div>{successMessage}</div>}
-         <button onClick={handleCreateGroup}>Create Group</button>
+         <button className="createbtn" onClick={handleCreateGroup}>
+            Create Group
+         </button>
       </div>
    );
 };
