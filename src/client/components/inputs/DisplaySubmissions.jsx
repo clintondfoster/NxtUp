@@ -6,8 +6,8 @@ import {
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import CreateVote from "../inputs/CreateVote";
-import AllVotes from "./AllVotes";
-import VideoEmbed from "./VideoEmbed";
+import AllVotes from "../Leaderboard/AllVotes";
+import VideoEmbed from "../Leaderboard/VideoEmbed";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
