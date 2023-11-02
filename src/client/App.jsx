@@ -32,7 +32,7 @@ export default function App() {
             />
             {/* <Route path="/question/:id/submit" element={<SubmitLink />} /> */}
             <Route
-               path="/question/:id/submissions"
+               path="/question/:questionId/submissions"
                element={<DisplaySubmissions />}
             />
             <Route path="/oauthhandler" element={<OAuthHandler />} />
