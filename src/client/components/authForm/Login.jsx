@@ -34,7 +34,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <p> By clicking Sign Up or continue with Google, you agree to our Terms & Conditions</p>
+      <p className="by"> By clicking Sign Up or continue with Google, you agree to our Terms & Conditions</p>
     </div>
   );
 }

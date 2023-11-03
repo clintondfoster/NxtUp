@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCloseQuestionMutation } from "../../reducers/api";
 import React from "react";
 
@@ -6,13 +6,15 @@ const CloseQuestion = () => {
   const { questionId } = useParams();
   const [closeQuestion] = useCloseQuestionMutation();
 
+  const navigate = useNavigate();
+
   const onCloseQuestion = async () => {
-    await closeQuestion(questionId)
-      .then(() => {
-      })
-      .catch(() => {
-        console.log("error");
-      });
+    try {
+      const closequestion = await closeQuestion(questionId);
+      navigate(`/home`);
+    } catch (err) {
+      console.log("Error closing question:", err);
+    }
   };
   return (
     <div>
