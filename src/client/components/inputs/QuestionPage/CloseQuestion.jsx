@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useCloseQuestionMutation } from "../../reducers/api";
-import React from "react";
+import { useCloseQuestionMutation } from "../../../reducers/api";
+import "./CloseQuestion.scss";
 
 const CloseQuestion = () => {
   const { questionId } = useParams();
@@ -15,8 +15,8 @@ const CloseQuestion = () => {
       });
   };
   return (
-    <div>
-      <button onClick={onCloseQuestion}>Close Question</button>
+    <div >
+      <button onClick={onCloseQuestion} className="close-btn">Close Question</button>
     </div>
   );
 };
