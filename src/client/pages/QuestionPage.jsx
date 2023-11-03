@@ -1,9 +1,10 @@
 import React from "react";
-import CreateSubmission from "../components/inputs/CreateSubmission";
+import CreateSubmission from "../components/inputs/QuestionPage/CreateSubmission";
 import { useParams } from "react-router-dom";
-import { useGetQuestionByIdQuery } from "../reducers/api/";
-import CloseQuestion from "../components/inputs/CloseQuestion";
+import { useGetQuestionByIdQuery } from "../reducers/api";
+import CloseQuestion from "../components/inputs/QuestionPage/CloseQuestion";
 import { useNavigate } from "react-router-dom";
+import "./QuestionPage.scss"
 
 const QuestionPage = () => {
   const { questionId } = useParams();
@@ -25,13 +26,13 @@ const QuestionPage = () => {
   };
 
   return (
-    <div>
-      <div> {renderQuestion()}</div>
+    <div className="question-container">
+      <div className="question-header"> {renderQuestion()}</div>
       <div>
-        <div>
+        <div className="create-sub">
           <CreateSubmission questionId={questionId} />
         </div>
-        <div>
+        <div className="maybe-later-button">
           <p onClick={handleMaybeLaterClick} className="maybe-later">
             maybe later
           </p>

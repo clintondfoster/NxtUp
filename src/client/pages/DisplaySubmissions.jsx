@@ -35,6 +35,15 @@ const DisplaySubmissions = () => {
     };
   }, []);
 
+  const [voteClicked, setVoteClicked] = useState(false);
+
+  const [clickedVideoId, setClickedVideoId] = useState(null);
+
+  const handleVoteClick = (submissionId) => {
+    !clickedVideoId ?  setClickedVideoId(submissionId) : setClickedVideoId(null);
+    !voteClicked ? setVoteClicked(true) : setVoteClicked(false);
+  };
+
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
   // const { refetchVotes } = useGetVotesForSubQuery(submissionId);
   // console.log('sub id from display', submissionId)
@@ -64,19 +73,26 @@ const DisplaySubmissions = () => {
       <div className="ds-question">{renderQuestion()}</div>
       <div className="ds-video-list">
         {submissionsData.map((submission) => {
+          const isClicked = submission.id === clickedVideoId;
           return (
-            <div className="ds-video-container" key={submission.id}>
+            <div
+              className={`ds-video-container${
+                isClicked ? " vote-clicked" : ""
+              }`}
+              key={submission.id}
+            >
               <div>
                 <div>
                   <VideoEmbed videoUrl={submission.link} />
                 </div>
                 <div className="ds-voting">
-                {/* <p> User: {submission.user.username}</p> */}
-                  <CreateVote
-                    questionId={questionId}
-                    submissionId={submission.id}
-                  />
-                  
+                  {/* <p> User: {submission.user.username}</p> */}
+                  <div onClick={() => handleVoteClick(submission.id)}>
+                    <CreateVote
+                      questionId={questionId}
+                      submissionId={submission.id}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,3 +119,5 @@ const DisplaySubmissions = () => {
 };
 
 export default DisplaySubmissions;
+
+//
