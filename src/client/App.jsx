@@ -8,6 +8,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Navbar from "./components/Navbar/Navbar";
 import DisplaySubmissions from "./pages/DisplaySubmissions";
 import { useSelector } from "react-redux";
+import AccountSettings from "./pages/AccountSettings";
 
 export default function App() {
   const token = useSelector((state) => state.auth.credentials.token);
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/group/:accessCode" element={<GroupPage />} />
         <Route path="/question/:questionId" element={<QuestionPage />} />
+        <Route path="/account-settings" element={<AccountSettings />} />
         <Route
           path="/question/:questionId/leaderboard"
           element={<Leaderboard />}

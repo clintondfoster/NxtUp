@@ -73,13 +73,12 @@ export const votingApi = createApi({
       query: (body) => ({
         url: "api/role",
         method: "POST",
-
         body: body,
       }),
     }),
-    getCurrentUser: builder.query({
-      query: () => `api/me`,
-  }),
+  //   getCurrentUser: builder.query({
+  //     query: () => `api/me`,
+  // }),
     getUserById: builder.query({
       query: (id) => `api/users/${id}`,
     }),

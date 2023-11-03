@@ -1,14 +1,14 @@
 import react from "react";
 import { useState, useEffect, useRef } from "react";
 // import UserProfile from "../components/inputs/UserProfile";
-import NavB from "../components/Nav";
+// import NavB from "../components/Nav";
 import { useLogoutMutation } from "../reducers/auth";
 import { useNavigate } from "react-router-dom";
 
 import { useEditUserMutation } from "../reducers/api";
 import { useGetCurrentUserQuery } from "../reducers/auth";
 // import { useParams } from "react-router-dom";
-import TextInput from "../components/inputs/TextInput";
+import TextInput from "../components/authForm/TextInput";
 
 function AccountSettings() {
   const { data: currentUser, isError, isLoading } = useGetCurrentUserQuery();
@@ -31,7 +31,7 @@ function AccountSettings() {
 
   const timeoutId = useRef(null);
 
-  const handleUsernameToggle = () => {
+  const handleDropdownToggle = () => {
     setShowDropdown(!showDropdown);
   };
 
@@ -72,7 +72,7 @@ function AccountSettings() {
       if (err.data && err.data.error) {
         setError(err.data.error);
       } else {
-        setError("Ann error occured while updating your details.");
+        setError("An error occured while updating your details.");
       }
     }
   };
@@ -98,73 +98,79 @@ function AccountSettings() {
   }
 
   return (
-    <div>
-      <NavB />
+    <div className="as-container">
       <h2>Account Settings</h2>
       {LogoutMessage && <div>You have successfully logged out.</div>}
       {updateSuccess && <div>Your account has been updated successfully!</div>}
-      <div className="login-information">
+      <div className="as-login-container">
         <h2>Login information</h2>
         {currentUser && (
           <>
             <div>
-              <h3>Welcome, {currentUser.user.username}</h3>
-              <p>{currentUser.user.email}</p>
+              <h3 className="as-welcome">
+                Welcome, {currentUser.user.username}
+              </h3>
+              <p className="as-email">{currentUser.user.email}</p>
 
               <div className="username-dropdown">
                 <button
                   onClick={() => setShowChangeUsername(!showChangeUsername)}
                 >
-                  {showChangeUsername ? "Cancel" : "Change Username"}
+                  Update Username
                 </button>
                 {showChangeUsername && (
-                  <form onSubmit={handleUsernameSubmit}>
-                    <TextInput
-                      type="text"
-                      vl={newUsername}
-                      chg={setNewUsername}
-                      placeholder="Enter new username"
-                      required
-                    />
-                    <button type="submit" disabled={isEditingUser}>
-                      Update username
-                    </button>
-                  </form>
+                  <div className="dropdown-content">
+                    <form onSubmit={handleUsernameSubmit}>
+                      <TextInput
+                        type="text"
+                        vl={newUsername}
+                        chg={setNewUsername}
+                        placeholder="Enter new username"
+                        required
+                      />
+                      <button type="submit" disabled={isEditingUser}>
+                        Update username
+                      </button>
+                    </form>
+                  </div>
                 )}
               </div>
+            </div>
 
+            <div className="password-dropdown">
               <button
                 onClick={() => setShowChangePassword(!showChangePassword)}
               >
-                {showChangePassword ? "Cancel" : "Change Password"}
+                Update Password
               </button>
+              {showChangePassword && (
+                <div className="dropdown-content">
+                  <form onSubmit={handlePasswordSubmit}>
+                    <TextInput
+                      type="password"
+                      vl={newPassword}
+                      chg={setNewPassword}
+                      placeholder="Enter new password"
+                      required
+                    />
+                    <TextInput
+                      type="password"
+                      vl={confirmPassword}
+                      chg={setConfirmPassword}
+                      placeholder="Confirm new password"
+                      required
+                    />
+                    <button type="submit" disabled={isEditingUser}>
+                      Update password
+                    </button>
+                  </form>
+                </div>
+              )}
             </div>
-
-            {showChangePassword && (
-              <form onSubmit={handlePasswordSubmit}>
-                <TextInput
-                  type="password"
-                  vl={newPassword}
-                  chg={setNewPassword}
-                  placeholder="Enter new password"
-                  required
-                />
-                <TextInput
-                  type="password"
-                  vl={confirmPassword}
-                  chg={setConfirmPassword}
-                  placeholder="Confirm new password"
-                  required
-                />
-                <button type="submit" disabled={isEditingUser}>
-                  Update Password
-                </button>
-              </form>
-            )}
           </>
         )}
       </div>
-      <div>
+      <div className="as-logout">
         <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
