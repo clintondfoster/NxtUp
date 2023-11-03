@@ -77,9 +77,6 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
-  //   getCurrentUser: builder.query({
-  //     query: () => `api/me`,
-  // }),
     updateUserRole: builder.mutation({
       query: ({ groupId, userId, data }) => ({
         url: `api/users/group/${groupId}/users/${userId}/role`,
@@ -112,6 +109,16 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
+    editUser: builder.mutation({
+      query(data) {
+        const { id, ...body } = data;
+        return {
+          url: `api/users/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
+    }),
     editGroupName: builder.mutation({
       query(data) {
         const { id, ...body } = data;
@@ -143,7 +150,7 @@ export const {
   useGetSubmissionsForQuestionQuery,
   useGetUserGroupsByRolesQuery,
   useGetUserHistoryQuery,
-  // useGetCurrentUserQuery,
+  useEditUserMutation,
   useUpdateUserRoleMutation,
   useGetUsersInGroupQuery,
   useGetActiveQuestionsFromJoinedGroupsQuery,
