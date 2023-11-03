@@ -2,7 +2,6 @@ import React from "react";
 import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useParams } from "react-router-dom";
 import { useGetQuestionByIdQuery } from "../reducers/api/";
-import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 import CloseQuestion from "../components/inputs/CloseQuestion";
 import { useNavigate } from "react-router-dom";
 

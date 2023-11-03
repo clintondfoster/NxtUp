@@ -1,6 +1,7 @@
-import { useGetVotesForSubQuery } from "../../reducers/api";
+import { useGetVotesForSubQuery  } from "../../reducers/api";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
+import "./AllVotes.scss";
 
 const AllVotes = ({ submissionId }) => {
   const { data, isLoading, refetch } = useGetVotesForSubQuery(submissionId);
@@ -28,7 +29,7 @@ const AllVotes = ({ submissionId }) => {
 
   return (
     <>
-      {isLoading ? null : data.length > 0 && <section> {data.length} </section>}
+      {isLoading ? null : data.length > 0 && <div className="votes"> {data.length} </div>}
     </>
   );
 };

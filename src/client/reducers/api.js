@@ -96,6 +96,9 @@ export const votingApi = createApi({
     getVotesForSub: builder.query({
       query: (submissionId) => `api/vote/${submissionId}`,
     }),
+    getVotesForSubByUser: builder.query({
+      query: (submissionId, userId) => `api/vote/${submissionId}/${userId}`,
+    }),
     deleteVote: builder.mutation({
       query: (code) => ({
         url: `api/vote/${code}`,
@@ -137,6 +140,7 @@ export const {
   useAddQuestionMutation,
   useAddRoleMutation,
   useGetVotesForSubQuery,
+  useGetVotesForSubByUserQuery,
   useCreateVoteMutation,
   useDeleteVoteMutation,
   useGetGroupByCodeQuery,
