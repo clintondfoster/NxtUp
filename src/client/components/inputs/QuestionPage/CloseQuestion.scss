@@ -1,0 +1,16 @@
+@use "../../../style.scss";
+
+.close-btn{
+    border: none;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    border-radius: 3px;
+    margin: 8px;
+    background-color: style.$tertiary;
+    &:hover {
+      background-color: style.$tertiary-active;
+    }
+    color: style.$secondary;
+    border-radius: 7px;
+    font-size: 1.2rem;
+}

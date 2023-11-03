@@ -1,6 +1,7 @@
 import {
   useGetSubmissionsForQuestionQuery,
   useGetVotesForSubQuery,
+  useGetQuestionByIdQuery,
 } from "../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
@@ -26,7 +27,7 @@ const Leaderboard = () => {
     socket.on("new_vote", (submissionId) => {
       console.log("leaderboard socket connected", socket.connected);
       refetch(questionId);
-      topVoted.forEach((submission) => refetchVotes(submission.id));
+      // topVoted.forEach((submission) => refetchVotes(submission.id));
     });
 
     return () => {
@@ -42,8 +43,15 @@ const Leaderboard = () => {
     isLoading: submissionsLoading,
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
-  //   console.log('submission data from leaderboard', submissionsData)
-  //   console.log('question ID from leaderboard', questionId)
+
+  const { data: questionData, isLoading: questionLoading } =
+    useGetQuestionByIdQuery(questionId);
+
+  const renderQuestion = () => {
+    if (questionLoading) return <div>Loading question...</div>;
+    if (!questionData) return null;
+    return <div>{questionData.title}</div>;
+  };
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
@@ -56,7 +64,13 @@ const Leaderboard = () => {
 
   return (
     <div className="lb-container">
-      <h1>Leaderboard</h1>
+      <div className="lb-question">
+        <h2>{renderQuestion()}</h2>
+      </div>
+      <div className="lb-header">
+        <h2>Leaderboard</h2>
+      </div>
+
       <div className="lb-video-list">
         {topVoted.map((submission, index) => (
           <div className="lb-video-container" key={submission.id}>
@@ -64,7 +78,6 @@ const Leaderboard = () => {
               <VideoEmbed videoUrl={submission.link} />
             </div>
             <div className="lb-votes">
-              <div>votes: </div>
               <AllVotes submissionId={submission.id} />
             </div>
           </div>

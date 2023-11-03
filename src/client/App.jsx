@@ -6,7 +6,7 @@ import QuestionPage from "./pages/QuestionPage";
 import OAuthHandler from "./pages/OAuthHandler";
 import Leaderboard from "./pages/Leaderboard";
 import Navbar from "./components/Navbar/Navbar";
-import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
+import DisplaySubmissions from "./pages/DisplaySubmissions";
 import { useSelector } from "react-redux";
 
 export default function App() {

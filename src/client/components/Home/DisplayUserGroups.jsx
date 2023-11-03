@@ -3,7 +3,12 @@ import react, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import {
+   faCaretDown,
+   faSquareCaretUp,
+} from "@fortawesome/free-solid-svg-icons";
+import "./DisplayUserGroups.scss";
+
 function DisplayUserGroups() {
    const userId = useSelector((state) => state.auth.credentials.user.userId);
    const {
@@ -22,17 +27,22 @@ function DisplayUserGroups() {
    const sheep = userGroups.filter((group) => group.userId !== userId);
 
    return (
-      <div className="displayGroup">
-         <div>
-            <h2>
-               My Group
-               <span
-                  onClick={() => setIsOpen(!isOpen)}
-                  onBlur={() => setIsOpen(false)}
-               >
-                  <FontAwesomeIcon icon={faCaretDown} />
+      <div className="display-group-container">
+         <div className="display-my-groups">
+            <div
+               className="groups-btn"
+               onClick={() => setIsOpen(!isOpen)}
+               onBlur={() => setIsOpen(false)}
+            >
+               My Groups
+               <span>
+                  {isOpen ? (
+                     <FontAwesomeIcon icon={faCaretDown} />
+                  ) : (
+                     <FontAwesomeIcon icon={faSquareCaretUp} />
+                  )}
                </span>
-            </h2>
+            </div>
             {isOpen && (
                <div className="dropdown-content">
                   <ul>
@@ -47,18 +57,21 @@ function DisplayUserGroups() {
                </div>
             )}
          </div>
-         <div>
-            <h2>
-               {" "}
-               Joined Group{" "}
-               <span
-                  onClick={() => setIsOpen2(!isOpen2)}
-                  onBlur={() => setIsOpen2(false)}
-               >
-                  {" "}
-                  <FontAwesomeIcon icon={faCaretDown} />
+         <div className="display-joined-groups">
+            <div
+               className="groups-btn"
+               onClick={() => setIsOpen2(!isOpen2)}
+               onBlur={() => setIsOpen2(false)}
+            >
+               Joined Groups
+               <span>
+                  {isOpen2 ? (
+                     <FontAwesomeIcon icon={faCaretDown} />
+                  ) : (
+                     <FontAwesomeIcon icon={faSquareCaretUp} />
+                  )}
                </span>
-            </h2>
+            </div>
             {isOpen2 && (
                <div className="dropdown-content">
                   <ul>

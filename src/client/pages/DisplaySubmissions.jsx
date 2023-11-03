@@ -1,18 +1,18 @@
 import {
   useGetSubmissionsForQuestionQuery,
   useGetQuestionByIdQuery,
-  useGetVotesForSubQuery
-} from "../../reducers/api";
+  useGetVotesForSubQuery,
+} from "../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import CreateVote from "../inputs/CreateVote";
-import AllVotes from "../Leaderboard/AllVotes";
-import VideoEmbed from "../Leaderboard/VideoEmbed";
+import CreateVote from "../components/inputs/CreateVote";
+import AllVotes from "../components/Leaderboard/AllVotes";
+import VideoEmbed from "../components/Leaderboard/VideoEmbed";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import "./DisplaySubmissions.scss";
 
-
-const DisplaySubmissions = ( ) => {
+const DisplaySubmissions = () => {
   const { questionId } = useParams();
   //socket logic
   useEffect(() => {
@@ -35,6 +35,15 @@ const DisplaySubmissions = ( ) => {
     };
   }, []);
 
+  const [voteClicked, setVoteClicked] = useState(false);
+
+  const [clickedVideoId, setClickedVideoId] = useState(null);
+
+  const handleVoteClick = (submissionId) => {
+    !clickedVideoId ?  setClickedVideoId(submissionId) : setClickedVideoId(null);
+    !voteClicked ? setVoteClicked(true) : setVoteClicked(false);
+  };
+
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
   // const { refetchVotes } = useGetVotesForSubQuery(submissionId);
   // console.log('sub id from display', submissionId)
@@ -46,7 +55,7 @@ const DisplaySubmissions = ( ) => {
   } = useGetSubmissionsForQuestionQuery(questionId);
 
   const { data: questionData, isLoading: questionLoading } =
-  useGetQuestionByIdQuery(questionId);
+    useGetQuestionByIdQuery(questionId);
 
   const renderQuestion = () => {
     if (questionLoading) return <div>Loading question...</div>;
@@ -60,33 +69,36 @@ const DisplaySubmissions = ( ) => {
   }
 
   return (
-    <div>
-      {renderQuestion()}
-      <div>
-        <div>
-          {submissionsData.map((submission) => {
-            return (
-              <div key={submission.id}>
-                <div
-                  style={{
-                    border: "2px solid #000",
-                    padding: "10px",
-                    width: "355px",
-                    backgroundColor: "gainsboro",
-                    marginBottom: "12px",
-                  }}
-                >
+    <div className="ds-container">
+      <div className="ds-question">{renderQuestion()}</div>
+      <div className="ds-video-list">
+        {submissionsData.map((submission) => {
+          const isClicked = submission.id === clickedVideoId;
+          return (
+            <div
+              className={`ds-video-container${
+                isClicked ? " vote-clicked" : ""
+              }`}
+              key={submission.id}
+            >
+              <div>
+                <div>
                   <VideoEmbed videoUrl={submission.link} />
-                  <CreateVote
-                    questionId={questionId}
-                    submissionId={submission.id}
-                  />
-                  <p> User: {submission.user.username}</p>
+                </div>
+                <div className="ds-voting">
+                  {/* <p> User: {submission.user.username}</p> */}
+                  <div onClick={() => handleVoteClick(submission.id)}>
+                    <CreateVote
+                      questionId={questionId}
+                      submissionId={submission.id}
+                    />
+                  </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
+
         <div>
           <Link
             to={{
@@ -94,11 +106,7 @@ const DisplaySubmissions = ( ) => {
             }}
           >
             <button
-              style={{
-                position: "fixed",
-                bottom: "20px",
-                right: "20px",
-              }}
+              className="ds-submit-button"
               // onClick={refetch}
             >
               Submit
@@ -111,3 +119,5 @@ const DisplaySubmissions = ( ) => {
 };
 
 export default DisplaySubmissions;
+
+//

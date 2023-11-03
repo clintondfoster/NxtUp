@@ -1,29 +1,25 @@
 import React from "react";
-import CreateGroup from "../components/inputs/CreateGroup";
-import JoinGroup from "../components/inputs/JoinGroup";
-import DisplayUserGroups from "../components/inputs/DisplayUserGroups";
-import "./Home.scss"
+import CreateGroup from "../components/Home/CreateGroup";
+import JoinGroup from "../components/Home/JoinGroup";
+import DisplayUserGroups from "../components/Home/DisplayUserGroups";
+import "./Home.scss";
 
 const Home = () => {
-
-  return (
-    <div className="home">
-   
-      <h2 className="name">UpNxt!</h2>
-  
-      <div >
-        <JoinGroup />
+   return (
+      <div className="home-container">
+         <div className="join-container">
+            <JoinGroup />
+         </div>
+         <p style={{ padding: 10 }}>or</p>
+         <div className="create-container">
+            <CreateGroup />
+         </div>
+         <hr />
+         <div className="display-container">
+            <DisplayUserGroups />
+         </div>
       </div>
-      <p>or</p>
-      <div className="creategroup">
-        <CreateGroup />
-      </div> 
-      <hr></hr>
-      <div>
-        <DisplayUserGroups />
-      </div>
-    </div>
-  );
+   );
 };
 
 export default Home;
