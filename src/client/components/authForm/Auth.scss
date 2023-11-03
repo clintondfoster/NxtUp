@@ -1,0 +1,106 @@
+@use "../../style.scss";
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.login-logo {
+  width: 50%;
+  margin-bottom: 20px;
+  border-radius: 0.5rem;
+  margin-top: 160px;
+}
+
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: #ffe7d0;
+  margin: 8px 0px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.hr-sect:before,
+.hr-sect:after {
+  content: "";
+  flex-grow: 1;
+  background: #ffe7d0;
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 8px;
+}
+
+.google-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signupBtn {
+  box-sizing: border-box;
+  padding: 0.7rem;
+  width: 230px;
+  border-radius: 3px;
+  margin: 8px;
+  background-color: style.$tertiary;
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
+  color: style.$secondary;
+  border-radius: 7px;
+  font-size: 1.2rem;
+}
+.gg-box {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: style.$tertiary;
+  color: style.$secondary;
+  border-radius: 100%;
+}
+p {
+  font-size: 10px;
+  margin: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
+  font-style: italic;
+}
+
+.inputAuth {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.input {
+  border-radius: 2.5px;
+  background-color: style.$text;
+  margin: 2px;
+  width: 80%;
+  height: 30px;
+  text-align: start;
+  padding-left: 4px;
+}
+
+.input::placeholder {
+  font-weight: bold;
+  color: style.$secondary-dark;
+}
+
+.authBtn {
+  margin-top: 30px;
+  background-color: style.$tertiary;
+  color: style.$secondary;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
+}
