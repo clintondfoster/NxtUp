@@ -1,0 +1,30 @@
+@use "../../style.scss";
+
+.join-group-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .join-group-input {
+        display: flex;
+        font-size: 1em;
+        background-color: style.$text;
+        margin-bottom: .8rem;
+        border-radius: 3px;
+        border: none;
+    }
+
+    .join-group-btn {
+        display: flex;
+        padding: .8rem;
+        background-color: style.$tertiary;
+        color: style.$secondary;
+        border-radius: 5px;
+        font-size: 1rem;
+
+        &:hover {
+            background-color: style.$tertiary-active;
+        }
+    }
+}
