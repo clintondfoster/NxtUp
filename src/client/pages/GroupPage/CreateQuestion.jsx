@@ -8,7 +8,6 @@ const CreateQuestion = ({ groupId }) => {
 
   const { data: currentUser } = useGetCurrentUserQuery();
 
-
   const handleCreateQuestion = async () => {
     try {
       const response = await createQuestion({
@@ -21,9 +20,9 @@ const CreateQuestion = ({ groupId }) => {
     }
   };
 
-  // const isCreator = currentUser?.user?.roles?.some(
-  //   (role) => role.group_id === groupId && role.is_creator
-  // );
+  const isCreator = currentUser?.user?.roles?.some(
+    (role) => role.group_id === groupId && role.is_creator
+  );
   // const isAdmin = currentUser?.user?.roles?.some(
   //   (role) => role.group_id === groupId && role.is_Admin
   // );
@@ -32,7 +31,7 @@ const CreateQuestion = ({ groupId }) => {
   // );
 
 
-  // if (isCreator) {
+  if (isCreator) {
     return (
       <div>
         <input
@@ -44,9 +43,9 @@ const CreateQuestion = ({ groupId }) => {
         <button onClick={handleCreateQuestion}>Create Question</button>
       </div>
     );
-  // } else {
-  //   return <div>Please wait for question to be created.</div>;
-  // }
+  } else {
+    return <div>Please wait for question to be created.</div>;
+  }
 };
 
 export default CreateQuestion;

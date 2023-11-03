@@ -1,68 +1,66 @@
 import React from "react";
 import {
-
   useGetGroupByCodeQuery,
   useGetActiveQuestionsForGroupQuery,
   useEditGroupNameMutation,
-
-} from "../reducers/api";
-import CreateQuestion from "../components/inputs/CreateQuestion";
+} from "../../reducers/api";
+import CreateQuestion from "./CreateQuestion";
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
-import UsersList from "../components/inputs/UsersList";
-import DeleteGroup from "../components/inputs/DeleteGroup";
+import UsersList from "../../components/inputs/UsersList";
+import DeleteGroup from "./DeleteGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-
+import PreviousQuestion from "./PreviousQuestion";
 const GroupPage = () => {
-   const { accessCode } = useParams();
+  const { accessCode } = useParams();
 
-   const {
-      data: groupData,
-      isLoading: groupLoading,
-      isError: groupError,
-   } = useGetGroupByCodeQuery(accessCode);
+  const {
+    data: groupData,
+    isLoading: groupLoading,
+    isError: groupError,
+  } = useGetGroupByCodeQuery(accessCode);
 
-   const { refetch } = useGetGroupByCodeQuery(accessCode);
+  const { refetch } = useGetGroupByCodeQuery(accessCode);
 
-   const {
-      data: questionsData,
-      isLoading: questionsLoading,
-      isError: questionsError,
-   } = useGetActiveQuestionsForGroupQuery(accessCode);
+  const {
+    data: questionsData,
+    isLoading: questionsLoading,
+    isError: questionsError,
+  } = useGetActiveQuestionsForGroupQuery(accessCode);
 
-   const [editGroupName] = useEditGroupNameMutation();
+  const [editGroupName] = useEditGroupNameMutation();
 
-   const [isEditingGroupName, setIsEditingGroupName] = useState(false);
-   const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+  const [isEditingGroupName, setIsEditingGroupName] = useState(false);
+  const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
 
-   const handleEditGroupName = async () => {
-      try {
-         const result = await editGroupName({
-            id: groupData.id,
-            name: newGroupName,
-         });
+  const handleEditGroupName = async () => {
+    try {
+      const result = await editGroupName({
+        id: groupData.id,
+        name: newGroupName,
+      });
 
-         if (result.error) {
-            console.error("Error editing group name:", result.error);
-         } else {
-            console.log(`Group name updated`, newGroupName);
-            refetch();
-         }
-      } catch (error) {
-         console.error("An error occurred while editing group name:", error);
+      if (result.error) {
+        console.error("Error editing group name:", result.error);
+      } else {
+        console.log(`Group name updated`, newGroupName);
+        refetch();
       }
-      setIsEditingGroupName(false);
-   };
+    } catch (error) {
+      console.error("An error occurred while editing group name:", error);
+    }
+    setIsEditingGroupName(false);
+  };
 
-   const [selectedQuestion, setSelectedQuestion] = useState("");
+  const [selectedQuestion, setSelectedQuestion] = useState("");
 
-   if (groupLoading) return <div>Loading...</div>;
-   if (groupError) {
-      return <div>Error with group data: {groupError.message}</div>;
-   }
+  if (groupLoading) return <div>Loading...</div>;
+  if (groupError) {
+    return <div>Error with group data: {groupError.message}</div>;
+  }
 
-   if (!groupData) return null;
+  if (!groupData) return null;
 
   return (
     <div className="groupPage">
@@ -114,20 +112,19 @@ const GroupPage = () => {
       </div>
 
       <hr></hr>
+
       <div className="previousQuestion">
-        <h3>Previous Question</h3>
+        <PreviousQuestion/>
       </div>
+
       <hr></hr>
       <div className="creatorOnly">
         <h2>Creator Setting</h2>
+        <DeleteGroup groupId={groupData.id} />
         <h4>Users in this group:</h4>
         <ul>
           <li>{groupData && <UsersList groupId={groupData?.id} />}</li>
         </ul>
-        <span>
-        <DeleteGroup groupId={groupData.id} />
-          </span>
-   
       </div>
     </div>
   );

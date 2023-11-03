@@ -4,6 +4,34 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const protection = require("../middleware");
 
+// get previous question
+
+router.get("/group/:access_code/inactive", async (req, res, next) => {
+  try {
+    const group = await prisma.Group.findFirst({
+      where: {
+        access_code: req.params.access_code,
+      },
+    });
+
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    const inactiveQuestions = await prisma.question.findMany({
+      where: {
+        group_id: group.id,
+        is_active: false,
+      },
+    });
+    res.status(200).send(inactiveQuestions);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// Get Question by Id
 router.get("/:id", async (req, res, next) => {
   try {
     const question = await prisma.question.findUnique({
@@ -71,6 +99,7 @@ router.get("/group/:access_code/active", async (req, res, next) => {
   }
 });
 
+// Create a question Route
 router.post("/", protection, async (req, res, next) => {
   const { title, group_id } = req.body;
   const user = req.user.id;
