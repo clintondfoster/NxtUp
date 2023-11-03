@@ -4,9 +4,9 @@ function TextInput(props) {
   };
 
   return (
-    <input
+
+    <input className="input"
       placeholder={props.placeholder || "..."}
-      className={`form-control ${props.className || ""}`}
       value={props.vl}
       type={props.type}
       onChange={changed}

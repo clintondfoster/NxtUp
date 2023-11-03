@@ -1,17 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./components/authForm/Login";
 import GroupPage from "./pages/GroupPage";
 import QuestionPage from "./pages/QuestionPage";
 import OAuthHandler from "./pages/OAuthHandler";
 import Leaderboard from "./pages/Leaderboard";
 import Navbar from "./components/Navbar/Navbar";
-import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
+import DisplaySubmissions from "./pages/DisplaySubmissions";
 import { useSelector } from "react-redux";
 
 export default function App() {
    const token = useSelector((state) => state.auth.credentials.token);
-
    const signupView = (
       <Routes>
          <Route path="/" element={<Login />} />
