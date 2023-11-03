@@ -135,7 +135,6 @@ function AuthForm() {
 
         {(view === "login" || view === "register") && (
           <>
-            {/* <h2>{authType}</h2> */}
 
             <form className="inputAuth" onSubmit={attemptAuth} name={authType}>
               <TextInput
@@ -150,7 +149,6 @@ function AuthForm() {
                 vl={password}
                 chg={(value) => {
                   setPassword(value);
-                  checkPasswordStrength(value);
                   if (error) {
                     setError(null);
                   }
@@ -158,13 +156,6 @@ function AuthForm() {
               />
               {view === "register" && (
                 <>
-                  {/* <div className="password-requirements">
-                              {passwordRequirements
-                                 .filter((req) => !req.met)
-                                 .map((req, index) => (
-                                    <div key={index}>{req.description}</div>
-                                 ))}
-                           </div> */}
                   <TextInput
                     placeholder="Confirm Password..."
                     type="password"
