@@ -2,7 +2,6 @@ import React from "react";
 import CreateSubmission from "../components/inputs/CreateSubmission";
 import { useParams } from "react-router-dom";
 import { useGetQuestionByIdQuery } from "../reducers/api/";
-import DisplaySubmissions from "../components/inputs/DisplaySubmissions";
 import CloseQuestion from "../components/inputs/CloseQuestion";
 import { useNavigate } from "react-router-dom";
 
@@ -27,14 +26,18 @@ const QuestionPage = () => {
 
   return (
     <div>
-      {renderQuestion()}
-      <CreateSubmission questionId={questionId} />
-      <p
-        onClick={handleMaybeLaterClick}
-        className="maybe-later"
-      >
-        maybe later
-      </p>
+      <div> {renderQuestion()}</div>
+      <div>
+        <div>
+          <CreateSubmission questionId={questionId} />
+        </div>
+        <div>
+          <p onClick={handleMaybeLaterClick} className="maybe-later">
+            maybe later
+          </p>
+        </div>
+      </div>
+
       <CloseQuestion />
       {/* <DisplaySubmissions questionId={questionId}/> */}
     </div>

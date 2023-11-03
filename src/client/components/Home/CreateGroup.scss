@@ -1,0 +1,13 @@
+@use "../../style.scss";
+
+.create-group-btn {
+    display: flex;
+    padding: 10px;
+    background-color: style.$tertiary;
+    color: style.$secondary;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: style.$tertiary-active;
+    }
+}

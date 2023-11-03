@@ -8,7 +8,6 @@ const CreateQuestion = ({ groupId }) => {
 
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  console.log("data returned by getcurrentUser", currentUser);
 
   const handleCreateQuestion = async () => {
     try {
@@ -16,26 +15,24 @@ const CreateQuestion = ({ groupId }) => {
         title: questionTitle,
         group_id: groupId,
       });
-      console.log("Question created:", questionTitle);
       setQuestionTitle("");
     } catch (err) {
       console.error("Error creating group:", err);
     }
   };
 
-  const isCreator = currentUser?.user?.roles?.some(
-    (role) => role.group_id === groupId && role.is_creator
-  );
-  const isAdmin = currentUser?.user?.roles?.some(
-    (role) => role.group_id === groupId && role.is_Admin
-  );
-  const isAdmitted = currentUser?.user?.roles?.some(
-    (role) => role.group_id === groupId && role.is_admitted
-  );
+  // const isCreator = currentUser?.user?.roles?.some(
+  //   (role) => role.group_id === groupId && role.is_creator
+  // );
+  // const isAdmin = currentUser?.user?.roles?.some(
+  //   (role) => role.group_id === groupId && role.is_Admin
+  // );
+  // const isAdmitted = currentUser?.user?.roles?.some(
+  //   (role) => role.group_id === groupId && role.is_admitted
+  // );
 
-  // console.log("user isCreator", isCreator);
 
-  if (isCreator) {
+  // if (isCreator) {
     return (
       <div>
         <input
@@ -47,9 +44,9 @@ const CreateQuestion = ({ groupId }) => {
         <button onClick={handleCreateQuestion}>Create Question</button>
       </div>
     );
-  } else {
-    return <div>Please wait for question to be created.</div>;
-  }
+  // } else {
+  //   return <div>Please wait for question to be created.</div>;
+  // }
 };
 
 export default CreateQuestion;

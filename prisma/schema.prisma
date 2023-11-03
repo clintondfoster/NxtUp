@@ -28,7 +28,7 @@ model Role {
   group       Group   @relation(fields: [group_id], references: [id])
   is_admitted Boolean @default(true)
   is_creator  Boolean @default(false)
-  is_admin    Boolean
+  is_admin    Boolean @default(false)
 }
 
 model Group {

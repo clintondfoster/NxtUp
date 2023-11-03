@@ -1,18 +1,15 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { useCreateVoteMutation } from "../../reducers/api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useCreateVoteMutation, useGetVotesForSubByUserQuery } from "../../reducers/api";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
-
-
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 
 const CreateVote = ({ questionId, submissionId }) => {
-
   const socket = io.connect("http://localhost:3000");
   socket.on("connect", () => {});
 
   const [createVote] = useCreateVoteMutation();
+  const { voted } = useGetVotesForSubByUserQuery(submissionId);
   const user = useSelector((state) => state.auth.credentials.user);
   const [active, setActive] = useState(false);
   const handleClick = () => {
@@ -20,19 +17,25 @@ const CreateVote = ({ questionId, submissionId }) => {
   };
   useEffect(() => {
     async function findVote() {
-      const req = await fetch(`/api/vote/voted/${submissionId}/${user.userId}`);
-      const res = await req.json();
-      // console.log(res, "res");
-      if (res) {
-        handleClick();
+      if (user && user.userId) {
+        const req = await fetch(
+          `/api/vote/voted/${submissionId}/${user.userId}`
+        );
+        const res = await req.json();
+        if (res) {
+          handleClick();
+        }
       }
     }
     findVote();
   }, []);
+
+
+
   const onCreateVote = async () => {
     await createVote({ questionId, submissionId })
       .then(() => {
-        console.log("vote cast for", submissionId);
+        console.log("create vote socket connected", socket.connected);
         socket.emit("new_vote", submissionId);
       })
       .catch(() => {
@@ -42,15 +45,16 @@ const CreateVote = ({ questionId, submissionId }) => {
 
   return (
     <Fragment>
-      <button
+      <div
         onClick={function (event) {
           onCreateVote();
           handleClick();
         }}
-        style={{ backgroundColor: active ? "green" : "white" }}
+        className="vote-button"
+        style={{ color: active ? "#fa6b21" : null }}
       >
-        <FontAwesomeIcon icon={faHeart} />
-      </button>
+        <ThumbUpAltIcon />
+      </div>
     </Fragment>
   );
 };

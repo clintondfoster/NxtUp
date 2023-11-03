@@ -1,0 +1,57 @@
+@use '../../style.scss';
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    color: style.$tertiary;
+    min-height: 2rem;
+
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: style.$secondary;
+        height: 100%;
+    }
+    
+    .nav-home {
+        display: flex;
+        height: 100%;
+    }
+
+    .nav-logo {
+        display: flex;
+        height: 2rem;
+        margin-left: 2px;
+    }
+    
+    .nav-menu {
+        display: flex;
+        padding: 10px;
+    }
+    
+    .nav-links {
+        display: none;
+        width: 33%;
+        align-self: flex-end;
+    }
+    
+    .active {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .nav-btn {
+        background-color: style.$secondary-dark;
+        width: 100%;
+        padding: 2px 5px;
+        &:hover {
+            background-color: style.$secondary-active;
+        }
+    }
+}
+

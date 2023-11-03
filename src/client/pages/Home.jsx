@@ -1,27 +1,25 @@
 import React from "react";
-import CreateGroup from "../components/inputs/CreateGroup";
-import JoinGroup from "../components/inputs/JoinGroup";
-import DisplayUserGroups from "../components/inputs/DisplayUserGroups";
-// import { selectGroupId } from "../reducers/api";
+import CreateGroup from "../components/Home/CreateGroup";
+import JoinGroup from "../components/Home/JoinGroup";
+import DisplayUserGroups from "../components/Home/DisplayUserGroups";
+import "./Home.scss";
 
 const Home = () => {
-  // const groupId = useSelector(selectGroupId);
-
-  return (
-    <>
-      {" "}
-      <h2>Home Page</h2>
-      <div>
-        <CreateGroup />
+   return (
+      <div className="home-container">
+         <div className="join-container">
+            <JoinGroup />
+         </div>
+         <p style={{ padding: 10 }}>or</p>
+         <div className="create-container">
+            <CreateGroup />
+         </div>
+         <hr />
+         <div className="display-container">
+            <DisplayUserGroups />
+         </div>
       </div>
-      <div>
-        <JoinGroup />
-      </div>
-      <div>
-        <DisplayUserGroups />
-      </div>
-    </>
-  );
+   );
 };
 
 export default Home;

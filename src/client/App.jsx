@@ -1,89 +1,43 @@
-import { useEffect, useState } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import jwtDecode from "jwt-decode";
+import Login from "./components/authForm/Login";
 import GroupPage from "./pages/GroupPage";
 import QuestionPage from "./pages/QuestionPage";
-import NavB from "./components/Nav";
-// import PageNav from "./components/PageNav";
 import OAuthHandler from "./pages/OAuthHandler";
-import AccountSettings from "./pages/AccountSettings";
-import Footer from "./components/Footer/Footer";
 import Leaderboard from "./pages/Leaderboard";
-import DisplaySubmissions from "./components/inputs/DisplaySubmissions";
+import Navbar from "./components/Navbar/Navbar";
+import DisplaySubmissions from "./pages/DisplaySubmissions";
+import { useSelector } from "react-redux";
 
-function App({ questionId }) {
-  const storedToken = window.sessionStorage.getItem("credentials");
-  let decodedToken = null;
+export default function App() {
+  const token = useSelector((state) => state.auth.credentials.token);
+  const signupView = (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/oauthhandler" element={<OAuthHandler />} />
+    </Routes>
+  );
 
-  if (storedToken) {
-    decodedToken = jwtDecode(storedToken);
-  }
-
-  const loggedIn = decodedToken?.id;
-
-  return (
-    <div className="App">
+  const loggedInView = (
+    <div>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route
-          path="/home"
-          element={
-            loggedIn ? (
-              <>
-                {" "}
-                <NavB /> <Home />{" "}
-              </>
-            ) : (
-              <Login />
-            )
-          }
-        />
-        <Route index element={<Login />} />
-        <Route path="/account-settings" element={<AccountSettings />} />
-        <Route
-          path="/results/:accessCode"
-          element={
-            <>
-              {/* <PageNav /> */}
-              <GroupPage />
-            </>
-          }
-        />
-        <Route
-          path="/question/:questionId"
-          element={
-            <>
-              {/* <PageNav /> */}
-              <QuestionPage />
-              {/* this will be renamed to SubmitLink as will relevant file */}
-            </>
-          }
-        />
-        <Route
-          path="/question/:questionId/submissions"
-          element={
-            <>
-              {/* <PageNav /> */}
-              <DisplaySubmissions questionId={questionId} />
-            </>
-          }
-        />
+        <Route path="/home" element={<Home />} />
+        <Route path="/group/:accessCode" element={<GroupPage />} />
+        <Route path="/question/:questionId" element={<QuestionPage />} />
         <Route
           path="/question/:questionId/leaderboard"
-          element={
-            <>
-              {/* <PageNav /> */}
-              <Leaderboard questionId={questionId} />
-            </>
-          }
+          element={<Leaderboard />}
+        />
+        {/* <Route path="/question/:id/submit" element={<SubmitLink />} /> */}
+        <Route
+          path="/question/:questionId/submissions"
+          element={<DisplaySubmissions />}
         />
         <Route path="/oauthhandler" element={<OAuthHandler />} />
       </Routes>
-      {/* <Footer/> */}
     </div>
   );
-}
 
-export default App;
+  return token ? loggedInView : signupView;
+}

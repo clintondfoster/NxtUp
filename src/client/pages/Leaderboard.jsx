@@ -1,10 +1,15 @@
-import { useGetSubmissionsForQuestionQuery } from "../reducers/api";
+import {
+  useGetSubmissionsForQuestionQuery,
+  useGetVotesForSubQuery,
+  useGetQuestionByIdQuery,
+} from "../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Chart from "../components/Chart/Chart";
-import AllVotes from "../components/inputs/AllVotes";
-import VideoEmbed from "../components/inputs/VideoEmbed";
+import AllVotes from "../components/Leaderboard/AllVotes";
+import VideoEmbed from "../components/Leaderboard/VideoEmbed";
 import { useParams } from "react-router-dom";
+import "./Leaderboard.scss";
 
 const Leaderboard = () => {
   const { questionId } = useParams();
@@ -20,8 +25,9 @@ const Leaderboard = () => {
     });
 
     socket.on("new_vote", (submissionId) => {
-      console.log("vote changed:", submissionId);
+      console.log("leaderboard socket connected", socket.connected);
       refetch(questionId);
+      // topVoted.forEach((submission) => refetchVotes(submission.id));
     });
 
     return () => {
@@ -30,14 +36,22 @@ const Leaderboard = () => {
   }, []);
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
+  // const { refetchVotes } = useGetVotesForSubQuery(submissionId);
 
   const {
     data: submissionsData,
     isLoading: submissionsLoading,
     error,
   } = useGetSubmissionsForQuestionQuery(questionId);
-  //   console.log('submission data from leaderboard', submissionsData)
-  //   console.log('question ID from leaderboard', questionId)
+
+  const { data: questionData, isLoading: questionLoading } =
+    useGetQuestionByIdQuery(questionId);
+
+  const renderQuestion = () => {
+    if (questionLoading) return <div>Loading question...</div>;
+    if (!questionData) return null;
+    return <div>{questionData.title}</div>;
+  };
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
@@ -49,33 +63,27 @@ const Leaderboard = () => {
   );
 
   return (
-    <div>
-      <div>
+    <div className="lb-container">
+      <div className="lb-question">
+        <h2>{renderQuestion()}</h2>
+      </div>
+      <div className="lb-header">
+        <h2>Leaderboard</h2>
+      </div>
+
+      <div className="lb-video-list">
         {topVoted.map((submission, index) => (
-          <div key={submission.id}>
-            <div
-              style={{
-                border: "2px solid #000",
-                padding: "10px",
-                width: "355px",
-                backgroundColor: "gainsboro",
-                marginBottom: "12px",
-              }}
-            >
-              <div>
-                <VideoEmbed videoUrl={submission.link} />
-              </div>
-              <div className="user-votes">
-                <p>{submission.user.username}</p>
-                <div>
-                  <AllVotes submissionId={submission.id} />
-                </div>
-              </div>
+          <div className="lb-video-container" key={submission.id}>
+            <div>
+              <VideoEmbed videoUrl={submission.link} />
+            </div>
+            <div className="lb-votes">
+              <AllVotes submissionId={submission.id} />
             </div>
           </div>
         ))}
       </div>
-      <div>
+      <div className="lb-chart">
         <Chart questionId={questionId} />
       </div>
     </div>

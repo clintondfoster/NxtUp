@@ -77,6 +77,12 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
+    getCurrentUser: builder.query({
+      query: () => `api/me`,
+  }),
+    getUserById: builder.query({
+      query: (id) => `api/users/${id}`,
+    }),
     updateUserRole: builder.mutation({
       query: ({ groupId, userId, data }) => ({
         url: `api/users/group/${groupId}/users/${userId}/role`,
@@ -89,6 +95,9 @@ export const votingApi = createApi({
     }),
     getVotesForSub: builder.query({
       query: (submissionId) => `api/vote/${submissionId}`,
+    }),
+    getVotesForSubByUser: builder.query({
+      query: (submissionId, userId) => `api/vote/${submissionId}/${userId}`,
     }),
     deleteVote: builder.mutation({
       query: (code) => ({
@@ -141,6 +150,7 @@ export const {
   useAddQuestionMutation,
   useAddRoleMutation,
   useGetVotesForSubQuery,
+  useGetVotesForSubByUserQuery,
   useCreateVoteMutation,
   useDeleteVoteMutation,
   useGetGroupByCodeQuery,
@@ -150,6 +160,8 @@ export const {
   useGetSubmissionsForQuestionQuery,
   useGetUserGroupsByRolesQuery,
   useGetUserHistoryQuery,
+  useGetCurrentUserQuery,
+  useGetUserByIdQuery,
   useEditUserMutation,
   useUpdateUserRoleMutation,
   useGetUsersInGroupQuery,

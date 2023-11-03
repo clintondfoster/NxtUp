@@ -6,6 +6,7 @@ const protection = require("../middleware");
 
 // Create vote if not exist, delete vote if exists
 router.post("/", protection, async (req, res, next) => {
+  let createVote
   try {
     const existVote = await prisma.vote.findFirst({
       where: {
@@ -22,7 +23,7 @@ router.post("/", protection, async (req, res, next) => {
         },
       });
     } else {
-      const createVote = await prisma.vote.create({
+      createVote = await prisma.vote.create({
         data: {
           submissionId: +req.body.submissionId,
           user_id: req.user.id,
@@ -36,12 +37,12 @@ router.post("/", protection, async (req, res, next) => {
   }
 });
 
-router.get("/voted/:submissionId/:userId", async (req, res, next) => {
+router.get("/voted/:submissionId/:userId", protection, async (req, res, next) => {
   try {
     const validVote = await prisma.vote.findFirst({
       where: {
         submissionId: +req.params.submissionId,
-        user_id: +req.params.userId,
+        user_id: req.user.id,
       },
     });
     if (validVote) {

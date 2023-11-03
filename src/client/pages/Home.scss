@@ -1,0 +1,33 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+
+    .join-container {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        width: 100vw;
+    }
+
+    .create-container {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        width: 100vw;
+    }
+
+    .display-container {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        width: 100vw;
+    }
+}
+
+hr {
+    width: 80%;
+    margin: 1rem 0;
+}
