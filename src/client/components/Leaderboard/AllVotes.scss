@@ -1,0 +1,13 @@
+@use "../../style.scss";
+
+.votes{
+    width: 25px;
+    height: 25px;
+    border: 1px solid style.$background;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: style.$background;
+    background-color: style.$text;
+}

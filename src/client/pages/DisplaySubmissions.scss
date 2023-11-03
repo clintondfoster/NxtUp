@@ -1,0 +1,67 @@
+@use "../style.scss";
+
+.ds-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ds-video-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ds-video-container {
+  display: flex;
+  flex-direction: column;
+  background-color: style.$secondary-active;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+}
+
+
+.ds-voting {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.ds-question{
+    margin: 15px;
+}
+
+.ds-submit-button{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: style.$tertiary;
+    color: style.$secondary; 
+    border: none;
+    padding: 10px;
+
+    &:hover{
+        background-color: style.$tertiary-active;
+    }
+}
+
+.ds-question{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    background-color: style.$secondary-active;
+    color: style.$text;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    line-height: 1.5;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+}
+// h2{
+//     margin: 15px;
+//     font-weight: bold;
+// }
