@@ -37,6 +37,9 @@ export const votingApi = createApi({
     getActiveQuestionsForGroup: builder.query({
       query: (code) => `api/questions/group/${code}/active`,
     }),
+    getInactiveQuestionsForGroup: builder.query({
+      query: (code) => `api/questions/group/${code}/inactive`,
+    }),
     getQuestionById: builder.query({
       query: (id) => `api/questions/${id}`,
     }),
@@ -76,9 +79,9 @@ export const votingApi = createApi({
         body: body,
       }),
     }),
-  //   getCurrentUser: builder.query({
-  //     query: () => `api/me`,
-  // }),
+    getCurrentUser: builder.query({
+      query: () => `auth/me`,
+  }),
     getUserById: builder.query({
       query: (id) => `api/users/${id}`,
     }),
@@ -169,5 +172,6 @@ export const {
   useDeleteGroupByCodeMutation,
   useCloseQuestionMutation,
   useEditGroupNameMutation,
+  useGetInactiveQuestionsForGroupQuery
 } = votingApi;
 // export default dataSlice.reducer;

@@ -19,25 +19,7 @@ function AuthForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const [passwordRequirements, setPasswordRequirements] = useState([
-  //    {
-  //       description: "At least 7 characters",
-  //       test: (pass) => pass.length >= 7,
-  //       met: false,
-  //    },
-  //    {
-  //       description: "Contains a number",
-  //       test: /\d/.test.bind(/\d/),
-  //       met: false,
-  //    },
-  //    {
-  //       description: "Contains a capital letter",
-  //       test: /[A-Z]/.test.bind(/[A-Z]/),
-  //       met: false,
-  //    },
-  // ]);
 
-  // const [isLogin, setIsLogin] = useState(true);
   const [message, setMessage] = useState("");
 
   const authType = view === "login" ? "Login" : "Create Account";
@@ -47,18 +29,7 @@ function AuthForm() {
     view === "login" ? "Don't have an account?" : "Already have an account?";
   const oppositeAuthType = view === "login" ? "Create Account" : "Login";
 
-  // function checkPasswordStrength(pass) {
-  //    setPasswordRequirements((prevReqs) =>
-  //       prevReqs.map((req) => ({
-  //          ...req,
-  //          met: req.test(pass),
-  //       }))
-  //    );
-  // }
-
-  /**
-   * Send credentials to server for authentication
-   */
+ 
   async function attemptAuth(event) {
     event.preventDefault();
     setError(null);
@@ -68,28 +39,7 @@ function AuthForm() {
       return;
     }
 
-    // if (
-    //    !validator.isStrongPassword(password, {
-    //       minLength: 7,
-    //       minUppercase: 1,
-    //       minNumbers: 1,
-    //       minSymbols: 0,
-    //       returnScore: false,
-    //       pointsPerUnique: 1,
-    //       pointsPerRepeat: 0.5,
-    //       pointsForContainingLower: 10,
-    //       pointsForContainingUpper: 10,
-    //       pointsForContainingNumber: 10,
-    //       pointsForContainingSymbol: 10,
-    //    })
-    // )
-    //  {
-    //    setError(
-    //      "Password should contain an uppercase letter, a number, and be at least 7 characters long"
-    //    );
-    //    return;
-    //  }
-
+  
     const authMethod = view === "login" ? login : register;
     const credentials =
       view === "login" ? { password, email } : { password, email, username };
@@ -105,7 +55,7 @@ function AuthForm() {
         } else {
           setMessage("Successfully registered! Redirecting...");
           setTimeout(() => {
-            navigate(`/home`);
+            (`/home`);
           }, 2000);
         }
       } else {

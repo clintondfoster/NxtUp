@@ -64,7 +64,7 @@
   color: style.$secondary;
   border-radius: 100%;
 }
-p {
+.by{
   font-size: 10px;
   margin: 25px;
   padding-left: 50px;
@@ -95,6 +95,7 @@ p {
 }
 
 .authBtn {
+  border: none;
   margin-top: 30px;
   background-color: style.$tertiary;
   color: style.$secondary;

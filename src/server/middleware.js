@@ -3,7 +3,6 @@ const process = require("process");
 
 
 const protection = async (req, res, next) => {
-
     const bearerToken = req.headers.authorization;
 
     if (!bearerToken) {

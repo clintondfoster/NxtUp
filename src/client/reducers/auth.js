@@ -55,6 +55,7 @@ const authSlice = createSlice({
         credentials : JSON.parse(window.sessionStorage.getItem(CREDENTIALS)) || {
 
             token:"",
+            user: {},
 
         }
     },
@@ -63,12 +64,9 @@ const authSlice = createSlice({
         builder.addMatcher(storeApi.endpoints.login.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.register.matchFulfilled, storeToken);
         builder.addMatcher(storeApi.endpoints.oauth.matchFulfilled, storeToken);
-        builder.addMatcher(storeApi.endpoints.getCurrentUser.matchFulfilled, (state, action) => {
-            state.credentials.user = action.payload;
-            state.credentials.isCreator = action.payload.user.isCreator;
-            state.credentials.isAdmitted = action.payload.user.isAdmitted;
-            state.credentials.isAdmin = action.payload.user.isAdmin;
-
+        builder.addMatcher(storeApi.endpoints.getCurrentUser.matchFulfilled, (state, {payload}) => {
+            // state.credentials.user = action.payload;
+           return {...state, user: payload.user}
         })
         builder.addMatcher(storeApi.endpoints.logout.matchRejected, (state)=>{
             state.credentials = {

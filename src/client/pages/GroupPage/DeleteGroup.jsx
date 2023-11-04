@@ -1,5 +1,4 @@
 import { React, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
 import { useDeleteGroupByCodeMutation } from "../../reducers/api";
 import { useNavigate } from "react-router-dom";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
@@ -8,8 +7,7 @@ const DeleteGroup = ({ groupId }) => {
   const { data: currentUser } = useGetCurrentUserQuery();
   const [deleteGroup] = useDeleteGroupByCodeMutation();
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
-
+  
   const { refetch } = useDeleteGroupByCodeMutation(groupId);
   const handleDeleteGroup = async () => {
     try {

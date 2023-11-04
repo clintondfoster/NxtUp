@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./components/authForm/Login";
-import GroupPage from "./pages/GroupPage";
+import GroupPage from "./pages/GroupPage/GroupPage";
 import QuestionPage from "./pages/QuestionPage";
 import OAuthHandler from "./pages/OAuthHandler";
 import Leaderboard from "./pages/Leaderboard";

@@ -1,0 +1,26 @@
+@use "../../../style.scss";
+
+.create-sub-button {
+  border: none;
+  box-sizing: border-box;
+  padding: 0.7rem;
+  border-radius: 3px;
+  margin: 8px;
+  background-color: style.$tertiary;
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
+  color: style.$secondary;
+  border-radius: 7px;
+  font-size: 1.2rem;
+}
+.create-sub-input {
+  border: none;
+  box-sizing: border-box;
+  padding: 0.7rem;
+  border-radius: 3px;
+  margin: 8px;
+  color: style.$secondary;
+  border-radius: 7px;
+  font-size: 1.2rem;
+}
