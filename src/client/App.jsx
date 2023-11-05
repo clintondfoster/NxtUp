@@ -23,6 +23,7 @@ export default function App() {
     <div>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/group/:accessCode" element={<GroupPage />} />
         <Route path="/question/:questionId" element={<QuestionPage />} />

@@ -1,14 +1,17 @@
 import react from "react";
 import { useState, useEffect, useRef } from "react";
-// import UserProfile from "../components/inputs/UserProfile";
-// import NavB from "../components/Nav";
 import { useLogoutMutation } from "../reducers/auth";
 import { useNavigate } from "react-router-dom";
 
 import { useEditUserMutation } from "../reducers/api";
 import { useGetCurrentUserQuery } from "../reducers/auth";
-// import { useParams } from "react-router-dom";
 import TextInput from "../components/authForm/TextInput";
+import "./AccountSettings.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaretDown,
+  faSquareCaretUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 function AccountSettings() {
   const { data: currentUser, isError, isLoading } = useGetCurrentUserQuery();
@@ -42,7 +45,11 @@ function AccountSettings() {
         id: currentUser.user.id,
         username: newUsername,
       }).unwrap();
+      setUpdateSuccess(true);
       setShowChangeUsername(false);
+      setNewUsername("");
+      clearTimeout(timeoutId.current);
+      timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
       console.log(err);
       setError("Ann error occured while updating your details.");
@@ -51,9 +58,10 @@ function AccountSettings() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords must match. Please try again.");
       return;
     }
 
@@ -63,10 +71,12 @@ function AccountSettings() {
         password: newPassword,
         username: currentUser.user.username,
       }).unwrap();
-
+      setUpdateSuccess(true);
       setShowChangePassword(false);
       setNewPassword("");
       setConfirmPassword("");
+      clearTimeout(timeoutId.current);
+      timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
       console.log(err);
       if (err.data && err.data.error) {
@@ -80,13 +90,11 @@ function AccountSettings() {
   const handleLogout = async () => {
     try {
       await logout();
-      setLogoutMessage(true);
       setTimeout(() => {
-        setLogoutMessage(false);
         navigate("/");
-      }, 2000);
+      }, 1000);
     } catch (err) {
-      console.err("Error logging out:", err);
+      console.error("Error logging out:", err);
     }
   };
 
@@ -99,70 +107,104 @@ function AccountSettings() {
 
   return (
     <div className="as-container">
-      <h2>Account Settings</h2>
-      {LogoutMessage && <div>You have successfully logged out.</div>}
-      {updateSuccess && <div>Your account has been updated successfully!</div>}
+      <h2 className="as-title">Account Settings</h2>
+      {/* {LogoutMessage && <div className="message">{LogoutMessage}</div>} */}
+      {updateSuccess && (
+        <div className="message">
+          Your account has been updated successfully!
+        </div>
+      )}
       <div className="as-login-container">
-        <h2>Login information</h2>
+        <h3 className="as-login-title">Login information</h3>
         {currentUser && (
           <>
-            <div>
-              <h3 className="as-welcome">
-                Welcome, {currentUser.user.username}
-              </h3>
-              <p className="as-email">{currentUser.user.email}</p>
-
-              <div className="username-dropdown">
-                <button
-                  onClick={() => setShowChangeUsername(!showChangeUsername)}
-                >
-                  Update Username
-                </button>
-                {showChangeUsername && (
-                  <div className="dropdown-content">
-                    <form onSubmit={handleUsernameSubmit}>
-                      <TextInput
-                        type="text"
-                        vl={newUsername}
-                        chg={setNewUsername}
-                        placeholder="Enter new username"
-                        required
-                      />
-                      <button type="submit" disabled={isEditingUser}>
-                        Update username
-                      </button>
-                    </form>
-                  </div>
-                )}
-              </div>
+            <div className="as-user-info">
+              <p className="as-welcome">Welcome, {currentUser.user.username}</p>
+              <h6 className="as-email">{currentUser.user.email}</h6>
             </div>
 
-            <div className="password-dropdown">
-              <button
+            <div className="settings-section">
+              <div
+                className="update-btn"
+                onClick={() => setShowChangeUsername(!showChangeUsername)}
+                onBlur={() => setShowChangeUsername(false)}
+              >
+                Update Username
+                <span>
+                  {showChangeUsername ? (
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSquareCaretUp} />
+                  )}
+                </span>
+              </div>
+              {showChangeUsername && (
+                <div className="dropdown-content">
+                  <form onSubmit={handleUsernameSubmit}>
+                    <TextInput
+                      className="input"
+                      type="text"
+                      vl={newUsername}
+                      chg={setNewUsername}
+                      placeholder="Enter new username..."
+                      required
+                    />
+                    <div
+                      className="submit-btn"
+                      type="submit"
+                      disabled={isEditingUser}
+                      onClick={handleUsernameSubmit}
+                    >
+                      Save Changes
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
+
+            {error && <div className="message-error">{error}</div>}
+            <div className="settings-section">
+              <div
+                className="update-btn"
                 onClick={() => setShowChangePassword(!showChangePassword)}
+                onBlur={() => setShowChangePassword(false)}
               >
                 Update Password
-              </button>
+                <span>
+                  {showChangePassword ? (
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  ) : (
+                    <FontAwesomeIcon icon={faSquareCaretUp} />
+                  )}
+                </span>
+              </div>
               {showChangePassword && (
                 <div className="dropdown-content">
                   <form onSubmit={handlePasswordSubmit}>
                     <TextInput
+                      className="input"
                       type="password"
                       vl={newPassword}
                       chg={setNewPassword}
-                      placeholder="Enter new password"
+                      placeholder="Enter new password..."
                       required
                     />
                     <TextInput
+                      className="input"
                       type="password"
                       vl={confirmPassword}
                       chg={setConfirmPassword}
-                      placeholder="Confirm new password"
+                      placeholder="Confirm new password..."
                       required
                     />
-                    <button type="submit" disabled={isEditingUser}>
-                      Update password
-                    </button>
+                    <div
+                      className="submit-btn"
+                      type="submit"
+                      disabled={isEditingUser}
+                      onClick={handlePasswordSubmit}
+                    >
+                      Save Changes
+                    </div>
                   </form>
                 </div>
               )}
@@ -171,7 +213,7 @@ function AccountSettings() {
         )}
       </div>
       <div className="as-logout">
-        <button onClick={handleLogout}>Logout</button>
+        <div onClick={handleLogout}>Logout</div>
       </div>
     </div>
   );
