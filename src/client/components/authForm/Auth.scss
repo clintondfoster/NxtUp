@@ -52,6 +52,7 @@
   color: style.$secondary;
   border-radius: 7px;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 .gg-box {
   width: 65px;
@@ -63,6 +64,10 @@
   background-color: style.$tertiary;
   color: style.$secondary;
   border-radius: 100%;
+  cursor: pointer;
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
 }
 .by{
   font-size: 10px;

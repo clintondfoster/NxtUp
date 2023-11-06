@@ -34,9 +34,9 @@ function AccountSettings() {
 
   const timeoutId = useRef(null);
 
-  const handleDropdownToggle = () => {
-    setShowDropdown(!showDropdown);
-  };
+  // const handleDropdownToggle = () => {
+  //   setShowDropdown(!showDropdown);
+  // };
 
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();

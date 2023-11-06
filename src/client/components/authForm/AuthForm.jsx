@@ -27,9 +27,8 @@ function AuthForm() {
 
   const oppositeAuthCopy =
     view === "login" ? "Don't have an account?" : "Already have an account?";
-  const oppositeAuthType = view === "login" ? "Create Account" : "Login";
+  const oppositeAuthType = view === "login" ? "CREATE ACCOUNT" : "LOGIN";
 
- 
   async function attemptAuth(event) {
     event.preventDefault();
     setError(null);
@@ -39,7 +38,6 @@ function AuthForm() {
       return;
     }
 
-  
     const authMethod = view === "login" ? login : register;
     const credentials =
       view === "login" ? { password, email } : { password, email, username };
@@ -55,7 +53,7 @@ function AuthForm() {
         } else {
           setMessage("Successfully registered! Redirecting...");
           setTimeout(() => {
-            (`/home`);
+            `/home`;
           }, 2000);
         }
       } else {
@@ -85,7 +83,6 @@ function AuthForm() {
 
         {(view === "login" || view === "register") && (
           <>
-
             <form className="inputAuth" onSubmit={attemptAuth} name={authType}>
               <TextInput
                 type="email"
@@ -125,7 +122,9 @@ function AuthForm() {
                   />
                 </>
               )}
-              <button type="submit" className="signupBtn">{authType}</button>
+              <button type="submit" className="signupBtn">
+                {authType}
+              </button>
             </form>
 
             <p>
