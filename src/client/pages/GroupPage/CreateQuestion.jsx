@@ -31,21 +31,22 @@ const CreateQuestion = ({ groupId }) => {
   // );
 
 
-  if (isCreator) {
-    return (
-      <div>
-        <input
-          placeholder="Enter Question"
-          type="text"
-          value={questionTitle}
-          onChange={(e) => setQuestionTitle(e.target.value)}
-        />
-        <button onClick={handleCreateQuestion}>Create Question</button>
-      </div>
-    );
-  } else {
-    return <div>Please wait for question to be created.</div>;
+
+  if (!isCreator) {
+    return <div>Please wait for the question to be created.</div>;
   }
+
+  return (
+    <div>
+      <input
+        placeholder="Enter Question"
+        type="text"
+        value={questionTitle}
+        onChange={(e) => setQuestionTitle(e.target.value)}
+      />
+      <button onClick={handleCreateQuestion}>Create Question</button>
+    </div>
+  );
 };
 
 export default CreateQuestion;

@@ -1,4 +1,3 @@
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const CREDENTIALS = "credentials";
 // Define a service using a base URL and expected endpoints
@@ -82,7 +81,7 @@ export const votingApi = createApi({
     }),
     getCurrentUser: builder.query({
       query: () => `auth/me`,
-  }),
+    }),
     getUserById: builder.query({
       query: (id) => `api/users/${id}`,
     }),
@@ -100,7 +99,7 @@ export const votingApi = createApi({
       query: (submissionId) => `api/vote/${submissionId}`,
     }),
     getVotesForSubByUser: builder.query({
-      query: (submissionId, userId) => `api/vote/${submissionId}/${userId}`,
+      query: (submissionId) => `api/vote/voted/${submissionId}`,
     }),
     deleteVote: builder.mutation({
       query: (code) => ({
@@ -162,6 +161,6 @@ export const {
   useDeleteGroupByCodeMutation,
   useCloseQuestionMutation,
   useEditGroupNameMutation,
-  useGetInactiveQuestionsForGroupQuery
+  useGetInactiveQuestionsForGroupQuery,
 } = votingApi;
 // export default dataSlice.reducer;

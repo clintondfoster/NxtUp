@@ -1,11 +1,11 @@
 import {
   useGetSubmissionsForQuestionQuery,
   useGetQuestionByIdQuery,
-  useGetVotesForSubQuery,
+  useGetVotesForSubByUserQuery,
 } from "../reducers/api";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import CreateVote from "../components/inputs/CreateVote";
+import CreateVote from "../components/inputs/DisplaySubmissions/CreateVote";
 import AllVotes from "../components/Leaderboard/AllVotes";
 import VideoEmbed from "../components/Leaderboard/VideoEmbed";
 import { Link } from "react-router-dom";
@@ -40,7 +40,7 @@ const DisplaySubmissions = () => {
   const [clickedVideoId, setClickedVideoId] = useState(null);
 
   const handleVoteClick = (submissionId) => {
-    !clickedVideoId ?  setClickedVideoId(submissionId) : setClickedVideoId(null);
+    !clickedVideoId ? setClickedVideoId(submissionId) : setClickedVideoId(null);
     !voteClicked ? setVoteClicked(true) : setVoteClicked(false);
   };
 
