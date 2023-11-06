@@ -2,7 +2,6 @@ import React from "react";
 import CreateSubmission from "../components/inputs/QuestionPage/CreateSubmission";
 import { useParams } from "react-router-dom";
 import { useGetQuestionByIdQuery } from "../reducers/api";
-import CloseQuestion from "../components/inputs/QuestionPage/CloseQuestion";
 import { useNavigate } from "react-router-dom";
 import "./QuestionPage.scss"
 
@@ -38,9 +37,6 @@ const QuestionPage = () => {
           </p>
         </div>
       </div>
-
-      <CloseQuestion />
-      {/* <DisplaySubmissions questionId={questionId}/> */}
     </div>
   );
 };
