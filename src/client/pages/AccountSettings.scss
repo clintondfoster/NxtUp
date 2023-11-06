@@ -1,0 +1,146 @@
+@use "../style.scss";
+
+.as-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  margin: 0 auto;
+}
+
+.as-title {
+  display: flex;
+  align-self: flex-start;
+  padding-left: 30px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.as-login-title {
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+
+.as-user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+
+
+  span {
+      margin-left: 5px;
+  }
+}
+
+.as-login-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  background-color: style.$secondary-dark;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  width: 300px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+}
+
+
+.settings-section {
+  width: 100%;
+}
+
+
+  .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: style.$secondary-active;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .input {
+      width: 100%;
+      font-size: 12px;
+    }
+  }
+
+
+.update-btn {
+  padding: 0.7rem;
+  display: block;
+  width: 80%;
+  border-radius: 3px;
+  margin: 8px;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: underline;
+  color: style.$tertiary;
+  border: none;
+  background: none;
+  &:hover {
+    background-color: style.$tertiary-dark;
+    background: none;
+    text-decoration: underline;
+  }
+  font-size: 12px;
+}
+
+.submit-btn {
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 8px 16px;
+  width: auto;
+  border-radius: 3px;
+  margin: 8px;
+  background-color: style.$tertiary;
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
+  color: style.$secondary;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.as-logout {
+  box-sizing: border-box;
+  padding: 8px 16px;
+  width: auto;
+  margin-top: 10px;
+  border-radius: 3px;
+  min-height: 60%;
+  border-radius: 3px;
+  background-color: style.$tertiary;
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: style.$background;
+  color: style.$text;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.message-error {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: style.$background;
+  color: style.$text;
+  border-radius: 4px;
+  text-align: center;
+}

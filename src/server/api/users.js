@@ -3,6 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const protection = require("../middleware");
+const bcrypt = require("bcrypt");
 
 //Apply Middleware to all routes for user
 router.use(protection);
@@ -80,16 +81,36 @@ router.put("/:id", async (req, res, next) => {
             return res.status(401).send("User not authenticated")
         }
 
-        const updatedInfo = req.body;
+        const { password, username } = req.body;
+       
+
+        if (!username) {
+            return res.status(400).json({ error: "Username is required"});
+        }
+        let updateData = {username};
+
+        if (password) {        
+        const salt_rounds = 5;
+        const hashedPassword = await bcrypt.hash(password, salt_rounds);
+        updateData.password = hashedPassword;
+        }
+const userInUse = await prisma.User.findFirst({
+    where: { username },
+})
+
+if (userInUse && userInUse.id !== req.user.id) {
+   return res.status(400).json("Username already in use.")
+}
 
         const updatedUser = await prisma.User.update({
             where: { id: req.user.id },
-            data: updatedInfo,
+            data: updateData,
         });
 
         res.send(updatedUser);
     } catch (err) {
-        next(err);
+       console.error("Error updating user:", err.message)
+       return res.status(500).json({ error: "Internal server error."})
     }
 })
 
