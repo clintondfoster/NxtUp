@@ -12,6 +12,7 @@ import {
   faCaretDown,
   faSquareCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { validatePassword } from "../components/authForm/Validator";
 
 function AccountSettings() {
   const { data: currentUser, isError, isLoading } = useGetCurrentUserQuery();
@@ -40,6 +41,8 @@ function AccountSettings() {
 
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+
     try {
       const response = await editUser({
         id: currentUser.user.id,
@@ -52,13 +55,24 @@ function AccountSettings() {
       timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
       console.log(err);
-      setError("Ann error occured while updating your details.");
+      if (err.data && typeof err.data === "string") {
+        setError(err.data);
+      } else {
+        setError("An error occured while updating your details.");
+      }
     }
   };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    //validate new password
+    const passwordError = validatePassword(newPassword);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
 
     if (newPassword !== confirmPassword) {
       setError("Passwords must match. Please try again.");
