@@ -21,8 +21,12 @@ router.get("/:access_code", async (req, res, next) => {
         access_code: req.params.access_code,
       },
     });
+    if (!group) {
+      return res.status(404).send({ message: "Group with the given code does not exist."});
+    }
     res.send(group);
   } catch (err) {
+    res.status(500).send({ message: "Internal server error. Please try again later."})
     next(err);
   }
 });
@@ -91,10 +95,14 @@ router.post("/", protection, async (req, res, next) => {
       },
     });
 
+    const groupUrl = `localhost:3000/groups/${accessCode}`;
+
     const response = {
       group,
       role,
+      url: groupUrl
     };
+
     res.send(response);
   } catch (err) {
     console.error("Error adding group", err);

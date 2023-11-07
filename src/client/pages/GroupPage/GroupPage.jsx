@@ -10,16 +10,21 @@ import { useState } from "react";
 import UsersList from "../../components/inputs/UsersList";
 import DeleteGroup from "./DeleteGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCopy } from "@fortawesome/free-solid-svg-icons";
 import PreviousQuestion from "./PreviousQuestion";
+
 const GroupPage = () => {
   const { accessCode } = useParams();
+
+  console.log("access code in group page", accessCode);
 
   const {
     data: groupData,
     isLoading: groupLoading,
     isError: groupError,
   } = useGetGroupByCodeQuery(accessCode);
+
+  console.log("group page groupData:", groupData);
 
   const { refetch } = useGetGroupByCodeQuery(accessCode);
 
@@ -33,6 +38,7 @@ const GroupPage = () => {
 
   const [isEditingGroupName, setIsEditingGroupName] = useState(false);
   const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+  const [copySuccess, setCopySuccess] = useState("");
 
   const handleEditGroupName = async () => {
     try {
@@ -51,6 +57,18 @@ const GroupPage = () => {
       console.error("An error occurred while editing group name:", error);
     }
     setIsEditingGroupName(false);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => setCopySuccess("Copied!"))
+      .catch(() => setCopySuccess("Failed to copy!"));
+  };
+
+  const onCopy = () => {
+    copyToClipboard();
+    setTimeout(() => setCopySuccess(""), 2000);
   };
 
   const [selectedQuestion, setSelectedQuestion] = useState("");
@@ -94,6 +112,17 @@ const GroupPage = () => {
 
       <h4>Code: {groupData.access_code}</h4>
 
+      <div className="shareGroup">
+        <h4>Shareable Link: </h4>
+        <div onClick={onCopy}>
+          <FontAwesomeIcon icon={faCopy} />
+          Copy Link
+        </div>
+        {copySuccess && (
+          <span style={{ marginLeft: "10px" }}>{copySuccess}</span>
+        )}
+      </div>
+
       {questionsLoading && <div>Loading questions...</div>}
       <div>
         {questionsData && questionsData.length > 0 ? (
@@ -114,7 +143,7 @@ const GroupPage = () => {
       <hr></hr>
 
       <div className="previousQuestion">
-        <PreviousQuestion/>
+        <PreviousQuestion />
       </div>
 
       <hr></hr>
