@@ -36,8 +36,8 @@ const CreateQuestion = ({ groupId }) => {
                onChange={(e) => setQuestionTitle(e.target.value)}
             />
             <div
-               disabled={!questionTitle}
                className="create-question-btn"
+               disabled={!questionTitle}
                onClick={handleCreateQuestion}
             >
                Create Question

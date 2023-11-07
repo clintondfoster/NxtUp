@@ -9,18 +9,20 @@ import {
 } from "../reducers/api";
 import { useGetCurrentUserQuery } from "../reducers/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCopy } from "@fortawesome/free-solid-svg-icons";
 import UsersList from "../components/inputs/UsersList";
-import CreateQuestion from "../components/Group/CreateQuestion";
-import DeleteGroup from "../components/Group/DeleteGroup";
-import PreviousQuestion from "../components/Group/PreviousQuestion";
-import CloseQuestion from "../components/Group/CloseQuestion";
+import CreateQuestion from "../components/GroupPage/CreateQuestion";
+import DeleteGroup from "../components/GroupPage/DeleteGroup";
+import PreviousQuestion from "../components/GroupPage/PreviousQuestion";
+import CloseQuestion from "../components/GroupPage/CloseQuestion";
 import "./GroupPage.scss";
 
 const GroupPage = () => {
    const state = useSelector((state) => state);
    console.log("state: ", state);
    const { accessCode } = useParams();
+
+   console.log("access code in group page", accessCode);
 
    const {
       data: groupData,
@@ -40,6 +42,7 @@ const GroupPage = () => {
 
    const [isEditingGroupName, setIsEditingGroupName] = useState(false);
    const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+   const [copySuccess, setCopySuccess] = useState("");
 
    const { data: currentUser } = useGetCurrentUserQuery();
    console.log("currentUser", currentUser);
@@ -64,6 +67,18 @@ const GroupPage = () => {
          console.error("An error occurred while editing group name:", error);
       }
       setIsEditingGroupName(false);
+   };
+
+   const copyToClipboard = () => {
+      navigator.clipboard
+         .writeText(window.location.href)
+         .then(() => setCopySuccess("Copied!"))
+         .catch(() => setCopySuccess("Failed to copy!"));
+   };
+
+   const onCopy = () => {
+      copyToClipboard();
+      setTimeout(() => setCopySuccess(""), 2000);
    };
 
    if (groupLoading) return <div>Loading...</div>;
@@ -101,8 +116,14 @@ const GroupPage = () => {
             )}
          </div>
 
-         <div className="group-code-container">
-            {`Code: ${groupData.access_code}`}
+         <div className="group-code-container" onClick={onCopy}>
+            <div className="group-code">
+               {`Code: ${groupData.access_code}`}
+               <FontAwesomeIcon icon={faCopy} />
+            </div>
+            {copySuccess && (
+               <span style={{ marginLeft: "10px" }}>{copySuccess}</span>
+            )}
          </div>
 
          {questionsLoading && <div>Loading questions...</div>}
