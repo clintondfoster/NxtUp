@@ -11,6 +11,7 @@ import VideoEmbed from "../components/Leaderboard/VideoEmbed";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import "./DisplaySubmissions.scss";
+import CheckVotes from "../components/inputs/DisplaySubmissions/CheckVotes";
 
 const DisplaySubmissions = () => {
   const { questionId } = useParams();
@@ -45,8 +46,6 @@ const DisplaySubmissions = () => {
   };
 
   const { refetch } = useGetSubmissionsForQuestionQuery(questionId);
-  // const { refetchVotes } = useGetVotesForSubQuery(submissionId);
-  // console.log('sub id from display', submissionId)
 
   const {
     data: submissionsData,
@@ -76,22 +75,22 @@ const DisplaySubmissions = () => {
           const isClicked = submission.id === clickedVideoId;
           return (
             <div
-              className={`ds-video-container${
-                isClicked ? " vote-clicked" : ""
-              }`}
-              key={submission.id}
+              // className={`ds-video-container${
+              //   isClicked ? " vote-clicked" : ""
+              // }`}
+              key={submission.id} 
             >
               <div>
                 <div>
                   <VideoEmbed videoUrl={submission.link} />
                 </div>
                 <div className="ds-voting">
-                  {/* <p> User: {submission.user.username}</p> */}
                   <div onClick={() => handleVoteClick(submission.id)}>
                     <CreateVote
                       questionId={questionId}
                       submissionId={submission.id}
-                    />
+                    /> 
+                    {/* {CheckVotes(submission.id) && <h1>true</h1>} */}
                   </div>
                 </div>
               </div>
@@ -119,5 +118,3 @@ const DisplaySubmissions = () => {
 };
 
 export default DisplaySubmissions;
-
-//

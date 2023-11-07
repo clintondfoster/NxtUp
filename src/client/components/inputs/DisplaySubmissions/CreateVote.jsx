@@ -10,17 +10,16 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import CheckVotes from "./CheckVotes";
 
 
-const CreateVote = ({ questionId, submissionId, }) => {
+const CreateVote = ({ questionId, submissionId }) => {
   const socket = io.connect("http://localhost:3000");
   socket.on("connect", () => {});
-
+  const [active, setActive] = useState(false);
   const [createVote] = useCreateVoteMutation();
 
-  const user = useSelector((state) => state.auth.credentials.user);
-
   const {data: voted} = useGetVotesForSubByUserQuery(submissionId);
+  // console.log('voted from createVote', voted)
 
-  const [active, setActive] = useState(voted);
+
 
   const handleClick = () => {
     setActive(!active);
@@ -43,11 +42,13 @@ const CreateVote = ({ questionId, submissionId, }) => {
   };
 
   const voteStyle = () => {
-    if (voted || active) {
+    if ( active) {
       return "#fa6b21"
+    }  else if ( !active) {
+      return "#ffff"
     }  else {
-      null
-    }   
+      return null
+    } 
   }
 
   return (
@@ -58,8 +59,8 @@ const CreateVote = ({ questionId, submissionId, }) => {
           handleClick();
         }}
         className="vote-button"
-        // style={{ color: voteStyle() }}
-        style={{ color: voted || active ? "#fa6b21" : null }}
+        style={{ color: voteStyle() }}
+        // style={{ color: voted || active ? "#fa6b21" : null }}
       >
         <ThumbUpAltIcon />
       </div>
