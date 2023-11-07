@@ -1,39 +1,51 @@
 import React from "react";
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 import {
    useGetGroupByCodeQuery,
    useGetActiveQuestionsForGroupQuery,
    useEditGroupNameMutation,
 } from "../reducers/api";
-import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
-import UsersList from "../components/inputs/UsersList";
+import { useGetCurrentUserQuery } from "../reducers/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import UsersList from "../components/inputs/UsersList";
 import CreateQuestion from "../components/Group/CreateQuestion";
 import DeleteGroup from "../components/Group/DeleteGroup";
 import PreviousQuestion from "../components/Group/PreviousQuestion";
+import CloseQuestion from "../components/Group/CloseQuestion";
+import "./GroupPage.scss";
 
 const GroupPage = () => {
+   const state = useSelector((state) => state);
+   console.log("state: ", state);
    const { accessCode } = useParams();
 
    const {
       data: groupData,
       isLoading: groupLoading,
       isError: groupError,
+      refetch,
    } = useGetGroupByCodeQuery(accessCode);
-
-   const { refetch } = useGetGroupByCodeQuery(accessCode);
 
    const {
       data: questionsData,
       isLoading: questionsLoading,
       isError: questionsError,
+      refetch: refetchQuestion,
    } = useGetActiveQuestionsForGroupQuery(accessCode);
 
    const [editGroupName] = useEditGroupNameMutation();
 
    const [isEditingGroupName, setIsEditingGroupName] = useState(false);
    const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+
+   const { data: currentUser } = useGetCurrentUserQuery();
+   console.log("currentUser", currentUser);
+   const isAdmin = currentUser?.user?.roles?.some(
+      (role) => role.group_id === groupData?.id && role.is_admin
+   );
 
    const handleEditGroupName = async () => {
       try {
@@ -54,15 +66,12 @@ const GroupPage = () => {
       setIsEditingGroupName(false);
    };
 
-   const [selectedQuestion, setSelectedQuestion] = useState("");
-
    if (groupLoading) return <div>Loading...</div>;
    if (groupError) {
       return <div>Error with group data: {groupError.message}</div>;
    }
 
    if (!groupData) return null;
-
    return (
       <div className="group-page-container">
          <div className="group-name-container">
@@ -81,51 +90,63 @@ const GroupPage = () => {
             ) : (
                <div className="group-title-container">
                   <div className="group-title">{groupData.name}</div>
-                  <FontAwesomeIcon
-                     icon={faPenToSquare}
-                     onClick={() => setIsEditingGroupName(true)}
-                     style={{ cursor: "pointer" }}
-                  />
+                  {isAdmin && (
+                     <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        onClick={() => setIsEditingGroupName(true)}
+                        style={{ cursor: "pointer" }}
+                     />
+                  )}
                </div>
             )}
          </div>
 
          <div className="group-code-container">
-            Code: {groupData.access_code}
+            {`Code: ${groupData.access_code}`}
          </div>
 
          {questionsLoading && <div>Loading questions...</div>}
-         <div>
+         <div className="group-questions-container">
             {questionsData && questionsData.length > 0 ? (
-               <div>
-                  <div>
-                     {questionsData.map((question) => (
-                        <div key={question.id}>
-                           <Link to={`/question/${question.id}`}>
-                              {" "}
-                              {question.title}
-                           </Link>
-                        </div>
-                     ))}
-                  </div>
+               <div className="questions-map">
+                  {questionsData.map((question) => (
+                     <div key={question.id}>
+                        <Link
+                           className="current"
+                           to={`/question/${question.id}`}
+                        >
+                           {" "}
+                           {question.title}
+                        </Link>
+
+                        {isAdmin && <CloseQuestion id={question.id} />}
+                     </div>
+                  ))}
                </div>
             ) : (
-               <CreateQuestion groupId={groupData.id} />
+               <div onClick={() => refetchQuestion()}>
+                  <CreateQuestion groupId={groupData.id} />
+               </div>
             )}
          </div>
 
          <hr></hr>
 
-         <div className="previousQuestion">
+         <div className="previous-questions">
             <PreviousQuestion />
          </div>
-         <div className="creatorOnly">
-            <div>Creator Setting</div>
-            <DeleteGroup groupId={groupData.id} />
-            <div>Users in this group:</div>
-            <ul>
-               <li>{groupData && <UsersList groupId={groupData?.id} />}</li>
-            </ul>
+
+         <div className="group-info-footer-container">
+            <div className="footer-admin-container">
+               <div className="admin-title">Creator Setting</div>
+               <DeleteGroup groupId={groupData.id} />
+            </div>
+            <div className="footer-users-container">
+               <div className="users-list">Users in this group:</div>
+               <ul>
+                  <li>{groupData && <UsersList groupId={groupData?.id} />}</li>
+               </ul>
+            </div>
          </div>
       </div>
    );

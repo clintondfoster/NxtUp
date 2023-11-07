@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAddQuestionMutation } from "../../reducers/api";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
+import "./CreateQuestion.scss";
 
 const CreateQuestion = ({ groupId }) => {
    const [questionTitle, setQuestionTitle] = useState("");

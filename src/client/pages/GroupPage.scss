@@ -1,0 +1,87 @@
+@use "../style.scss";
+
+.group-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+
+    .group-name-container {
+        display: flex;
+
+        .group-name-change-container {
+            display: flex;
+            
+            .save-button {
+                display: flex;
+            }
+        }
+
+        
+        .group-title-container {
+            display: flex;
+            
+            .group-title {
+                display: flex;
+            }
+        }
+    }
+
+    .group-code-container {
+        display: flex;
+    }
+
+    .group-questions-container {
+        display: flex;
+
+        .questions-map {
+            display: flex;
+
+            .current {
+                border: none;
+                box-sizing: border-box;
+                padding: 0.7rem;
+                border-radius: 3px;
+                margin: 8px;
+                background-color: style.$tertiary;
+                color: style.$secondary;
+                border-radius: 7px;
+                font-size: 1.2rem;
+                
+                &:hover {
+                    background-color: style.$tertiary-active;
+                }
+            }
+        }
+    }
+
+    .previous-questions {
+        display: flex;
+    }
+    
+    .group-info-footer-container {
+        display: flex;
+        flex-direction: column;
+        justify-self: flex-end;
+
+        .footer-admin-container {
+            display: flex;
+
+            .admin-title {
+                display: flex;
+            }
+        }
+
+        .footer-users-container {
+            display: flex;
+
+            .users-list {
+                display: flex;
+            }
+        }
+
+
+    }
+
+}

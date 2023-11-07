@@ -1,22 +1,21 @@
-import { useCloseQuestionMutation } from "../../../reducers/api";
+import { useCloseQuestionMutation } from "../../reducers/api";
 import "./CloseQuestion.scss";
 
-const CloseQuestion = () => {
-   const { questionId } = useParams();
+const CloseQuestion = ({ id }) => {
    const [closeQuestion] = useCloseQuestionMutation();
 
    const onCloseQuestion = async () => {
-      await closeQuestion(questionId)
+      await closeQuestion(id)
          .then(() => {})
          .catch(() => {
             console.log("error");
          });
+      location.reload();
    };
+
    return (
-      <div>
-         <div onClick={onCloseQuestion} className="close-btn">
-            Close Question
-         </div>
+      <div onClick={onCloseQuestion} className="close-btn">
+         Close Question
       </div>
    );
 };
