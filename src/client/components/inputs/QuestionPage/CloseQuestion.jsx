@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useCloseQuestionMutation } from "../../../reducers/api";
 import "./CloseQuestion.scss";
 

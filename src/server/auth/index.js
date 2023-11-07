@@ -5,18 +5,56 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const protection = require("../middleware")
 
+const responseError = (res, code, message) => res.status(code).json({ error: message});
 
-router.post("/register", async (req, res,next)=>{
+async function checkEmailExists(req, res, next) {
+    const { email } = req.body;
+    if(!email) {
+        return responseError(res, 400, 'Valid email is required.')
+    }
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { email: email },
+        });
+        if (existingUser) {
+            return responseError(res, 409, "Account already exists. Please login.")
+        } next ();
+    } catch (error) {
+        next (error);
+    }
+}
 
+
+async function checkUsernameExists (req, res, next) {
+    const { username } = req.body;
+    if(!username) {
+        return responseError(res, 400, "Username is required.")
+    }
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { username: username },
+        });
+        if (existingUser) {
+            return responseError(res, 409, 'That username already exists. Please try again.')
+        }
+        next();
+    } catch (err) {
+        next(err)
+    }
+}
+
+router.post("/register", checkEmailExists, checkUsernameExists, async (req, res,next)=>{
+
+const { username, email, password } = req.body;
     const salt_rounds = 5;
-    const hashedPassword = await bcrypt.hash(req.body.password, salt_rounds)
+    const hashedPassword = await bcrypt.hash(password, salt_rounds)
 
     try{
         const user = await prisma.user.create({
             data:{
-                username: req.body.username,
+                username: username,
                 password: hashedPassword,
-                email: req.body.email
+                email: email
             }
         })
 
@@ -36,18 +74,16 @@ router.post("/register", async (req, res,next)=>{
 
 router.post("/login", async (req, res,next)=>{
     try{
-        const user = await  prisma.user.findUnique({
-            where: {email: req.body.email}
+        const { email, password } = req.body;
+
+        const user = await prisma.user.findUnique({
+            where: {email: email}
         })
 
-        if(!user){
-            return res.status(401).send("Invalid Login")
-        }
+        const isValid = await bcrypt.compare(req.body.password, user.password);
 
-        const isValid = await bcrypt.compare(req.body.password, user.password)
-
-        if(!isValid){
-            return res.status(401).send("Invalid Login")
+        if(!user || !isValid){
+            return responseError(res, 401, "Invalid login credentials.")
         }
 
         const token = jwt.sign({id:user.id}, process.env.JWT)
