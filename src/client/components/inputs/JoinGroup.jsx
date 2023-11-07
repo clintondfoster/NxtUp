@@ -24,7 +24,7 @@ const JoinGroup = () => {
       setAccessCode("");
       setSuccessMessage(`You are now entering ${groupData.name}`);
 
-      //Redirect to results page after 3 seconds
+      //Redirect to group page after 3 seconds
       setTimeout(() => {
         navigate(`/group/${accessCode}`);
       }, 3000);
@@ -40,19 +40,21 @@ const JoinGroup = () => {
   return (
     <div>
       {successMessage && <div>{successMessage}</div>}
-      {errorMessage && <div style={{ color: "red"}}>{errorMessage}</div>}
-      <div >
-      <input className="joingroup"
-        placeholder="Enter Your Group Code"
-        type="text"
-        value={accessCode}
-        onChange={(e) => setAccessCode(e.target.value)}
-      />
+      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+      <div>
+        <input
+          className="joingroup"
+          placeholder="Enter Your Group Code"
+          type="text"
+          value={accessCode}
+          onChange={(e) => setAccessCode(e.target.value)}
+        />
       </div>
       <div className="btn">
-      <button onClick={handleCreateRole} className="start">Start</button>
+        <button onClick={handleCreateRole} className="start">
+          Start
+        </button>
       </div>
-      
     </div>
   );
 };

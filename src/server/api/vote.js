@@ -6,7 +6,7 @@ const protection = require("../middleware");
 
 // Create vote if not exist, delete vote if exists
 router.post("/", protection, async (req, res, next) => {
-  let createVote
+  let createVote;
   try {
     const existVote = await prisma.vote.findFirst({
       where: {
@@ -37,25 +37,43 @@ router.post("/", protection, async (req, res, next) => {
   }
 });
 
-router.get("/voted/:submissionId/:userId", protection, async (req, res, next) => {
+router.get("/voted/:submissionId/", protection, async (req, res, next) => {
+
+  const userId = parseInt(req.user.id)
+  const submissionId = parseInt(req.params.submissionId)
   try {
-    const validVote = await prisma.vote.findFirst({
+    const activeVote = await prisma.vote.findFirst({
       where: {
-        submissionId: +req.params.submissionId,
-        user_id: req.user.id,
+        user_id: userId,
+        submissionId,
       },
     });
-    if (validVote) {
-      res.status(200).send(validVote);
-      return;
-    } else {
-      res.status(404).send(null);
-    }
+
+    res.status(200).send(activeVote);
+    console.log('active vote from get', activeVote)
   } catch (err) {
     console.error(err);
     next(err);
   }
 });
+
+// const activeSubmission = await prisma.submission.findFirst({
+//   where: {
+//     id: +req.params.submissionId,
+//   },
+//   include: {
+//     Vote: {
+//       where: {
+//         user_id: +req.params.userId,
+//         submission_id: +req.params.submissionId,
+//       },
+//       include: {
+//         submission:true,
+//       },
+//     },
+//   },
+// });
+// res.status(200).send(activeSubmission.Vote);
 
 router.get("/:submissionId", async (req, res, next) => {
   try {
@@ -66,7 +84,7 @@ router.get("/:submissionId", async (req, res, next) => {
       include: {
         Vote: {
           include: {
-            submission:true,
+            submission: true,
           },
         },
       },
@@ -77,6 +95,5 @@ router.get("/:submissionId", async (req, res, next) => {
     next(err);
   }
 });
-
 
 module.exports = router;
