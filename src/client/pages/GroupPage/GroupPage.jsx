@@ -41,6 +41,7 @@ const GroupPage = () => {
 
   const [isEditingGroupName, setIsEditingGroupName] = useState(false);
   const [newGroupName, setNewGroupName] = useState(groupData?.name || "");
+  const [copySuccess, setCopySuccess] = useState("");
 
   const { data: currentUser } = useGetCurrentUserQuery();
   console.log("currentUser", currentUser);

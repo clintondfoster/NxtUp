@@ -14,6 +14,7 @@ const CreateQuestion = ({ groupId }) => {
         title: questionTitle,
         group_id: groupId,
       });
+      refetch();
       setQuestionTitle("");
     } catch (err) {
       console.error("Error creating group:", err);
@@ -23,7 +24,7 @@ const CreateQuestion = ({ groupId }) => {
   const isCreator = currentUser?.user?.roles?.some(
     (role) => role.group_id === groupId && role.is_creator
   );
- 
+
   if (isCreator) {
     return (
       <div>
@@ -33,7 +34,9 @@ const CreateQuestion = ({ groupId }) => {
           value={questionTitle}
           onChange={(e) => setQuestionTitle(e.target.value)}
         />
-        <button disabled={!questionTitle} onClick={handleCreateQuestion}>Create Question</button>
+        <button disabled={!questionTitle} onClick={handleCreateQuestion}>
+          Create Question
+        </button>
       </div>
     );
   } else {
