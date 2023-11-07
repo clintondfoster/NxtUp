@@ -23,12 +23,6 @@ const CreateQuestion = ({ groupId }) => {
    const isCreator = currentUser?.user?.roles?.some(
       (role) => role.group_id === groupId && role.is_creator
    );
-   // const isAdmin = currentUser?.user?.roles?.some(
-   //   (role) => role.group_id === groupId && role.is_Admin
-   // );
-   // const isAdmitted = currentUser?.user?.roles?.some(
-   //   (role) => role.group_id === groupId && role.is_admitted
-   // );
 
    if (isCreator) {
       return (
@@ -40,7 +34,11 @@ const CreateQuestion = ({ groupId }) => {
                value={questionTitle}
                onChange={(e) => setQuestionTitle(e.target.value)}
             />
-            <div className="create-question-btn" onClick={handleCreateQuestion}>
+            <div
+               disabled={!questionTitle}
+               className="create-question-btn"
+               onClick={handleCreateQuestion}
+            >
                Create Question
             </div>
          </div>
