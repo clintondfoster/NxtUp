@@ -91,6 +91,7 @@ router.get("/me", protection, async (req, res,next)=>{
                 username: user.username,
                 email: user.email,
                 roles: user.Role,
+                sub: user.sub,
                 isCreator: isCreator,
                 isAdmitted: isAdmitted,
                 isAdmin: isAdmin
