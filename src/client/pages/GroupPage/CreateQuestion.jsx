@@ -23,14 +23,7 @@ const CreateQuestion = ({ groupId }) => {
   const isCreator = currentUser?.user?.roles?.some(
     (role) => role.group_id === groupId && role.is_creator
   );
-  // const isAdmin = currentUser?.user?.roles?.some(
-  //   (role) => role.group_id === groupId && role.is_Admin
-  // );
-  // const isAdmitted = currentUser?.user?.roles?.some(
-  //   (role) => role.group_id === groupId && role.is_admitted
-  // );
-
-
+ 
   if (isCreator) {
     return (
       <div>
@@ -40,12 +33,24 @@ const CreateQuestion = ({ groupId }) => {
           value={questionTitle}
           onChange={(e) => setQuestionTitle(e.target.value)}
         />
-        <button onClick={handleCreateQuestion}>Create Question</button>
+        <button disabled={!questionTitle} onClick={handleCreateQuestion}>Create Question</button>
       </div>
     );
   } else {
     return <div>Please wait for question to be created.</div>;
   }
+
+  return (
+    <div>
+      <input
+        placeholder="Enter Question"
+        type="text"
+        value={questionTitle}
+        onChange={(e) => setQuestionTitle(e.target.value)}
+      />
+      <button onClick={handleCreateQuestion}>Create Question</button>
+    </div>
+  );
 };
 
 export default CreateQuestion;

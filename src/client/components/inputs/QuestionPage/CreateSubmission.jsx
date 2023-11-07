@@ -16,7 +16,7 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
 
   const handleCreateSubmission = async () => {
     if (!submissionLink) {
-      setErrorMessage("Please provide a valid link.");
+      setErrorMessage("Please provide a valid link.");  
       return;
     }
 
