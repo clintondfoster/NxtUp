@@ -11,7 +11,7 @@ import UsersList from "../../components/inputs/UsersList";
 import DeleteGroup from "./DeleteGroup";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCopy } from "@fortawesome/free-solid-svg-icons";
 import PreviousQuestion from "./PreviousQuestion";
 import CloseQuestion from "../../components/inputs/QuestionPage/CloseQuestion";
 import { useSelector } from "react-redux";
@@ -20,6 +20,8 @@ const GroupPage = () => {
   const state = useSelector((state) => state);
   console.log("state", state);
   const { accessCode } = useParams();
+
+  console.log("access code in group page", accessCode);
 
   const {
     data: groupData,
@@ -65,6 +67,20 @@ const GroupPage = () => {
     setIsEditingGroupName(false);
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => setCopySuccess("Copied!"))
+      .catch(() => setCopySuccess("Failed to copy!"));
+  };
+
+  const onCopy = () => {
+    copyToClipboard();
+    setTimeout(() => setCopySuccess(""), 2000);
+  };
+
+  const [selectedQuestion, setSelectedQuestion] = useState("");
+
   if (groupLoading) return <div>Loading...</div>;
   if (groupError) {
     return <div>Error with group data: {groupError.message}</div>;
@@ -107,6 +123,17 @@ const GroupPage = () => {
 
       <h4>Code: {groupData.access_code}</h4>
 
+      <div className="shareGroup">
+        <h4>Shareable Link: </h4>
+        <div onClick={onCopy}>
+          <FontAwesomeIcon icon={faCopy} />
+          Copy Link
+        </div>
+        {copySuccess && (
+          <span style={{ marginLeft: "10px" }}>{copySuccess}</span>
+        )}
+      </div>
+
       {questionsLoading && <div>Loading questions...</div>}
       <div>
         {questionsData && questionsData.length > 0 ? (
@@ -120,8 +147,8 @@ const GroupPage = () => {
             </h2>
           </div>
         ) : (
-          <div onClick={()=>refetchQuestion()}>
-          <CreateQuestion groupId={groupData.id} />
+          <div onClick={() => refetchQuestion()}>
+            <CreateQuestion groupId={groupData.id} />
           </div>
         )}
       </div>
@@ -135,16 +162,16 @@ const GroupPage = () => {
       <hr></hr>
       <div className="creatorOnly">
         <h2>Creator Setting</h2>
-        <div onClick={()=>refetchQuestion()}>
-        {questionsData?.length > 0 && (
-          <CloseQuestion
-            questionId={
-              questionsData && Array.isArray(questionsData)
-                ? questionsData[0]?.id
-                : null
-            }
-          />
-        )}
+        <div onClick={() => refetchQuestion()}>
+          {questionsData?.length > 0 && (
+            <CloseQuestion
+              questionId={
+                questionsData && Array.isArray(questionsData)
+                  ? questionsData[0]?.id
+                  : null
+              }
+            />
+          )}
         </div>
         <DeleteGroup groupId={groupData.id} />
         <h4>Users in this group:</h4>
