@@ -1,11 +1,9 @@
-import { useParams } from "react-router-dom";
 import { useCloseQuestionMutation } from "../../../reducers/api";
 import "./CloseQuestion.scss";
 
-const CloseQuestion = () => {
-  const { questionId } = useParams();
-  const [closeQuestion] = useCloseQuestionMutation();
-
+const CloseQuestion = ({questionId}) => {
+const [closeQuestion] = useCloseQuestionMutation();
+console.log("QuestionFromBtn", questionId)
   const onCloseQuestion = async () => {
     await closeQuestion(questionId)
       .then(() => {
