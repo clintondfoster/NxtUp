@@ -24,7 +24,7 @@ const JoinGroup = () => {
       setAccessCode("");
       setSuccessMessage(`You are now entering ${groupData.name}`);
 
-      //Redirect to results page after 3 seconds
+      //Redirect to group page after 3 seconds
       setTimeout(() => {
         navigate(`/group/${accessCode}`);
       }, 3000);

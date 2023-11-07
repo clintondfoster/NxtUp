@@ -24,7 +24,6 @@ const CreateQuestion = ({ groupId }) => {
     (role) => role.group_id === groupId && role.is_creator
   );
  
-
   if (isCreator) {
     return (
       <div>
@@ -40,6 +39,18 @@ const CreateQuestion = ({ groupId }) => {
   } else {
     return <div>Please wait for question to be created.</div>;
   }
+
+  return (
+    <div>
+      <input
+        placeholder="Enter Question"
+        type="text"
+        value={questionTitle}
+        onChange={(e) => setQuestionTitle(e.target.value)}
+      />
+      <button onClick={handleCreateQuestion}>Create Question</button>
+    </div>
+  );
 };
 
 export default CreateQuestion;
