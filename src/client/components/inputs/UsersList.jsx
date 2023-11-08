@@ -1,87 +1,91 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
-  useGetUsersInGroupQuery,
-  useUpdateUserRoleMutation,
+   useGetUsersInGroupQuery,
+   useUpdateUserRoleMutation,
 } from "../../reducers/api";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
+import "./UsersList.scss";
 
 export const UsersList = ({ groupId }) => {
-  if (!groupId) return <p>Awaiting group...</p>;
-  const {
-    data: users,
-    isLoading: usersLoading,
-    error: usersError,
-  } = useGetUsersInGroupQuery(groupId);
+   if (!groupId) return <p>Awaiting group...</p>;
+   const {
+      data: users,
+      isLoading: usersLoading,
+      error: usersError,
+   } = useGetUsersInGroupQuery(groupId);
 
-  const { data: thisUser } = useGetCurrentUserQuery();
+   const { data: thisUser } = useGetCurrentUserQuery();
 
-  console.log("userlist current user", thisUser);
+   console.log("userlist current user", thisUser);
 
-  const isCreator = thisUser?.user?.roles?.some(
-    (role) => role.group_id === groupId && role.is_creator
-  );
-  const isAdmin = thisUser?.user?.roles?.some(
-    (role) => role.group_id === groupId && role.is_admin
-  );
-  const isAdmitted = thisUser?.user?.roles?.some(
-    (role) => role.group_id === groupId && role.is_admitted
-  );
+   const isCreator = thisUser?.user?.roles?.some(
+      (role) => role.group_id === groupId && role.is_creator
+   );
+   const isAdmin = thisUser?.user?.roles?.some(
+      (role) => role.group_id === groupId && role.is_admin
+   );
+   const isAdmitted = thisUser?.user?.roles?.some(
+      (role) => role.group_id === groupId && role.is_admitted
+   );
 
-  console.log("data returned by getcurrentUser", thisUser);
+   console.log("data returned by getcurrentUser", thisUser);
 
-  console.log("users in userslist", users);
-  console.log("Group id in userslist:", groupId);
+   console.log("users in userslist", users);
+   console.log("Group id in userslist:", groupId);
 
-  const [updatedUsers, setUpdatedUsers] = useState({});
-  const [updateUserRole, { isLoading: isUpdating }] =
-    useUpdateUserRoleMutation();
+   const [updatedUsers, setUpdatedUsers] = useState({});
+   const [updateUserRole, { isLoading: isUpdating }] =
+      useUpdateUserRoleMutation();
 
-  const handleToggleCreatorStatus = async (userId, currentStatus) => {
-    const isCreator = updatedUsers[userId] ?? currentStatus;
+   const handleToggleCreatorStatus = async (userId, currentStatus) => {
+      const isCreator = updatedUsers[userId] ?? currentStatus;
 
-    const data = {
-      is_creator: !isCreator,
-    };
+      const data = {
+         is_creator: !isCreator,
+      };
 
-    try {
-      await updateUserRole({ groupId, userId, data });
-      setUpdatedUsers({ ...updatedUsers, [userId]: !isCreator });
-    } catch (err) {
-      console.log("failed to update", err);
-    }
-  };
+      try {
+         await updateUserRole({ groupId, userId, data });
+         setUpdatedUsers({ ...updatedUsers, [userId]: !isCreator });
+      } catch (err) {
+         console.log("failed to update", err);
+      }
+   };
 
-  if (usersLoading) return <p>Loading...</p>;
-  if (usersError) return <p>Error loading users</p>;
-  if (!users.length) return <p>No users found.</p>;
+   if (usersLoading) return <p>Loading...</p>;
+   if (usersError) return <p>Error loading users</p>;
+   if (!users.length) return <p>No users found.</p>;
 
-  // const currentUser = users.find((user) => user.is_admin);
-  // const isAdmin = currentUser?.is_admin || false;
+   // const currentUser = users.find((user) => user.is_admin);
+   // const isAdmin = currentUser?.is_admin || false;
 
-  return (
-    <ul>
-      {users.map((user) => {
-        const isCreatorStatus = updatedUsers[user.id] ?? user.is_creator;
+   return (
+      <ul className="list">
+         {users.map((user) => {
+            const isCreatorStatus = updatedUsers[user.id] ?? user.is_creator;
 
-        return (
-          <li key={user.id}>
-            {user.username}
+            return (
+               <li className="list-item" key={user.id}>
+                  <div className="username">{user.username}</div>
 
-            {isAdmin && user.id !== thisUser.user.id && (
-              <button
-                onClick={() =>
-                  handleToggleCreatorStatus(user.id, isCreatorStatus)
-                }
-              >
-                {isCreatorStatus ? "Remove Status" : "Assign Creator Status"}
-              </button>
-            )}
-          </li>
-        );
-      })}
-    </ul>
-  );
+                  {isAdmin && user.id !== thisUser.user.id && (
+                     <div
+                        className="btn"
+                        onClick={() =>
+                           handleToggleCreatorStatus(user.id, isCreatorStatus)
+                        }
+                     >
+                        {isCreatorStatus
+                           ? "Remove Moderator"
+                           : "Make Moderator"}
+                     </div>
+                  )}
+               </li>
+            );
+         })}
+      </ul>
+   );
 };
 
 export default UsersList;
