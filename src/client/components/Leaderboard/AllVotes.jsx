@@ -8,7 +8,13 @@ const AllVotes = ({ submissionId }) => {
 
   //socket logic
   useEffect(() => {
-    const socket = io.connect("http://localhost:3000");
+    const socket = io.connect("http://localhost:3000", {
+  cors: {
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
+    methods: ["GET", "POST"]
+  },
+});
+
 
     socket.on("connect", () => {});
 
