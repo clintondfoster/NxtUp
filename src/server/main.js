@@ -26,7 +26,7 @@ app.use("/oauth", require("./oauth"))
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: import.meta.env.VITE_URL || "http://localhost:3000",
+    origin: process.env.VITE_URL || "http://localhost:3000/",
     methods: ["GET", "POST"]
   },
 });
