@@ -9,6 +9,9 @@
   margin-bottom: 20px;
   border-radius: 0.5rem;
   margin-top: 160px;
+  @media (min-width: 50em) {
+    width: 10em;
+  }
 }
 
 .hr-sect {
@@ -51,6 +54,7 @@
   }
   color: style.$secondary;
   border-radius: 7px;
+  border: none;
   font-size: 1.2rem;
   cursor: pointer;
 }

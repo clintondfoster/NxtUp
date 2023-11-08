@@ -46,9 +46,9 @@
     }
 
     .nav-btn {
-        background-color: style.$secondary-dark;
+        background-color: style.$secondary;
         width: 100%;
-        padding: 2px 5px;
+        padding: 10px 5px;
         &:hover {
             background-color: style.$secondary-active;
         }

@@ -35,7 +35,14 @@ router.post("/oauth", async (req, res, next) => {
                 }
             })
             const token = jwt.sign({ id: newUser.id }, process.env.JWT);     
-            return res.status(201).send({ token, user: { id: newUser.id, username: newUser.username } })
+            return res.status(201).send({ 
+                token, 
+                user: { 
+                    id: newUser.id, 
+                    email: newUser.email,
+                    username: newUser.username
+                } 
+            })
         }
 
         // if a user was created internally, update it with OAuth info
@@ -48,7 +55,14 @@ router.post("/oauth", async (req, res, next) => {
                 data: {sub}
             })
             const token = jwt.sign({ id: existingUser.id }, process.env.JWT); 
-            res.status(201).send({ token, user: { id: existingUser.id, username: existingUser.username } })
+            res.status(201).send({ 
+                token, 
+                user: { 
+                    userId: existingUser.id, 
+                    email:existingUser.email, 
+                    username: existingUser.username 
+                } 
+            })
         }
 
         // if the token sub and the user sub are different, error out
@@ -62,7 +76,8 @@ router.post("/oauth", async (req, res, next) => {
             res.status(201).send({
                 token,
                 user: {
-                    id: existingUser.id,
+                    userId: existingUser.id,
+                    email: existingUser.email,
                     username: existingUser.username,
                 }
             })
