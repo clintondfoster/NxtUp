@@ -5,7 +5,7 @@ export const votingApi = createApi({
   tagTypes: ["vote"],
   reducerPath: "votingApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/",
+    baseUrl: import.meta.env.VITE_URL || "http://localhost:3000/",
     prepareHeaders: (headers, { getState }) => {
       const credentials = window.sessionStorage.getItem(CREDENTIALS);
       const parsedCredentials = JSON.parse(credentials || "{}");
