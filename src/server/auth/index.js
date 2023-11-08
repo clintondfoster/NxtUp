@@ -100,7 +100,7 @@ router.post("/login", async (req, res,next)=>{
 });
 
 router.get("/me", protection, async (req, res,next)=>{
-    console.log("endpoint /me activated,")
+   
     if(!req.user){
         return res.send({})
     }
@@ -134,7 +134,7 @@ router.get("/me", protection, async (req, res,next)=>{
             }
         })
         // res.send(user);
-        console.log("router /me", req.user);
+       
     }catch(err){
         next(err)
     }

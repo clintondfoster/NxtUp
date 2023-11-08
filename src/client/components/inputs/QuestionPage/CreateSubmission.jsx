@@ -52,11 +52,11 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
      socket.emit("new_submission", response);
 
 
-     console.log("Submission created:", response.data);
+    
      setSubmissionLink("");
      setSuccessMessage("Submission successfully created!");
    } catch (err) {
-     console.log("Error creating submission:", err);
+    
      setErrorMessage("Failed to create submission. Please try again.");
    }
  };

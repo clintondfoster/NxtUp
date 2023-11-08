@@ -17,7 +17,7 @@ const CreateVote = ({ questionId, submissionId }) => {
   const [createVote] = useCreateVoteMutation();
 
   const {data: voted} = useGetVotesForSubByUserQuery(submissionId);
-  // console.log('voted from createVote', voted)
+  //
 
 
 
@@ -32,12 +32,12 @@ const CreateVote = ({ questionId, submissionId }) => {
   const onCreateVote = async () => {
     await createVote({ questionId, submissionId })
       .then(() => {
-        console.log("create vote socket connected", socket.connected);
-        console.log("vote for ", submissionId);
+       
+       
         socket.emit("new_vote", submissionId);
       })
       .catch(() => {
-        console.log("error");
+       
       });
   };
 

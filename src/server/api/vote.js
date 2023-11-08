@@ -50,30 +50,13 @@ router.get("/voted/:submissionId/", protection, async (req, res, next) => {
     });
 
     res.status(200).send(activeVote);
-    console.log('active vote from get', activeVote)
+   
   } catch (err) {
     console.error(err);
     next(err);
   }
 });
 
-// const activeSubmission = await prisma.submission.findFirst({
-//   where: {
-//     id: +req.params.submissionId,
-//   },
-//   include: {
-//     Vote: {
-//       where: {
-//         user_id: +req.params.userId,
-//         submission_id: +req.params.submissionId,
-//       },
-//       include: {
-//         submission:true,
-//       },
-//     },
-//   },
-// });
-// res.status(200).send(activeSubmission.Vote);
 
 router.get("/:submissionId", async (req, res, next) => {
   try {
