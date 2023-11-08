@@ -5,31 +5,44 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {v4 : uuidv4} = require("uuid");
+const {generateUsername} = require("unique-username-generator")
 const { validationResult } = require('express-validator');
 
 router.post("/oauth", async (req, res, next) => {
     const errors = validationResult(req)
+    const salt_rounds = 5;
+    const password = uuidv4()
+    const hashedPassword = await bcrypt.hash(password, salt_rounds)
+    
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()})
     }
 
     const { email, sub } = req.body
 
-    function randomName() {
-        return "user"+uuidv4()
-    }
-    function randomPass() {
-        return uuidv4()
+    async function randomName() {
+        let username;
+        do {
+            // generate a name
+            username = generateUsername("", 3)
+            // check if the username exists in the database
+            var dbuser = await prisma.User.findFirst({where: {username}})
+            // if the name does, generate a new username, and recheck the database    
+        } while(dbuser);
+        // if the name is not found, return it
+        console.log(username)
+        return username;
     }
 
     try {
         const existingUser = await prisma.User.findFirst({ where: { email } });
         // if no user is found, make one
         if (!existingUser) {
+            console.log("Random name function", randomName())
             const newUser = await prisma.User.create({
                 data:{
-                    username: randomName(),
-                    password: randomPass(),
+                    username: await randomName(),
+                    password: hashedPassword,
                     email,
                     sub,
                 }
