@@ -89,84 +89,91 @@ const GroupPage = () => {
    if (!groupData) return null;
    return (
       <div className="group-page-container">
-         <div className="group-name-container">
-            {isEditingGroupName ? (
-               <div className="group-name-change-container">
-                  <input
-                     type="text"
-                     value={newGroupName}
-                     placeholder={groupData.name}
-                     onChange={(e) => setNewGroupName(e.target.value)}
-                  />
-                  <div className="save-button" onClick={handleEditGroupName}>
-                     Save
-                  </div>
-               </div>
-            ) : (
-               <div className="group-title-container">
-                  <div className="group-title">{groupData.name}</div>
-                  {isAdmin && (
-                     <FontAwesomeIcon
-                        icon={faPenToSquare}
-                        onClick={() => setIsEditingGroupName(true)}
-                        style={{ cursor: "pointer" }}
+         <div className="justify-fix">
+            <div className="group-name-container">
+               {isEditingGroupName ? (
+                  <div className="group-name-change-container">
+                     <input
+                        type="text"
+                        value={newGroupName}
+                        placeholder={groupData.name}
+                        onChange={(e) => setNewGroupName(e.target.value)}
                      />
-                  )}
-               </div>
-            )}
-         </div>
-
-         <div className="group-code-container" onClick={onCopy}>
-            <div className="group-code">
-               {`Code: ${groupData.access_code}`}
-               <FontAwesomeIcon icon={faCopy} />
-            </div>
-            {copySuccess && (
-               <span style={{ marginLeft: "10px" }}>{copySuccess}</span>
-            )}
-         </div>
-
-         {questionsLoading && <div>Loading questions...</div>}
-         <div className="group-questions-container">
-            {questionsData && questionsData.length > 0 ? (
-               <div className="questions-map">
-                  {questionsData.map((question) => (
-                     <div key={question.id}>
-                        <Link
-                           className="current"
-                           to={`/question/${question.id}`}
-                        >
-                           {" "}
-                           {question.title}
-                        </Link>
-
-                        {isAdmin && <CloseQuestion id={question.id} />}
+                     <div className="save-button" onClick={handleEditGroupName}>
+                        Save
                      </div>
-                  ))}
-               </div>
-            ) : (
-               <div onClick={() => refetchQuestion()}>
-                  <CreateQuestion groupId={groupData.id} />
-               </div>
-            )}
-         </div>
+                  </div>
+               ) : (
+                  <div className="group-title-container">
+                     <div className="group-title">{groupData.name}</div>
+                     {isAdmin && (
+                        <FontAwesomeIcon
+                           icon={faPenToSquare}
+                           onClick={() => setIsEditingGroupName(true)}
+                           style={{ cursor: "pointer" }}
+                        />
+                     )}
+                  </div>
+               )}
+            </div>
 
-         <hr></hr>
+            <div className="group-code-container" onClick={onCopy}>
+               <div className="group-code">{`Code: ${groupData.access_code}`}</div>
+               <FontAwesomeIcon icon={faCopy} />
+               {copySuccess && (
+                  <span style={{ marginLeft: "10px" }}>{copySuccess}</span>
+               )}
+            </div>
 
-         <div className="previous-questions">
-            <PreviousQuestion />
+            {questionsLoading && <div>Loading questions...</div>}
+            <div className="group-questions-container">
+               {questionsData && questionsData.length > 0 ? (
+                  <div className="questions-map">
+                     {"Active Questions"}
+                     {questionsData.map((question) => (
+                        <div className="active-question" key={question.id}>
+                           <Link
+                              className="current"
+                              to={`/question/${question.id}`}
+                           >
+                              {" "}
+                              {question.title}
+                           </Link>
+
+                           {isAdmin && <CloseQuestion id={question.id} />}
+                        </div>
+                     ))}
+                  </div>
+               ) : (
+                  <div onClick={() => refetchQuestion()}>
+                     <CreateQuestion groupId={groupData.id} />
+                  </div>
+               )}
+            </div>
+
+            <hr></hr>
+
+            <div className="previous-questions">
+               <PreviousQuestion />
+            </div>
          </div>
 
          <div className="group-info-footer-container">
-            <div className="footer-admin-container">
-               <div className="admin-title">Creator Setting</div>
-               <DeleteGroup groupId={groupData.id} />
-            </div>
+            {isAdmin && (
+               <div className="footer-admin-container">
+                  <div className="admin-title">Creator Setting</div>
+                  <DeleteGroup groupId={groupData.id} />
+               </div>
+            )}
             <div className="footer-users-container">
-               <div className="users-list">Users in this group:</div>
-               <ul>
-                  <li>{groupData && <UsersList groupId={groupData?.id} />}</li>
-               </ul>
+               <div className="users-list">
+                  Users in this group:
+                  <ul>
+                     <li>
+                        {groupData && <UsersList groupId={groupData?.id} />}
+                     </li>
+                  </ul>
+               </div>
             </div>
          </div>
       </div>
