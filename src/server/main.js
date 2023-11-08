@@ -32,18 +32,18 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  // console.log(`user connected: ${socket.id}`);
+  //
   socket.on("new_submission", (data) => {
     io.emit("new_submission", data)
-    console.log(data)
+   
   })
   socket.on("new_vote", (data) => {
     io.emit("new_vote", data)
-    console.log('server socket received',data)
+   
   })
 
   socket.on("disconnect", () => {
-    // console.log(`user disconnected: ${socket.id}`);
+    //
   });
 
 });
@@ -57,13 +57,10 @@ app.use((req, res, next) => {
 
 
 server.listen(PORT, () => {
-  console.log("Server running on port" + PORT);
+ 
 });
 ViteExpress.bind(app, server);
 
-// ViteExpress.listen(app, PORT, () =>
-//   console.log("Server is listening on port" +PORT)
-// );
 
 app.use((err, req, res, next) => {
   console.error(`Error: ${err.message}\nStack: ${err.stack}`);

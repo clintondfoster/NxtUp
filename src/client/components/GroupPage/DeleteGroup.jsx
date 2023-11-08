@@ -18,7 +18,7 @@ const DeleteGroup = ({ groupId }) => {
         navigate("/home");
       }, 2000);
     } catch (err) {
-      console.log("Error deleting group:", err);
+     
     }
   };
 

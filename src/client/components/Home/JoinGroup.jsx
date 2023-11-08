@@ -16,7 +16,7 @@ const JoinGroup = () => {
       isLoading,
    } = useGetGroupByCodeQuery(accessCode, { skip: accessCode.length !== 5 });
 
-   console.log("groupData in JoinGroup", groupData);
+  
 
    const extractAccessCode = (url) => {
       const digits = /\/group\/(\d{5})$/;
@@ -26,7 +26,7 @@ const JoinGroup = () => {
 
    const handleInputChange = (e) => {
       const enteredValue = e.target.value;
-      console.log("entered value:", enteredValue);
+     
       setInputValue(enteredValue);
    };
 
@@ -35,7 +35,7 @@ const JoinGroup = () => {
          if (!isLoading && groupData && !error) {
             try {
                const result = await createRole({ accessCode }).unwrap();
-               console.log("Group joined:", accessCode);
+              
                setSuccessMessage(
                   `You have joined the group: ${groupData.name}`
                );
@@ -89,7 +89,7 @@ const JoinGroup = () => {
    //       return;
    //     }
    //     await createRole({ accessCode: accessCode });
-   //     console.log("Group joined:", accessCode);
+   //    
    //     setAccessCode("");
    //     setSuccessMessage(`You are now entering ${groupData.name}`);
 

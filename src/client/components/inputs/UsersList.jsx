@@ -17,7 +17,7 @@ export const UsersList = ({ groupId }) => {
 
    const { data: thisUser } = useGetCurrentUserQuery();
 
-   console.log("userlist current user", thisUser);
+  
 
    const isCreator = thisUser?.user?.roles?.some(
       (role) => role.group_id === groupId && role.is_creator
@@ -29,10 +29,10 @@ export const UsersList = ({ groupId }) => {
       (role) => role.group_id === groupId && role.is_admitted
    );
 
-   console.log("data returned by getcurrentUser", thisUser);
+  
 
-   console.log("users in userslist", users);
-   console.log("Group id in userslist:", groupId);
+  
+  
 
    const [updatedUsers, setUpdatedUsers] = useState({});
    const [updateUserRole, { isLoading: isUpdating }] =
@@ -49,7 +49,7 @@ export const UsersList = ({ groupId }) => {
          await updateUserRole({ groupId, userId, data });
          setUpdatedUsers({ ...updatedUsers, [userId]: !isCreator });
       } catch (err) {
-         console.log("failed to update", err);
+        
       }
    };
 

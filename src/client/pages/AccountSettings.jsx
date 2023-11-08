@@ -18,7 +18,7 @@ function AccountSettings() {
   const { data: currentUser, isError, isLoading } = useGetCurrentUserQuery();
   const [editUser, { isLoading: isEditingUser }] = useEditUserMutation();
 
-  console.log("in accounts:", currentUser);
+ 
 
   const [showChangeUsername, setShowChangeUsername] = useState(false);
   const [newUsername, setNewUsername] = useState("");
@@ -54,7 +54,7 @@ function AccountSettings() {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
-      console.log(err);
+     
       if (err.data && typeof err.data === "string") {
         setError(err.data);
       } else {
@@ -92,7 +92,7 @@ function AccountSettings() {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
-      console.log(err);
+     
       if (err.data && err.data.error) {
         setError(err.data.error);
       } else {

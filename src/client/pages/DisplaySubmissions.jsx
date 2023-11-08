@@ -22,12 +22,12 @@ const DisplaySubmissions = () => {
     socket.on("connect", () => {});
 
     socket.on("new_submission", (newSubmission) => {
-      console.log("new submission:", newSubmission);
+     
       refetch(questionId);
     });
 
     socket.on("new_vote", (submissionId) => {
-      console.log("display submissions socket connected", socket.connected);
+     
       refetch(questionId);
     });
 
@@ -64,7 +64,9 @@ const DisplaySubmissions = () => {
 
   if (submissionsLoading) return <div>Loading submission...</div>;
   if (!submissionsData || submissionsData.length === 0) {
-    return <div>Input a link to create a submission.</div>;
+    return <div className="noSubMsg"> There's no submission yet! 
+      Drop a link <Link to={`/question/${questionId}`} className="here" style={{color:"Lime"}}> HERE</Link> to create a submission.</div>;
+
   }
 
   return (
@@ -75,9 +77,7 @@ const DisplaySubmissions = () => {
           const isClicked = submission.id === clickedVideoId;
           return (
             <div
-              // className={`ds-video-container${
-              //   isClicked ? " vote-clicked" : ""
-              // }`}
+       
               key={submission.id} 
             >
               <div>
