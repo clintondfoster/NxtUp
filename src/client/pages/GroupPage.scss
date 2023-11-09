@@ -17,12 +17,18 @@
 
     .group-name-container {
         display: flex;
+        margin: 10px;
 
         .group-name-change-container {
             display: flex;
+            margin: 20px;
             
             .save-button {
                 display: flex;
+                color: style.$tertiary;
+                box-shadow: 2px 4px 8px rgba(0, 0, 0, .3);
+                border-radius: 5px;
+                padding: .2rem .4rem;
             }
         }
 
