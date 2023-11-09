@@ -21,7 +21,7 @@ const JoinGroup = () => {
         return;
       }
       await createRole({ accessCode: accessCode });
-      console.log("Group joined:", accessCode);
+     
       setAccessCode("");
       setSuccessMessage(`You are now entering ${groupData.name}`);
 

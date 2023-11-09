@@ -16,8 +16,13 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
  const [successMessage, setSuccessMessage] = useState(null);
 
 
- const socket = io.connect("http://localhost:3000");
- socket.on("connect", () => {});
+ const socket = io.connect("https://voti.onrender.com", {
+  cors: {
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
+    methods: ["GET", "POST"]
+  },
+});
+
 
 
  useEffect(() => {
@@ -52,11 +57,11 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
      socket.emit("new_submission", response);
 
 
-     console.log("Submission created:", response.data);
+    
      setSubmissionLink("");
      setSuccessMessage("Submission successfully created!");
    } catch (err) {
-     console.log("Error creating submission:", err);
+    
      setErrorMessage("Failed to create submission. Please try again.");
    }
  };

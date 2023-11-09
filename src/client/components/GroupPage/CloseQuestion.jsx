@@ -8,7 +8,7 @@ const CloseQuestion = ({ id }) => {
       await closeQuestion(id)
          .then(() => {})
          .catch(() => {
-            console.log("error");
+           
          });
       location.reload();
    };

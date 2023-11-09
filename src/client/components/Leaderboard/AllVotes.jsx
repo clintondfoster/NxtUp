@@ -8,15 +8,21 @@ const AllVotes = ({ submissionId }) => {
 
   //socket logic
   useEffect(() => {
-    const socket = io.connect("http://localhost:3000");
+    const socket = io.connect("https://voti.onrender.com", {
+  cors: {
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
+    methods: ["GET", "POST"]
+  },
+});
+
 
     socket.on("connect", () => {});
 
     socket.on("new_vote", (submissionId) => {
-      console.log("AllVotes socket connected:", socket.connected);
-      // console.log("AllVotes submissionId:", submissionId);
+     
+      //
       refetch(submissionId);
-      // console.log("refetched");
+      //
     });
 
     return () => {
@@ -25,7 +31,7 @@ const AllVotes = ({ submissionId }) => {
   }, []);
 
   // const { refetch } = useGetVotesForSubQuery(submissionId);
-  // console.log('sub id from all votes', submissionId)
+  //
 
   return (
     <>

@@ -25,7 +25,9 @@ const JoinGroup = () => {
     skip: accessCode.length !== 5,
   });
 
+
   console.log("groupData in JoinGroup", groupData);
+
 
   const extractAccessCode = (url) => {
     const digits = /\/group\/(\d{5})$/;
@@ -33,11 +35,11 @@ const JoinGroup = () => {
     return matches ? matches[1] : null;
   };
 
-  const handleInputChange = (e) => {
-    const enteredValue = e.target.value;
-    console.log("entered value:", enteredValue);
-    setInputValue(enteredValue);
-  };
+   const handleInputChange = (e) => {
+      const enteredValue = e.target.value;
+     
+      setInputValue(enteredValue);
+   };
 
   useEffect(() => {
     const checkGroupAndCreateRole = async () => {
@@ -124,34 +126,7 @@ const JoinGroup = () => {
       } else {
         setErrorMessage("Please enter a valid link or a 5-digit access code.");
       }
-    }
-  };
-  // const handleCreateRole = async () => {
-  //   try {
-  //     if (error || !groupData) {
-  //       setErrorMessage("Please enter a valid group code");
-  //       setTimeout(() => {
-  //         setErrorMessage("");
-  //       }, 3000);
-  //       return;
-  //     }
-  //     await createRole({ accessCode: accessCode });
-  //     console.log("Group joined:", accessCode);
-  //     setAccessCode("");
-  //     setSuccessMessage(`You are now entering ${groupData.name}`);
 
-  //     //Redirect to results page after 3 seconds
-  //     setTimeout(() => {
-  //       navigate(`/results/${accessCode}`);
-  //     }, 3000);
-  //   } catch (err) {
-  //     console.error("Error creating group:", err);
-  //     setErrorMessage("Please enter a valid group code");
-  //     setTimeout(() => {
-  //       setErrorMessage("");
-  //     }, 2000);
-  //   }
-  // };
 
   return (
     <div className="join-group-container">

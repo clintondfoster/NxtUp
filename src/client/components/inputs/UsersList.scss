@@ -1,0 +1,26 @@
+@use "../../style.scss";
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .list-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .btn {
+            background-color: style.$tertiary;
+            color: style.$secondary;
+            border-radius: 5px;
+            padding: 3px;
+            
+        }
+        
+        .username {
+            display: flex;
+            padding: 0 0.5rem ;
+        }
+    }
+}

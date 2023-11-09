@@ -8,7 +8,12 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 //Use Cors
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
+    methods: ["GET", "POST"],
+  })
+);
 
 //Parse incoming requests with JSON payloads
 app.use(express.json());
@@ -26,24 +31,24 @@ app.use("/oauth", require("./oauth"))
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
     methods: ["GET", "POST"]
   },
 });
 
 io.on("connection", (socket) => {
-  // console.log(`user connected: ${socket.id}`);
+  //
   socket.on("new_submission", (data) => {
     io.emit("new_submission", data)
-    console.log(data)
+   
   })
   socket.on("new_vote", (data) => {
     io.emit("new_vote", data)
-    console.log('server socket received',data)
+   
   })
 
   socket.on("disconnect", () => {
-    // console.log(`user disconnected: ${socket.id}`);
+    //
   });
 
 });
@@ -57,13 +62,10 @@ app.use((req, res, next) => {
 
 
 server.listen(PORT, () => {
-  console.log("Server running on port" + PORT);
+ 
 });
 ViteExpress.bind(app, server);
 
-// ViteExpress.listen(app, PORT, () =>
-//   console.log("Server is listening on port" +PORT)
-// );
 
 app.use((err, req, res, next) => {
   console.error(`Error: ${err.message}\nStack: ${err.stack}`);

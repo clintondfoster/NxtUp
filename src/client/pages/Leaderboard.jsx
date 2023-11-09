@@ -15,17 +15,23 @@ const Leaderboard = () => {
   const { questionId } = useParams();
 
   useEffect(() => {
-    const socket = io.connect("http://localhost:3000");
+    const socket = io.connect("https://voti.onrender.com", {
+  cors: {
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
+    methods: ["GET", "POST"]
+  },
+});
+
 
     socket.on("connect", () => {});
 
     socket.on("new_submission", (newSubmission) => {
-      console.log("new submission:", newSubmission);
+     
       refetch(questionId);
     });
 
     socket.on("new_vote", (submissionId) => {
-      console.log("leaderboard socket connected", socket.connected);
+     
       refetch(questionId);
       // topVoted.forEach((submission) => refetchVotes(submission.id));
     });

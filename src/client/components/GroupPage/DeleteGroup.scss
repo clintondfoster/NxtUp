@@ -1,0 +1,8 @@
+@use "../../style.scss";
+
+.delete-btn {
+    background-color: style.$secondary;
+    color: style.$tertiary;
+    border-radius: 5px;
+    padding: .3rem;
+}

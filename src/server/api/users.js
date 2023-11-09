@@ -10,7 +10,7 @@ router.use(protection);
 
 // all users in a group can see the other members
 router.get("/group/:groupId/users", async (req, res, next) => {
-    console.log("Received request for users of group:")
+   
     try {
         if (!req.user) {
             return res.status(401).send("User not authenticated.")
@@ -55,7 +55,7 @@ router.get("/group/:groupId/users", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
     try {
         if (!req.User) {
-            console.log(req.User)
+           
             return res.status(401).send("User not authenticated")
         }
 

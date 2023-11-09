@@ -12,7 +12,7 @@ const DisplayQuestion = ({ groupId }) => {
     
       if (data) {
         const question = data;
-        console.log(question)
+       
     
         return (
           <div>
