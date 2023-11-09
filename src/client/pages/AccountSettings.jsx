@@ -13,12 +13,11 @@ import {
   faSquareCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { validatePassword } from "../components/authForm/Validator";
+import NotificationsComp from "../components/AccountSettings/Notifications";
 
 function AccountSettings() {
   const { data: currentUser, isError, isLoading } = useGetCurrentUserQuery();
   const [editUser, { isLoading: isEditingUser }] = useEditUserMutation();
-
- 
 
   const [showChangeUsername, setShowChangeUsername] = useState(false);
   const [newUsername, setNewUsername] = useState("");
@@ -54,7 +53,6 @@ function AccountSettings() {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
-     
       if (err.data && typeof err.data === "string") {
         setError(err.data);
       } else {
@@ -92,7 +90,6 @@ function AccountSettings() {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (err) {
-     
       if (err.data && err.data.error) {
         setError(err.data.error);
       } else {
@@ -225,6 +222,9 @@ function AccountSettings() {
             </div>
           </>
         )}
+      </div>
+      <div className="as-notifications-container">
+        <Notifications />
       </div>
       <div className="as-logout">
         <div onClick={handleLogout}>Logout</div>

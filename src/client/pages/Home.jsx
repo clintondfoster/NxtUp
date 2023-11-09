@@ -8,7 +8,6 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="join-container">
-        {/* <p>Enter your url link or your group code here.</p> */}
         <JoinGroup />
       </div>
       <p style={{ padding: 10 }}>or</p>

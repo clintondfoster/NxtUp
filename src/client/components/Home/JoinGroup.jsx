@@ -130,11 +130,11 @@ const JoinGroup = () => {
     <div className="join-group-container">
       {successMessage && <div>{successMessage}</div>}
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+      <p>Paste a link or enter your 5-digit code to join a group.</p>
       <div>
-        <p>Paste link or enter your 5-digit code.</p>
         <input
           className="join-group-input"
-          placeholder="Paste code..."
+          placeholder="Paste link..."
           s
           type="text"
           value={inputValue}
