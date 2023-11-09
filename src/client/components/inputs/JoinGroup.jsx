@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAddRoleMutation, useGetGroupByCodeQuery } from "../../reducers/api";
 import { useNavigate } from "react-router-dom";
+import { useGetActiveQuestionsForGroupQuery } from "../../reducers/api";
 
 const JoinGroup = () => {
   const [accessCode, setAccessCode] = useState("");
@@ -24,9 +25,9 @@ const JoinGroup = () => {
       setAccessCode("");
       setSuccessMessage(`You are now entering ${groupData.name}`);
 
-      //Redirect to group page after 3 seconds
+      //Redirect to active question page after 3 seconds
       setTimeout(() => {
-        navigate(`/group/${accessCode}`);
+        // navigate(`/question/${id}`);
       }, 3000);
     } catch (err) {
       console.error("Error creating group:", err);
