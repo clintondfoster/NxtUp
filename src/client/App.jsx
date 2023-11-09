@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar/Navbar";
 import DisplaySubmissions from "./pages/DisplaySubmissions";
 import { useSelector } from "react-redux";
 import AccountSettings from "./pages/AccountSettings";
+import HowToPlay from "./components/Home/HowToPlay";
 
 export default function App() {
    const token = useSelector((state) => state.auth.credentials.token);
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/group/:accessCode" element={<GroupPage />} />
             <Route path="/question/:questionId" element={<QuestionPage />} />
             <Route path="/account-settings" element={<AccountSettings />} />
+            <Route path="/how-to-play" element={<HowToPlay />} />
             <Route
                path="/question/:questionId/leaderboard"
                element={<Leaderboard />}

@@ -2,6 +2,7 @@ import React from "react";
 import CreateGroup from "../components/Home/CreateGroup";
 import JoinGroup from "../components/Home/JoinGroup";
 import DisplayUserGroups from "../components/Home/DisplayUserGroups";
+import HowToPlay from "../components/Home/HowToPlay";
 import "./Home.scss";
 
 const Home = () => {
@@ -15,10 +16,13 @@ const Home = () => {
       <div className="create-container">
         <CreateGroup />
       </div>
+      <div>Ditch the Doubt! Join NxtUp and let your voice be the choice!</div>
+      <div>Create or Join a group to figure out whats Up Nxt</div>
       <hr />
       <div className="display-container">
         <DisplayUserGroups />
       </div>
+    
     </div>
   );
 };
