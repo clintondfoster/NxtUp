@@ -8,7 +8,7 @@ import io from "socket.io-client";
 import Chart from "../components/Chart/Chart";
 import AllVotes from "../components/Leaderboard/AllVotes";
 import VideoEmbed from "../components/Leaderboard/VideoEmbed";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "./Leaderboard.scss";
 
 const Leaderboard = () => {
@@ -16,22 +16,19 @@ const Leaderboard = () => {
 
   useEffect(() => {
     const socket = io.connect("https://voti.onrender.com", {
-  cors: {
-    origin: ["http://localhost:3000", "https://voti.onrender.com"],
-    methods: ["GET", "POST"]
-  },
-});
-
+      cors: {
+        origin: ["http://localhost:3000", "https://voti.onrender.com"],
+        methods: ["GET", "POST"],
+      },
+    });
 
     socket.on("connect", () => {});
 
     socket.on("new_submission", (newSubmission) => {
-     
       refetch(questionId);
     });
 
     socket.on("new_vote", (submissionId) => {
-     
       refetch(questionId);
       // topVoted.forEach((submission) => refetchVotes(submission.id));
     });
@@ -88,6 +85,17 @@ const Leaderboard = () => {
             </div>
           </div>
         ))}
+        <div>
+          <Link
+            to={{
+              pathname: `/question/${questionId}/submissions`,
+            }}
+          >
+            <button className="ds-back-button">
+              BACK
+            </button>
+          </Link>
+        </div>
       </div>
       <div className="lb-chart">
         <Chart questionId={questionId} />
