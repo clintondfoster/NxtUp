@@ -15,13 +15,12 @@ const Home = () => {
       <div className="create-container">
         <CreateGroup />
       </div>
-      <div>Ditch the Doubt! Join NxtUp and let your voice be the choice!</div>
-      <div>Create or Join a group to figure out whats Up Nxt</div>
+      <div>Ditch the Doubt! Join NxtUp and let their voice be the choice!</div>
+      <div>Create or Join a group to figure out what's NxtUp</div>
       <hr />
       <div className="display-container">
         <DisplayUserGroups />
       </div>
-    
     </div>
   );
 };
