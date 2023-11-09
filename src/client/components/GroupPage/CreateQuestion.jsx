@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAddQuestionMutation } from "../../reducers/api";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
 import "./CreateQuestion.scss";
@@ -7,7 +7,11 @@ const CreateQuestion = ({ groupId }) => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [createQuestion] = useAddQuestionMutation();
 
-  const { data: currentUser } = useGetCurrentUserQuery();
+  const { data: currentUser, refetch } = useGetCurrentUserQuery();
+
+  useEffect(() => {
+    refetch();
+  }, [groupId, refetch]);
 
   const handleCreateQuestion = async () => {
     try {
