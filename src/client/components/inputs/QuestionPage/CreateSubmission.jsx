@@ -16,8 +16,13 @@ const CreateSubmission = ({ groupId, userId, questionId }) => {
  const [successMessage, setSuccessMessage] = useState(null);
 
 
- const socket = io.connect("http://localhost:3000");
- socket.on("connect", () => {});
+ const socket = io.connect("https://voti.onrender.com", {
+  cors: {
+    origin: ["http://localhost:3000", "https://voti.onrender.com"],
+    methods: ["GET", "POST"]
+  },
+});
+
 
 
  useEffect(() => {
