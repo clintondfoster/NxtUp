@@ -1,0 +1,85 @@
+@use "../../style.scss";
+
+.how-to-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  min-height: 20vh;
+  color: style.$text;
+}
+
+.display-how-to {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    min-height: 50%;
+
+    span {
+        margin-left: 5px;
+    }
+}
+
+// .how-to-list {
+//   display: flex;
+//   flex-direction: column;
+//   width: 400px;
+// }
+
+li {
+  margin: 8px;
+}
+
+.how-to-btn {
+  display: flex;
+  justify-content: center;
+  background-color: style.$tertiary;
+  color: style.$secondary;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  min-width: 50%;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: style.$tertiary-active;
+  }
+}
+
+.dropdown-content {
+    display: flex;
+    padding: .5rem;
+    border-radius: 5px;
+    background-color: style.$secondary;
+    
+    ul {
+        list-style: none;
+        text-decoration: none;
+
+        li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: .2rem;
+            margin-bottom: .2rem;
+            backdrop-filter: invert(5%);
+            border-radius: 5px;
+            cursor: pointer;
+
+
+            &:hover {
+                background-color: style.$secondary-active;
+            }
+        }
+
+        .group-link {
+            color: style.$tertiary;
+            text-decoration: none;
+            padding: .2rem;
+        }  
+    }
+}
