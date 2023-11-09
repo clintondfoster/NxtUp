@@ -25,9 +25,7 @@ const JoinGroup = () => {
     skip: accessCode.length !== 5,
   });
 
-
   console.log("groupData in JoinGroup", groupData);
-
 
   const extractAccessCode = (url) => {
     const digits = /\/group\/(\d{5})$/;
@@ -35,11 +33,11 @@ const JoinGroup = () => {
     return matches ? matches[1] : null;
   };
 
-   const handleInputChange = (e) => {
-      const enteredValue = e.target.value;
-     
-      setInputValue(enteredValue);
-   };
+  const handleInputChange = (e) => {
+    const enteredValue = e.target.value;
+
+    setInputValue(enteredValue);
+  };
 
   useEffect(() => {
     const checkGroupAndCreateRole = async () => {
@@ -126,8 +124,8 @@ const JoinGroup = () => {
       } else {
         setErrorMessage("Please enter a valid link or a 5-digit access code.");
       }
-
-
+    }
+  };
   return (
     <div className="join-group-container">
       {successMessage && <div>{successMessage}</div>}
