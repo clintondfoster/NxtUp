@@ -23,6 +23,14 @@ router.get("/group/:access_code/inactive", async (req, res, next) => {
         group_id: group.id,
         is_active: false,
       },
+      include: {
+        Submission: true,
+        Submission: {
+          include: {
+            Vote: true,
+          },
+        },
+      },
     });
     res.status(200).send(inactiveQuestions);
   } catch (err) {

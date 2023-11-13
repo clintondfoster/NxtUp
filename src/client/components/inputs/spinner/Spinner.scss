@@ -1,10 +1,10 @@
-
 @use "../../style.scss";
+
 .loader {
     width: 48px;
     height: 48px;
     border-width: 3px;
-    border-style: dashed solid  solid dotted;
+    border-style: dashed solid solid dotted;
     border-color: style.$tertiary style.$tertiary transparent style.$tertiary;
     border-radius: 50%;
     display: inline-block;
@@ -24,39 +24,12 @@
     transform: rotate(-40deg);
 }
 
-.previousQ-dropdown-content {
-    display: flex;
-    padding: .5rem;
-    border-radius: 5px;
-    background-color: style.$secondary;
-    
-    ul {
-        list-style: none;
-        text-decoration: none;
-
-        .pq-content {
-            width: 200px;
-            justify-content: center;
-            align-items: center;
-            padding: .3rem;
-            margin-bottom: .2rem;
-            backdrop-filter: invert(5%);
-            border-radius: 5px;
-            cursor: pointer;
-            &:hover {
-                background-color: style.$secondary-active;
-            }
-        }
-    }
-}
-
-
 @keyframes rotation {
     0% {
         transform: rotate(0deg);
-    }    
+    }
+
     100% {
         transform: rotate(360deg);
     }
 }
-
