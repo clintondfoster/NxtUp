@@ -12,7 +12,7 @@ export default function Login() {
       const qParams = {
          client_id:
             "392482149502-nhmjmarp8hj2de00t088096bvc31cpim.apps.googleusercontent.com",
-         redirect_uri: import.meta.env.BASE_URI + "/oauthhandler",
+         redirect_uri: "http://localhost:3000/oauthhandler",
          response_type: "token",
          scope: "openid email",
       };

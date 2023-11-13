@@ -15,6 +15,7 @@ import CreateQuestion from "../components/GroupPage/CreateQuestion";
 import DeleteGroup from "../components/GroupPage/DeleteGroup";
 import PreviousQuestion from "../components/GroupPage/PreviousQuestion";
 import CloseQuestion from "../components/GroupPage/CloseQuestion";
+import Spinner from "../components/inputs/spinner/Spinner";
 import "./GroupPage.scss";
 
 const GroupPage = () => {
@@ -81,7 +82,7 @@ const GroupPage = () => {
       setTimeout(() => setCopySuccess(""), 2000);
    };
 
-   if (groupLoading) return <div>Loading...</div>;
+   if (groupLoading) return <Spinner />;
    if (groupError) {
       return <div>Error with group data: {groupError.message}</div>;
    }
