@@ -11,10 +11,10 @@ const CreateGroup = () => {
   const handleCreateGroup = async () => {
     try {
       const response = await createGroup();
-      console.log("Backend response:", response);
+     
 
       const createdGroup = response.data.group;
-      console.log("Group created:", createdGroup);
+     
       setSuccessMessage(
         `${createdGroup.name} is live! Share this code to add users to this group: ${createdGroup.access_code}`
       );

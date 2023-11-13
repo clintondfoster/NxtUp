@@ -23,8 +23,6 @@ async function checkEmailExists(req, res, next) {
         next (error);
     }
 }
-
-
 async function checkUsernameExists (req, res, next) {
     const { username } = req.body;
     if(!username) {

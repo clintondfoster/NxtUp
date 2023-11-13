@@ -13,8 +13,6 @@ const DisplayQuestion = ({ groupId }) => {
 
    if (data) {
       const question = data;
-      console.log(question);
-
       return (
          <div>
             <h1>{question.title}</h1>

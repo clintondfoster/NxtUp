@@ -23,6 +23,10 @@ export default function Navbar() {
     navigate("/account-settings");
   }
 
+  function handleHowTo() {
+    navigate("/how-to-play");
+  }
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -50,6 +54,9 @@ export default function Navbar() {
         </div>
         <div className="nav-btn" onClick={handleAccount}>
           Account
+        </div>
+        <div className="nav-btn" onClick={handleHowTo}>
+          How to Play
         </div>
         <div className="nav-btn" onClick={handleLogout}>
           Logout

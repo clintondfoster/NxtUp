@@ -64,8 +64,18 @@
 .lb-chart {
   display: flex;
 }
-// h1{
-//     margin: 15px;
-//     font-weight: bold;
-// }
+
+.ds-back-button{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: style.$tertiary;
+  color: style.$secondary;
+  border: none;
+  padding: 10px;
+  z-index: 9999;
+  &:hover{
+      background-color: style.$tertiary-active;
+  }
+}
 

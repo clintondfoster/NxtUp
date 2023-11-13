@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSelector } from "react-redux/es/hooks/useSelector";
 import {
    useGetGroupByCodeQuery,
    useGetActiveQuestionsForGroupQuery,
@@ -19,11 +18,7 @@ import Spinner from "../components/inputs/spinner/Spinner";
 import "./GroupPage.scss";
 
 const GroupPage = () => {
-   const state = useSelector((state) => state);
-   console.log("state: ", state);
    const { accessCode } = useParams();
-
-   console.log("access code in group page", accessCode);
 
    const {
       data: groupData,
@@ -46,7 +41,7 @@ const GroupPage = () => {
    const [copySuccess, setCopySuccess] = useState("");
 
    const { data: currentUser } = useGetCurrentUserQuery();
-   console.log("currentUser", currentUser);
+
    const isAdmin = currentUser?.user?.roles?.some(
       (role) => role.group_id === groupData?.id && role.is_admin
    );
@@ -61,7 +56,6 @@ const GroupPage = () => {
          if (result.error) {
             console.error("Error editing group name:", result.error);
          } else {
-            console.log(`Group name updated`, newGroupName);
             refetch();
          }
       } catch (error) {
@@ -88,6 +82,15 @@ const GroupPage = () => {
    }
 
    if (!groupData) return null;
+
+   function isEmpty() {
+      if (newGroupName.trim().length === 0) {
+         alert("Group name can not be empty!");
+         return true;
+      } else {
+         return false;
+      }
+   }
    return (
       <div className="group-page-container">
          <div className="justify-fix">
@@ -100,7 +103,14 @@ const GroupPage = () => {
                         placeholder={groupData.name}
                         onChange={(e) => setNewGroupName(e.target.value)}
                      />
-                     <div className="save-button" onClick={handleEditGroupName}>
+                     <div
+                        className="save-button"
+                        onClick={() => {
+                           if (!isEmpty()) {
+                              handleEditGroupName();
+                           }
+                        }}
+                     >
                         Save
                      </div>
                   </div>
@@ -137,7 +147,6 @@ const GroupPage = () => {
                               className="current"
                               to={`/question/${question.id}`}
                            >
-                              {" "}
                               {question.title}
                            </Link>
 

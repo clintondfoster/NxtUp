@@ -63,7 +63,7 @@ function AuthForm() {
     try {
       const result = await authMethod(credentials).unwrap();
       setIsSubmitting(false);
-      console.log("auth result", result);
+     
       if (result && result.user && result.user.userId) {
         setMessage(
           view === "login" ? "Login successful!" : "Registration successful!"
