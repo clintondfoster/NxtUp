@@ -27,6 +27,16 @@
             background-color: style.$tertiary-active;
         }
     }
+
+    .join-group-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+p {
+    margin-bottom: 15px;
 }
 p {
     margin-bottom: 15px;
