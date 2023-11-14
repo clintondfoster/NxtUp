@@ -56,7 +56,7 @@ const JoinGroup = () => {
 
                //check if there is active question
                if (questionsData?.length > 0) {
-                  navigate(`/questions/${questionsData[0].id}`);
+                  navigate(`/question/${questionsData[0].id}`);
                   setSuccessMessage(
                      `You have joined the group: ${groupData.name}`
                   );
