@@ -9,7 +9,7 @@ const Home = () => {
    return (
       <div className="home-container">
          <div className="home-quip">
-            Create or join a Group to figure out whats UpNxt!
+            Create or join a Group to figure out what's UpNxt!
          </div>
          <div className="join-container">
             {/* <p>Enter your url link or your group code here.</p> */}
