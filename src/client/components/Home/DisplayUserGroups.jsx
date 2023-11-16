@@ -8,6 +8,7 @@ import {
    faSquareCaretUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DisplayUserGroups.scss";
+import Spinner from "../inputs/spinner/Spinner";
 
 function DisplayUserGroups() {
    const userId = useSelector((state) => state.auth.credentials.user.userId);
@@ -19,7 +20,7 @@ function DisplayUserGroups() {
    const [isOpen, setIsOpen] = useState(false);
    const [isOpen2, setIsOpen2] = useState(false);
 
-   if (isLoading) return <p>Loading...</p>;
+   if (isLoading) return <Spinner />;
    if (error) return <p>Error fetching users groups: {error.message}</p>;
 
    const creator = userGroups.filter((group) => group.userId === userId);

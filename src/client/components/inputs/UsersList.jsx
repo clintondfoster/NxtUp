@@ -5,6 +5,7 @@ import {
    useUpdateUserRoleMutation,
 } from "../../reducers/api";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
+import Spinner from "../inputs/spinner/Spinner";
 import "./UsersList.scss";
 
 export const UsersList = ({ groupId }) => {
@@ -53,7 +54,7 @@ export const UsersList = ({ groupId }) => {
       }
    };
 
-   if (usersLoading) return <p>Loading...</p>;
+   if (usersLoading) return <Spinner />;
    if (usersError) return <p>Error loading users</p>;
    if (!users.length) return <p>No users found.</p>;
 
