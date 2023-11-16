@@ -49,7 +49,10 @@ function DisplayUserGroups() {
                   <ul>
                      {creator.map((group) => (
                         <li key={group.id}>
-                           <Link to={`/group/${group.access_code}`}>
+                           <Link
+                              className="group-link"
+                              to={`/group/${group.access_code}`}
+                           >
                               {group.name}
                            </Link>
                         </li>
@@ -78,7 +81,10 @@ function DisplayUserGroups() {
                   <ul>
                      {sheep.map((group) => (
                         <li key={group.id}>
-                           <Link to={`/group/${group.access_code}`}>
+                           <Link
+                              className="group-link"
+                              to={`/group/${group.access_code}`}
+                           >
                               {group.name}
                            </Link>
                         </li>

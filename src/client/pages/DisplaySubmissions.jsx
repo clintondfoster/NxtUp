@@ -11,7 +11,7 @@ import VideoEmbed from "../components/Leaderboard/VideoEmbed";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import "./DisplaySubmissions.scss";
-import CheckVotes from "../components/inputs/DisplaySubmissions/CheckVotes";
+import Spinner from "../components/inputs/spinner/Spinner";
 
 const DisplaySubmissions = () => {
   const { questionId } = useParams();
@@ -63,12 +63,12 @@ const DisplaySubmissions = () => {
     useGetQuestionByIdQuery(questionId);
 
   const renderQuestion = () => {
-    if (questionLoading) return <div>Loading question...</div>;
+    if (questionLoading) return <Spinner/>;
     if (!questionData) return null;
     return <h2>{questionData.title}</h2>;
   };
 
-  if (submissionsLoading) return <div>Loading submission...</div>;
+  if (submissionsLoading) return <Spinner/> ;
   if (!submissionsData || submissionsData.length === 0) {
     return <div className="noSubMsg"> There's no submission yet! 
       Drop a link <Link to={`/question/${questionId}`} className="here" style={{color:"Lime"}}> HERE</Link> to create a submission.</div>;
