@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   useGetGroupByCodeQuery,
@@ -25,7 +25,7 @@ const GroupPage = () => {
     data: groupData,
     isLoading: groupLoading,
     isError: groupError,
-    refetch,
+    refetch: refetchGroup,
   } = useGetGroupByCodeQuery(accessCode);
 
   const {
@@ -34,6 +34,8 @@ const GroupPage = () => {
     isError: questionsError,
     refetch: refetchQuestion,
   } = useGetActiveQuestionsForGroupQuery(accessCode);
+
+
 
   const [editGroupName] = useEditGroupNameMutation();
 
@@ -77,6 +79,14 @@ const GroupPage = () => {
     copyToClipboard();
     setTimeout(() => setCopySuccess(""), 2000);
   };
+
+  useEffect(() => {
+    if (questionsData !== undefined) {
+      console.log("Effect triggered. Questions data:", questionsData);
+      refetchGroup()
+      refetchQuestion()
+    }
+  }, [refetchGroup,refetchQuestion, questionsData, groupData ]);
 
   if (groupLoading) return <div>Loading...</div>;
   if (groupError) {
@@ -155,7 +165,7 @@ const GroupPage = () => {
             </div>
           ) : (
             <div onClick={() => refetchQuestion()}>
-              <CreateQuestion groupId={groupData.id} />
+              <CreateQuestion groupId={groupData.id} accessCode={accessCode} />
             </div>
           )}
         </div>

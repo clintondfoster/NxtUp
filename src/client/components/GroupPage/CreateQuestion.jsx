@@ -1,14 +1,19 @@
-
 import { useState, useEffect } from "react";
-import { useAddQuestionMutation } from "../../reducers/api";
+import { useAddQuestionMutation, useGetActiveQuestionsForGroupQuery } from "../../reducers/api";
 import { useGetCurrentUserQuery } from "../../reducers/auth";
 import "./CreateQuestion.scss";
 
-const CreateQuestion = ({ groupId }) => {
+const CreateQuestion = ({ groupId, accessCode }) => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [createQuestion] = useAddQuestionMutation();
   const { data: currentUser, refetch } = useGetCurrentUserQuery();
 
+  const {
+    data: questionsData,
+    isLoading: questionsLoading,
+    isError: questionsError,
+    refetch: refetchQuestion,
+  } = useGetActiveQuestionsForGroupQuery(accessCode);
 
   useEffect(() => {
     refetch();
@@ -21,6 +26,7 @@ const CreateQuestion = ({ groupId }) => {
         group_id: groupId,
       });
       setQuestionTitle("");
+      refetchQuestion()
     } catch (err) {
       console.error("Error creating group:", err);
     }
