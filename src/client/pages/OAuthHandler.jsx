@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useOauthMutation } from "../reducers/auth";
 import { useEffect } from "react";
+import Spinner from "../components/inputs/spinner/Spinner";
+import "./OAuthHandler.scss";
 
 export default function OAuthHandler() {
    const [attemptOauth] = useOauthMutation();
@@ -37,5 +39,9 @@ export default function OAuthHandler() {
       navigate("/home");
    }
 
-   return <div>Loading</div>;
+   return (
+      <div className="handler-screen">
+         <Spinner />
+      </div>
+   );
 }
